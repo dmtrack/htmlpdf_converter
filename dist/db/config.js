@@ -15,9 +15,9 @@ const connection = new sequelize_typescript_1.Sequelize({
     database: process.env.DB_NAME,
     logging: false,
     models: [users_1.User],
-    dialectOptions: {
-        ssl: true,
-        native: true,
-    },
+    // dialectOptions: {
+    //     ssl: true,
+    //     native: true,
+    // },
 });
 exports.default = connection;
