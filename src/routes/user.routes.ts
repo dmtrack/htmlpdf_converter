@@ -3,6 +3,7 @@ import {
     createUser,
     getUserStatus,
     getAllUsers,
+    getUser,
     deleteUser,
     signUp,
     signIn,
@@ -13,6 +14,7 @@ const router = Router();
 
 router.post('/createuser', createUser);
 router.get('/getusers', getAllUsers);
+router.get('/getuser/:id([0-9]+)', getUser);
 router.get('/getuserstatus', getUserStatus);
 router.delete('/deleteuser', deleteUser);
 
@@ -22,3 +24,5 @@ router.put('/block', toggleBlock);
 router.put('/unblock', toggleUnblock);
 
 export default router;
+
+//

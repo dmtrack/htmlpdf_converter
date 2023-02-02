@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import { User } from '../models/users';
+import { User } from '../db/models/users';
 const { SHA3 } = require('sha3');
 
 export const updateUser: RequestHandler = async (req, res, next) => {
@@ -150,6 +150,29 @@ export const getAllUsers: RequestHandler = async (req, res, next) => {
             .json({ message: `users fetched successfully`, data: allUsers });
     } catch (err: any) {
         return err.message;
+    }
+};
+
+export const getUser: RequestHandler = async (req, res, next) => {
+    const id = req.params.id;
+    try {
+        const user: User | null = await User.findOne({
+            where: { id: id },
+        });
+        if (user) {
+            return res.status(200).json({
+                message: `user with id:${id} is found`,
+                user: user,
+            });
+        } else
+            return res.status(200).json({
+                message: `user with id:${id} is not found`,
+            });
+    } catch (err: any) {
+        return res.status(404).json({
+            error: 404,
+            message: `${err.message}`,
+        });
     }
 };
 
