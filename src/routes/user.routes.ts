@@ -10,19 +10,19 @@ import {
     toggleBlock,
     toggleUnblock,
 } from '../controllers/userController';
-const router = Router();
+const userRouter = Router();
 
-router.post('/createuser', createUser);
-router.get('/getusers', getAllUsers);
-router.get('/getuser/:id([0-9]+)', getUser);
-router.get('/getuserstatus', getUserStatus);
-router.delete('/deleteuser', deleteUser);
+userRouter.post('/createuser', createUser);
+userRouter.get('/getusers', getAllUsers);
+userRouter.get('/getuser/:id([0-9]+)', getUser);
+userRouter.get('/getuserstatus', getUserStatus);
+userRouter.delete('/deleteuser', deleteUser);
 
-router.post('/signup', signUp);
-router.post('/signin', signIn);
-router.put('/block', toggleBlock);
-router.put('/unblock', toggleUnblock);
+userRouter.post('/signup', signUp);
+userRouter.post('/signin', signIn);
+userRouter.put('/block', toggleBlock);
+userRouter.put('/unblock', toggleUnblock);
 
-export default router;
+export default userRouter;
 
 //

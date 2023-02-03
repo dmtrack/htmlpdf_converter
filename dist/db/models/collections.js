@@ -29,10 +29,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
-const collections_1 = require("./collections");
+exports.Collection = void 0;
 const sequelize = __importStar(require("sequelize-typescript"));
-let User = class User extends sequelize.Model {
+const items_1 = require("./items");
+const users_1 = require("./users");
+let Collection = class Collection extends sequelize.Model {
 };
 __decorate([
     sequelize.Column({
@@ -42,45 +43,48 @@ __decorate([
         allowNull: false,
         unique: true,
     })
-], User.prototype, "id", void 0);
+], Collection.prototype, "id", void 0);
 __decorate([
     sequelize.Column({
         type: sequelize.DataType.STRING,
         allowNull: false,
     })
-], User.prototype, "name", void 0);
-__decorate([
-    sequelize.Column({
-        type: sequelize.DataType.STRING,
-        allowNull: false,
-        unique: true,
-    })
-], User.prototype, "email", void 0);
+], Collection.prototype, "name", void 0);
 __decorate([
     sequelize.Column({
         type: sequelize.DataType.STRING,
         allowNull: false,
     })
-], User.prototype, "password", void 0);
+], Collection.prototype, "description", void 0);
 __decorate([
     sequelize.Column({
-        type: sequelize.DataType.BOOLEAN,
+        type: sequelize.DataType.STRING,
         allowNull: false,
     })
-], User.prototype, "blocked", void 0);
+], Collection.prototype, "theme", void 0);
 __decorate([
     sequelize.Column({
-        type: sequelize.DataType.BOOLEAN,
+        type: sequelize.DataType.STRING,
         allowNull: false,
     })
-], User.prototype, "isAdmin", void 0);
+], Collection.prototype, "image", void 0);
 __decorate([
-    sequelize.HasMany(() => collections_1.Collection)
-], User.prototype, "userCollections", void 0);
-User = __decorate([
+    sequelize.BelongsTo(() => users_1.User)
+], Collection.prototype, "user", void 0);
+__decorate([
+    sequelize.ForeignKey(() => users_1.User),
+    sequelize.Column({
+        type: sequelize.DataType.INTEGER,
+        allowNull: false,
+    })
+], Collection.prototype, "userId", void 0);
+__decorate([
+    sequelize.HasMany(() => items_1.Item)
+], Collection.prototype, "userCollections", void 0);
+Collection = __decorate([
     sequelize.Table({
         timestamps: false,
-        tableName: 'users',
+        tableName: 'collections',
     })
-], User);
-exports.User = User;
+], Collection);
+exports.Collection = Collection;

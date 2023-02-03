@@ -29,58 +29,40 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
-const collections_1 = require("./collections");
+exports.Item = void 0;
 const sequelize = __importStar(require("sequelize-typescript"));
-let User = class User extends sequelize.Model {
+const collections_1 = require("./collections");
+let Item = class Item extends sequelize.Model {
 };
 __decorate([
     sequelize.Column({
         type: sequelize.DataType.INTEGER,
         autoIncrement: true,
+        allowNull: false,
+        unique: true,
         primaryKey: true,
-        allowNull: false,
-        unique: true,
     })
-], User.prototype, "id", void 0);
+], Item.prototype, "id", void 0);
 __decorate([
     sequelize.Column({
         type: sequelize.DataType.STRING,
         allowNull: false,
     })
-], User.prototype, "name", void 0);
+], Item.prototype, "name", void 0);
 __decorate([
-    sequelize.Column({
-        type: sequelize.DataType.STRING,
-        allowNull: false,
-        unique: true,
-    })
-], User.prototype, "email", void 0);
+    sequelize.BelongsTo(() => collections_1.Collection)
+], Item.prototype, "collection", void 0);
 __decorate([
+    sequelize.ForeignKey(() => collections_1.Collection),
     sequelize.Column({
-        type: sequelize.DataType.STRING,
+        type: sequelize.DataType.INTEGER,
         allowNull: false,
     })
-], User.prototype, "password", void 0);
-__decorate([
-    sequelize.Column({
-        type: sequelize.DataType.BOOLEAN,
-        allowNull: false,
-    })
-], User.prototype, "blocked", void 0);
-__decorate([
-    sequelize.Column({
-        type: sequelize.DataType.BOOLEAN,
-        allowNull: false,
-    })
-], User.prototype, "isAdmin", void 0);
-__decorate([
-    sequelize.HasMany(() => collections_1.Collection)
-], User.prototype, "userCollections", void 0);
-User = __decorate([
+], Item.prototype, "collectionId", void 0);
+Item = __decorate([
     sequelize.Table({
         timestamps: false,
-        tableName: 'users',
+        tableName: 'items',
     })
-], User);
-exports.User = User;
+], Item);
+exports.Item = Item;

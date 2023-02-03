@@ -1,12 +1,13 @@
-import { Collection } from './collections';
 import * as sequelize from 'sequelize-typescript';
-import { ForeignKey } from 'sequelize-typescript';
+
+import { Item } from './items';
+import { User } from './users';
 
 @sequelize.Table({
     timestamps: false,
-    tableName: 'users',
+    tableName: 'collections',
 })
-export class User extends sequelize.Model {
+export class Collection extends sequelize.Model {
     @sequelize.Column({
         type: sequelize.DataType.INTEGER,
         autoIncrement: true,
@@ -25,28 +26,31 @@ export class User extends sequelize.Model {
     @sequelize.Column({
         type: sequelize.DataType.STRING,
         allowNull: false,
-        unique: true,
     })
-    email!: string;
+    description!: string;
 
     @sequelize.Column({
         type: sequelize.DataType.STRING,
         allowNull: false,
     })
-    password!: string;
+    theme!: string;
 
     @sequelize.Column({
-        type: sequelize.DataType.BOOLEAN,
+        type: sequelize.DataType.STRING,
         allowNull: false,
     })
-    blocked!: boolean;
+    image!: string;
 
+    @sequelize.BelongsTo(() => User)
+    user!: User;
+
+    @sequelize.ForeignKey(() => User)
     @sequelize.Column({
-        type: sequelize.DataType.BOOLEAN,
+        type: sequelize.DataType.INTEGER,
         allowNull: false,
     })
-    isAdmin!: boolean;
+    userId!: number;
 
-    @sequelize.HasMany(() => Collection)
-    userCollections!: Collection[];
+    @sequelize.HasMany(() => Item)
+    userCollections!: Item[];
 }

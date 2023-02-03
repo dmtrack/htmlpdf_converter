@@ -1,8 +1,10 @@
 import express from 'express';
 import connection from './db/config';
 import dotenv from 'dotenv';
-import router from './routes/user.routes';
+import userRouter from './routes/user.routes';
 import { urlencoded, json } from 'body-parser';
+import collectionRouter from './routes/collection.routes';
+import itemRouter from './routes/item.routes';
 const cors = require('cors');
 
 export const app = express();
@@ -11,7 +13,9 @@ dotenv.config();
 app.use(cors());
 app.use(json());
 app.use(urlencoded({ extended: true }));
-app.use('/api', router);
+app.use('/api/user', userRouter);
+app.use('/api/collection', collectionRouter);
+app.use('/api/item', itemRouter);
 app.use(
     (
         err: Error,

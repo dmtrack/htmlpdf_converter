@@ -152,6 +152,7 @@ exports.deleteUser = deleteUser;
 const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let user = yield users_1.User.create(Object.assign({}, req.body));
+        console.log('user', user);
         return res
             .status(200)
             .json({ message: 'user created succesfully', data: user });

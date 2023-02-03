@@ -1,9 +1,9 @@
 export interface IUser {
     body: {
-        nickname: string;
+        name: string;
         email: string;
-        registered: string;
-        login: string;
-        status: string;
+        password: string;
+        blocked: boolean;
+        isAdmin: boolean;
     };
 }

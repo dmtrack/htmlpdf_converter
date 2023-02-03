@@ -10,9 +10,9 @@ import {
     //     toggleBlock,
     //     toggleUnblock,
 } from '../controllers/collectionController';
-const router = Router();
+const collectionRouter = Router();
 
-router.post('/createcollection', createCollection);
+collectionRouter.post('/createcollection', createCollection);
 // router.get('/getusers', getAllUsers);
 // router.get('/getuser/:id', getUser);
 // router.get('/getuserstatus', getUserStatus);
@@ -23,4 +23,4 @@ router.post('/createcollection', createCollection);
 // router.put('/block', toggleBlock);
 // router.put('/unblock', toggleUnblock);
 
-export default router;
+export default collectionRouter;

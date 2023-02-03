@@ -134,6 +134,8 @@ export const deleteUser: RequestHandler = async (req, res, next) => {
 export const createUser: RequestHandler = async (req, res, next) => {
     try {
         let user = await User.create({ ...req.body });
+        console.log('user', user);
+
         return res
             .status(200)
             .json({ message: 'user created succesfully', data: user });

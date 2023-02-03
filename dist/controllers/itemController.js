@@ -1,20 +1,30 @@
-import { RequestHandler } from 'express';
-import { Collection } from '../db/models/collections';
-
-export const createCollection: RequestHandler = async (req, res, next) => {
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.createItem = void 0;
+const items_1 = require("../db/models/items");
+const createItem = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let collection = await Collection.create({ ...req.body });
-        console.log(`collection ${collection.name} is created`);
-
+        let item = yield items_1.Item.create(Object.assign({}, req.body));
+        console.log(`item ${item.name} is created`);
         return res.status(200).json({
-            message: 'collection created succesfully',
-            data: collection,
+            message: 'item is created succesfully',
+            data: item,
         });
-    } catch (err: any) {
+    }
+    catch (err) {
         return err.message;
     }
-};
-
+});
+exports.createItem = createItem;
 // export const updateUser: RequestHandler = async (req, res, next) => {
 //     try {
 //         const { id } = req.params;
@@ -28,7 +38,6 @@ export const createCollection: RequestHandler = async (req, res, next) => {
 //         return err.message;
 //     }
 // };
-
 // export const signUp: RequestHandler = async (req, res, next) => {
 //     try {
 //         const { email, password } = req.body;
@@ -37,10 +46,8 @@ export const createCollection: RequestHandler = async (req, res, next) => {
 //         });
 //         const hash = new SHA3(256);
 //         const hashpass = hash.update(password).digest('hex');
-
 //         const obj = { ...req.body, blocked: false };
 //         obj.password = hashpass;
-
 //         if (Number(user) === 0) {
 //             let user = await User.create({
 //                 ...obj,
@@ -57,7 +64,6 @@ export const createCollection: RequestHandler = async (req, res, next) => {
 //         });
 //     }
 // };
-
 // export const signIn: RequestHandler = async (req, res, next) => {
 //     try {
 //         const { password, email, login } = req.body;
@@ -83,7 +89,6 @@ export const createCollection: RequestHandler = async (req, res, next) => {
 //         });
 //     }
 // };
-
 // export const toggleBlock: RequestHandler = async (req, res, next) => {
 //     try {
 //         const { params } = req.body;
@@ -105,7 +110,6 @@ export const createCollection: RequestHandler = async (req, res, next) => {
 //         });
 //     }
 // };
-
 // export const toggleUnblock: RequestHandler = async (req, res, next) => {
 //     try {
 //         const { params } = req.body;
@@ -127,7 +131,6 @@ export const createCollection: RequestHandler = async (req, res, next) => {
 //         });
 //     }
 // };
-
 // export const deleteUser: RequestHandler = async (req, res, next) => {
 //     try {
 //         const { params } = req.body;
@@ -143,7 +146,6 @@ export const createCollection: RequestHandler = async (req, res, next) => {
 //         return err.message;
 //     }
 // };
-
 // export const getAllUsers: RequestHandler = async (req, res, next) => {
 //     try {
 //         const allUsers: User[] = await User.findAll();
@@ -154,7 +156,6 @@ export const createCollection: RequestHandler = async (req, res, next) => {
 //         return err.message;
 //     }
 // };
-
 // export const getUser: RequestHandler = async (req, res, next) => {
 //     const id = req.params.id;
 //     try {
@@ -177,7 +178,6 @@ export const createCollection: RequestHandler = async (req, res, next) => {
 //         });
 //     }
 // };
-
 // export const getUserStatus: RequestHandler = async (req, res, next) => {
 //     try {
 //         const { id } = req.params;

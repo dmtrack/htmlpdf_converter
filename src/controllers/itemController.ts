@@ -1,14 +1,14 @@
 import { RequestHandler } from 'express';
-import { Collection } from '../db/models/collections';
+import { Item } from '../db/models/items';
 
-export const createCollection: RequestHandler = async (req, res, next) => {
+export const createItem: RequestHandler = async (req, res, next) => {
     try {
-        let collection = await Collection.create({ ...req.body });
-        console.log(`collection ${collection.name} is created`);
+        let item = await Item.create({ ...req.body });
+        console.log(`item ${item.name} is created`);
 
         return res.status(200).json({
-            message: 'collection created succesfully',
-            data: collection,
+            message: 'item is created succesfully',
+            data: item,
         });
     } catch (err: any) {
         return err.message;

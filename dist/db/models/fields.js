@@ -29,10 +29,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
-const collections_1 = require("./collections");
+exports.Field = void 0;
 const sequelize = __importStar(require("sequelize-typescript"));
-let User = class User extends sequelize.Model {
+const items_1 = require("./items");
+let Field = class Field extends sequelize.Model {
 };
 __decorate([
     sequelize.Column({
@@ -42,45 +42,30 @@ __decorate([
         allowNull: false,
         unique: true,
     })
-], User.prototype, "id", void 0);
+], Field.prototype, "id", void 0);
+__decorate([
+    sequelize.BelongsTo(() => items_1.Item, 'id'),
+    sequelize.Column({
+        type: sequelize.DataType.INTEGER,
+        allowNull: false,
+    })
+], Field.prototype, "itemId", void 0);
 __decorate([
     sequelize.Column({
         type: sequelize.DataType.STRING,
         allowNull: false,
     })
-], User.prototype, "name", void 0);
-__decorate([
-    sequelize.Column({
-        type: sequelize.DataType.STRING,
-        allowNull: false,
-        unique: true,
-    })
-], User.prototype, "email", void 0);
+], Field.prototype, "type", void 0);
 __decorate([
     sequelize.Column({
         type: sequelize.DataType.STRING,
         allowNull: false,
     })
-], User.prototype, "password", void 0);
-__decorate([
-    sequelize.Column({
-        type: sequelize.DataType.BOOLEAN,
-        allowNull: false,
-    })
-], User.prototype, "blocked", void 0);
-__decorate([
-    sequelize.Column({
-        type: sequelize.DataType.BOOLEAN,
-        allowNull: false,
-    })
-], User.prototype, "isAdmin", void 0);
-__decorate([
-    sequelize.HasMany(() => collections_1.Collection)
-], User.prototype, "userCollections", void 0);
-User = __decorate([
+], Field.prototype, "value", void 0);
+Field = __decorate([
     sequelize.Table({
         timestamps: false,
-        tableName: 'users',
+        tableName: 'fields',
     })
-], User);
-exports.User = User;
+], Field);
+exports.Field = Field;

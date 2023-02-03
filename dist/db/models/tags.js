@@ -29,10 +29,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
-const collections_1 = require("./collections");
+exports.Tag = void 0;
 const sequelize = __importStar(require("sequelize-typescript"));
-let User = class User extends sequelize.Model {
+const items_1 = require("./items");
+let Tag = class Tag extends sequelize.Model {
 };
 __decorate([
     sequelize.Column({
@@ -42,45 +42,24 @@ __decorate([
         allowNull: false,
         unique: true,
     })
-], User.prototype, "id", void 0);
+], Tag.prototype, "id", void 0);
 __decorate([
     sequelize.Column({
         type: sequelize.DataType.STRING,
         allowNull: false,
     })
-], User.prototype, "name", void 0);
+], Tag.prototype, "name", void 0);
 __decorate([
     sequelize.Column({
-        type: sequelize.DataType.STRING,
+        type: sequelize.DataType.INTEGER,
         allowNull: false,
-        unique: true,
-    })
-], User.prototype, "email", void 0);
-__decorate([
-    sequelize.Column({
-        type: sequelize.DataType.STRING,
-        allowNull: false,
-    })
-], User.prototype, "password", void 0);
-__decorate([
-    sequelize.Column({
-        type: sequelize.DataType.BOOLEAN,
-        allowNull: false,
-    })
-], User.prototype, "blocked", void 0);
-__decorate([
-    sequelize.Column({
-        type: sequelize.DataType.BOOLEAN,
-        allowNull: false,
-    })
-], User.prototype, "isAdmin", void 0);
-__decorate([
-    sequelize.HasMany(() => collections_1.Collection)
-], User.prototype, "userCollections", void 0);
-User = __decorate([
+    }),
+    sequelize.ForeignKey(() => items_1.Item)
+], Tag.prototype, "itemId", void 0);
+Tag = __decorate([
     sequelize.Table({
         timestamps: false,
-        tableName: 'users',
+        tableName: 'tags',
     })
-], User);
-exports.User = User;
+], Tag);
+exports.Tag = Tag;
