@@ -17,7 +17,7 @@ export class Token extends sequelize.Model {
     id!: number;
 
     @sequelize.Column({
-        type: sequelize.DataType.STRING,
+        type: sequelize.DataType.TEXT,
         allowNull: true,
         unique: true,
     })

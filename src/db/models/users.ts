@@ -45,19 +45,19 @@ export class User extends sequelize.Model {
 
     @sequelize.Column({
         type: sequelize.DataType.INTEGER,
-        allowNull: false,
+        allowNull: true,
     })
     accessId!: number;
 
     @sequelize.Column({
         type: sequelize.DataType.INTEGER,
-        allowNull: false,
+        allowNull: true,
     })
     tokenId!: number;
 
     @sequelize.Column({
         type: sequelize.DataType.STRING,
-        allowNull: false,
+        allowNull: true,
     })
     avatarUrl!: string;
 
@@ -69,7 +69,7 @@ export class User extends sequelize.Model {
 
     @sequelize.Column({
         type: sequelize.DataType.STRING,
-        allowNull: false,
+        allowNull: true,
     })
     activationLink!: string;
 

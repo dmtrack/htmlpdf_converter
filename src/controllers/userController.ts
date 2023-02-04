@@ -1,29 +1,16 @@
 import { RequestHandler } from 'express';
 import { User } from '../db/models/users';
 const { SHA3 } = require('sha3');
+const userService = require('../services/user.service');
 
 class UserController {
     signUp: RequestHandler = async (req, res, next) => {
         try {
-            const { email, password } = req.body;
-            const user: User | null = await User.findOne({
-                where: { email: email },
+            const user = await userService.signUpUser(req);
+            return res.status(200).json({
+                message: `user with id:${user.id} was succesfully signed up`,
+                data: user,
             });
-            const hash = new SHA3(256);
-            const hashpass = hash.update(password).digest('hex');
-
-            const obj = { ...req.body, blocked: false };
-            obj.password = hashpass;
-
-            if (Number(user) === 0) {
-                let user = await User.create({
-                    ...obj,
-                });
-                return res.status(200).json({
-                    message: `user with id:${user.id} was succesfully signed up`,
-                    data: user,
-                });
-            } else throw Error();
         } catch (e: any) {
             return res.status(409).json({
                 error: 409,
