@@ -30,6 +30,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Collection = void 0;
+const item_configs_1 = require("./item_configs");
 const sequelize = __importStar(require("sequelize-typescript"));
 const items_1 = require("./items");
 const users_1 = require("./users");
@@ -81,6 +82,9 @@ __decorate([
 __decorate([
     sequelize.HasMany(() => items_1.Item)
 ], Collection.prototype, "userCollections", void 0);
+__decorate([
+    sequelize.HasOne(() => item_configs_1.Config)
+], Collection.prototype, "config", void 0);
 Collection = __decorate([
     sequelize.Table({
         timestamps: false,

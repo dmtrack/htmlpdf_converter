@@ -31,6 +31,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const collections_1 = require("./collections");
+const comments_1 = require("./comments");
 const sequelize = __importStar(require("sequelize-typescript"));
 let User = class User extends sequelize.Model {
 };
@@ -75,8 +76,17 @@ __decorate([
     })
 ], User.prototype, "isAdmin", void 0);
 __decorate([
+    sequelize.Column({
+        type: sequelize.DataType.STRING,
+        allowNull: false,
+    })
+], User.prototype, "avatarUrl", void 0);
+__decorate([
     sequelize.HasMany(() => collections_1.Collection)
 ], User.prototype, "userCollections", void 0);
+__decorate([
+    sequelize.HasMany(() => comments_1.Comment)
+], User.prototype, "comments", void 0);
 User = __decorate([
     sequelize.Table({
         timestamps: false,

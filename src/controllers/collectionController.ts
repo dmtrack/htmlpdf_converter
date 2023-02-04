@@ -1,5 +1,6 @@
 import { RequestHandler } from 'express';
 import { Collection } from '../db/models/collections';
+import { User } from '../db/models/users';
 
 export const createCollection: RequestHandler = async (req, res, next) => {
     try {
@@ -12,6 +13,29 @@ export const createCollection: RequestHandler = async (req, res, next) => {
         });
     } catch (err: any) {
         return err.message;
+    }
+};
+
+export const getUser: RequestHandler = async (req, res, next) => {
+    const id = req.params.id;
+    try {
+        const user: User | null = await User.findOne({
+            where: { id: id },
+        });
+        if (user) {
+            return res.status(200).json({
+                message: `user with id:${id} is found`,
+                user: user,
+            });
+        } else
+            return res.status(200).json({
+                message: `user with id:${id} is not found`,
+            });
+    } catch (err: any) {
+        return res.status(404).json({
+            error: 404,
+            message: `${err.message}`,
+        });
     }
 };
 

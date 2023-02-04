@@ -1,27 +1,21 @@
 import { Router } from 'express';
-import {
-    createUser,
-    getUserStatus,
-    getAllUsers,
-    getUser,
-    deleteUser,
-    signUp,
-    signIn,
-    toggleBlock,
-    toggleUnblock,
-} from '../controllers/userController';
+
 const userRouter = Router();
+const userController = require('../controllers/userController');
 
-userRouter.post('/createuser', createUser);
-userRouter.get('/getusers', getAllUsers);
-userRouter.get('/getuser/:id([0-9]+)', getUser);
-userRouter.get('/getuserstatus', getUserStatus);
-userRouter.delete('/deleteuser', deleteUser);
+userRouter.post('/signup', userController.signUp);
+userRouter.post('/signin', userController.signIn);
+userRouter.post('/logout', userController.logout);
+userRouter.get('/activate/:link', userController.activateUser);
+userRouter.get('/refresh', userController.refreshToken);
 
-userRouter.post('/signup', signUp);
-userRouter.post('/signin', signIn);
-userRouter.put('/block', toggleBlock);
-userRouter.put('/unblock', toggleUnblock);
+userRouter.post('/createuser', userController.createUser);
+userRouter.get('/getusers', userController.getAllUsers);
+userRouter.get('/getuser/:id([0-9]+)', userController.getUser);
+userRouter.get('/getuserstatus', userController.getUserStatus);
+userRouter.delete('/deleteuser', userController.deleteUser);
+userRouter.put('/block', userController.toggleBlock);
+userRouter.put('/unblock', userController.toggleUnblock);
 
 export default userRouter;
 

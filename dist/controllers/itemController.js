@@ -41,8 +41,8 @@ exports.createItem = createItem;
 // export const signUp: RequestHandler = async (req, res, next) => {
 //     try {
 //         const { email, password } = req.body;
-//         const user: User | null = await User.findOne({
-//             where: { email: email },
+//         const user: User | null = await User.findOne({[]
+//             where: { email: email },[]
 //         });
 //         const hash = new SHA3(256);
 //         const hashpass = hash.update(password).digest('hex');

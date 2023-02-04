@@ -51,18 +51,24 @@ __decorate([
     })
 ], Comment.prototype, "text", void 0);
 __decorate([
+    sequelize.BelongsTo(() => items_1.Item)
+], Comment.prototype, "item", void 0);
+__decorate([
+    sequelize.ForeignKey(() => items_1.Item),
     sequelize.Column({
         type: sequelize.DataType.INTEGER,
         allowNull: false,
-    }),
-    sequelize.ForeignKey(() => items_1.Item)
+    })
 ], Comment.prototype, "itemId", void 0);
 __decorate([
+    sequelize.BelongsTo(() => users_1.User)
+], Comment.prototype, "user", void 0);
+__decorate([
+    sequelize.ForeignKey(() => users_1.User),
     sequelize.Column({
         type: sequelize.DataType.INTEGER,
         allowNull: false,
-    }),
-    sequelize.ForeignKey(() => users_1.User)
+    })
 ], Comment.prototype, "userId", void 0);
 Comment = __decorate([
     sequelize.Table({

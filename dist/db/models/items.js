@@ -32,6 +32,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Item = void 0;
 const sequelize = __importStar(require("sequelize-typescript"));
 const collections_1 = require("./collections");
+const comments_1 = require("./comments");
+const tags_1 = require("./tags");
 let Item = class Item extends sequelize.Model {
 };
 __decorate([
@@ -59,6 +61,102 @@ __decorate([
         allowNull: false,
     })
 ], Item.prototype, "collectionId", void 0);
+__decorate([
+    sequelize.HasMany(() => comments_1.Comment)
+], Item.prototype, "comments", void 0);
+__decorate([
+    sequelize.HasMany(() => tags_1.Tag)
+], Item.prototype, "tags", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.STRING,
+        allowNull: true,
+    })
+], Item.prototype, "str1", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.STRING,
+        allowNull: true,
+    })
+], Item.prototype, "str2", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.STRING,
+        allowNull: true,
+    })
+], Item.prototype, "str3", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.TEXT,
+        allowNull: true,
+    })
+], Item.prototype, "txt1", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.TEXT,
+        allowNull: true,
+    })
+], Item.prototype, "txt2", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.TEXT,
+        allowNull: true,
+    })
+], Item.prototype, "txt3", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.INTEGER,
+        allowNull: true,
+    })
+], Item.prototype, "num1", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.INTEGER,
+        allowNull: true,
+    })
+], Item.prototype, "num2", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.INTEGER,
+        allowNull: true,
+    })
+], Item.prototype, "num3", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.BOOLEAN,
+        allowNull: true,
+    })
+], Item.prototype, "bool1", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.BOOLEAN,
+        allowNull: true,
+    })
+], Item.prototype, "bool2", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.BOOLEAN,
+        allowNull: true,
+    })
+], Item.prototype, "bool3", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.DATEONLY,
+        allowNull: true,
+    })
+], Item.prototype, "date1", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.DATEONLY,
+        allowNull: true,
+    })
+], Item.prototype, "date2", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.DATEONLY,
+        allowNull: true,
+    })
+], Item.prototype, "date3", void 0);
 Item = __decorate([
     sequelize.Table({
         timestamps: false,

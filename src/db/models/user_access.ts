@@ -1,11 +1,11 @@
 import * as sequelize from 'sequelize-typescript';
-import { Item } from './items';
+import { User } from './users';
 
 @sequelize.Table({
     timestamps: false,
-    tableName: 'fields',
+    tableName: 'user_access',
 })
-export class Field extends sequelize.Model {
+export class Access extends sequelize.Model {
     @sequelize.Column({
         type: sequelize.DataType.INTEGER,
         autoIncrement: true,
@@ -15,22 +15,19 @@ export class Field extends sequelize.Model {
     })
     id!: number;
 
-    @sequelize.BelongsTo(() => Item, 'id')
+    @sequelize.Column({
+        type: sequelize.DataType.STRING,
+        allowNull: true,
+    })
+    access!: string;
+
+    @sequelize.BelongsTo(() => User)
+    user!: User;
+
+    @sequelize.ForeignKey(() => User)
     @sequelize.Column({
         type: sequelize.DataType.INTEGER,
         allowNull: false,
     })
-    itemId!: Item;
-
-    @sequelize.Column({
-        type: sequelize.DataType.STRING,
-        allowNull: false,
-    })
-    type!: string;
-
-    @sequelize.Column({
-        type: sequelize.DataType.STRING,
-        allowNull: false,
-    })
-    value!: string;
+    userId!: number;
 }

@@ -50,11 +50,14 @@ __decorate([
     })
 ], Tag.prototype, "name", void 0);
 __decorate([
+    sequelize.BelongsTo(() => items_1.Item)
+], Tag.prototype, "item", void 0);
+__decorate([
+    sequelize.ForeignKey(() => items_1.Item),
     sequelize.Column({
         type: sequelize.DataType.INTEGER,
         allowNull: false,
-    }),
-    sequelize.ForeignKey(() => items_1.Item)
+    })
 ], Tag.prototype, "itemId", void 0);
 Tag = __decorate([
     sequelize.Table({

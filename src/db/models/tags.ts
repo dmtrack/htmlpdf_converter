@@ -21,10 +21,13 @@ export class Tag extends sequelize.Model {
     })
     name!: string;
 
+    @sequelize.BelongsTo(() => Item)
+    item!: Item;
+
+    @sequelize.ForeignKey(() => Item)
     @sequelize.Column({
         type: sequelize.DataType.INTEGER,
         allowNull: false,
     })
-    @sequelize.ForeignKey(() => Item)
     itemId!: number;
 }

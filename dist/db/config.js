@@ -7,7 +7,10 @@ const sequelize_typescript_1 = require("sequelize-typescript");
 const users_1 = require("./models/users");
 const dotenv_1 = __importDefault(require("dotenv"));
 const collections_1 = require("./models/collections");
+const tags_1 = require("./models/tags");
 const items_1 = require("./models/items");
+const comments_1 = require("./models/comments");
+const item_configs_1 = require("./models/item_configs");
 dotenv_1.default.config();
 const connection = new sequelize_typescript_1.Sequelize({
     dialect: 'postgres',
@@ -16,7 +19,7 @@ const connection = new sequelize_typescript_1.Sequelize({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     logging: false,
-    models: [users_1.User, collections_1.Collection, items_1.Item],
+    models: [users_1.User, collections_1.Collection, items_1.Item, comments_1.Comment, tags_1.Tag, item_configs_1.Config],
     // dialectOptions: {
     //     ssl: true,
     //     native: true,

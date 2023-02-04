@@ -4,8 +4,10 @@ import dotenv from 'dotenv';
 import { Collection } from './models/collections';
 import { Tag } from './models/tags';
 import { Item } from './models/items';
-import { Field } from './models/fields';
 import { Comment } from './models/comments';
+import { Config } from './models/item_configs';
+import { Access } from './models/user_access';
+import { Token } from './models/token';
 dotenv.config();
 
 const connection = new Sequelize({
@@ -15,7 +17,7 @@ const connection = new Sequelize({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     logging: false,
-    models: [User, Collection, Item],
+    models: [User, Collection, Item, Comment, Tag, Config, Access, Token],
     // dialectOptions: {
     //     ssl: true,
     //     native: true,

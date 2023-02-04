@@ -1,3 +1,4 @@
+import { Config } from './item_configs';
 import * as sequelize from 'sequelize-typescript';
 
 import { Item } from './items';
@@ -53,4 +54,7 @@ export class Collection extends sequelize.Model {
 
     @sequelize.HasMany(() => Item)
     userCollections!: Item[];
+
+    @sequelize.HasOne(() => Config)
+    config!: Config;
 }

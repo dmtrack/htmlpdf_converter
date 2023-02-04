@@ -22,17 +22,21 @@ export class Comment extends sequelize.Model {
     })
     text!: string;
 
+    @sequelize.BelongsTo(() => Item)
+    item!: Item;
+    @sequelize.ForeignKey(() => Item)
     @sequelize.Column({
         type: sequelize.DataType.INTEGER,
         allowNull: false,
     })
-    @sequelize.ForeignKey(() => Item)
     itemId!: number;
 
+    @sequelize.BelongsTo(() => User)
+    user!: User;
+    @sequelize.ForeignKey(() => User)
     @sequelize.Column({
         type: sequelize.DataType.INTEGER,
         allowNull: false,
     })
-    @sequelize.ForeignKey(() => User)
     userId!: number;
 }

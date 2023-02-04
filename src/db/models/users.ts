@@ -1,6 +1,8 @@
 import { Collection } from './collections';
+import { Comment } from './comments';
 import * as sequelize from 'sequelize-typescript';
-import { ForeignKey } from 'sequelize-typescript';
+import { Access } from './user_access';
+import { Token } from './token';
 
 @sequelize.Table({
     timestamps: false,
@@ -42,11 +44,44 @@ export class User extends sequelize.Model {
     blocked!: boolean;
 
     @sequelize.Column({
+        type: sequelize.DataType.INTEGER,
+        allowNull: false,
+    })
+    accessId!: number;
+
+    @sequelize.Column({
+        type: sequelize.DataType.INTEGER,
+        allowNull: false,
+    })
+    tokenId!: number;
+
+    @sequelize.Column({
+        type: sequelize.DataType.STRING,
+        allowNull: false,
+    })
+    avatarUrl!: string;
+
+    @sequelize.Column({
         type: sequelize.DataType.BOOLEAN,
         allowNull: false,
     })
-    isAdmin!: boolean;
+    isActivated!: boolean;
+
+    @sequelize.Column({
+        type: sequelize.DataType.STRING,
+        allowNull: false,
+    })
+    activationLink!: string;
 
     @sequelize.HasMany(() => Collection)
     userCollections!: Collection[];
+
+    @sequelize.HasMany(() => Comment)
+    comments!: Comment[];
+
+    @sequelize.HasOne(() => Access)
+    access!: Access;
+
+    @sequelize.HasOne(() => Token)
+    token!: Token;
 }
