@@ -19,17 +19,15 @@ class UserController {
         }
     };
 
-    activateUser: RequestHandler = async (req, res, next) => {
+    activate: RequestHandler = async (req, res, next) => {
         try {
-            const { id } = req.params;
-            await User.update({ ...req.body }, { where: { id } });
-            const activatedUser: User | null = await User.findByPk(id);
-            return res.status(200).json({
-                message: `user with id: ${id} was activated`,
-                data: activatedUser,
-            });
-        } catch (err: any) {
-            return err.message;
+            console.log(process.env.CLIENT_URL);
+
+            const activationLink = req.params.link;
+            await userService.activate(activationLink);
+            return res.redirect(`${process.env.CLIENT_URL}`);
+        } catch (e: any) {
+            return e.message;
         }
     };
 

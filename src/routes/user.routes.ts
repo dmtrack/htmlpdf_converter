@@ -6,7 +6,7 @@ const userController = require('../controllers/userController');
 userRouter.post('/signup', userController.signUp);
 userRouter.post('/signin', userController.signIn);
 userRouter.post('/logout', userController.logout);
-userRouter.get('/activate/:link', userController.activateUser);
+userRouter.get('/activate/:link', userController.activate);
 userRouter.get('/refresh', userController.refreshToken);
 
 userRouter.post('/createuser', userController.createUser);

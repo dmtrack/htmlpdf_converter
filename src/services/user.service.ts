@@ -32,7 +32,11 @@ class UserService {
             isActivated: false,
             avatarUrl: 'www.image.com/1',
         });
-        // await mailService.sendActivationMail({email, activationLink})
+        await mailService.sendActivationMail(
+            email,
+            `${process.env.API_URL}/api/user/activate/${activationLink}`
+        );
+
         const userDto = new UserDto(newUser);
         const tokens = tokenService.generateTokens({ ...userDto });
         const accessRight = await Access.create({
@@ -54,6 +58,13 @@ class UserService {
             ...tokens,
             user: userDto,
         };
+    }
+    async activate(activationLink: string) {
+        const user = await User.findOne({ where: { activationLink } });
+        if (!user) {
+            throw new Error('неккоректная ссылка активации');
+        }
+        await User.update({ isActivated: true }, { where: { activationLink } });
     }
 }
 
