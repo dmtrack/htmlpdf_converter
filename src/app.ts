@@ -2,12 +2,12 @@ import express from 'express';
 import connection from './db/config';
 import dotenv from 'dotenv';
 import userRouter from './routes/user.routes';
-import { urlencoded, json } from 'body-parser';
 import collectionRouter from './routes/collection.routes';
 import itemRouter from './routes/item.routes';
-const cors = require('cors');
+import { urlencoded, json } from 'body-parser';
 const cookieParser = require('cookie-parser');
-
+const cors = require('cors');
+const errorHandlingMiddleware = require('./middleware/ErrorHandlingMiddleware');
 export const app = express();
 
 dotenv.config();
@@ -18,16 +18,7 @@ app.use(urlencoded({ extended: true }));
 app.use('/api/user', userRouter);
 app.use('/api/collection', collectionRouter);
 app.use('/api/item', itemRouter);
-app.use(
-    (
-        err: Error,
-        req: express.Request,
-        res: express.Response,
-        next: express.NextFunction
-    ) => {
-        res.status(500).json({ message: err.message });
-    }
-);
+app.use(errorHandlingMiddleware);
 
 connection
     .sync({ force: true })

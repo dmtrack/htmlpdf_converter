@@ -1,8 +1,9 @@
-export interface IUserSignUp {
+export interface IUserRegistration {
     body: {
         name: string;
         email: string;
         password: string;
+        avatarUrl: string;
     };
 }
 

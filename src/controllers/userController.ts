@@ -1,224 +1,218 @@
 import { RequestHandler } from 'express';
+import { IRegistrationUserResponse } from './interfaces/userController.interface';
 import { User } from '../db/models/users';
-const { SHA3 } = require('sha3');
 const userService = require('../services/user.service');
+const { validationResult } = require('express-validator');
+const ApiError = require('../exceptions/api-error');
 
 class UserController {
-    signUp: RequestHandler = async (req, res, next) => {
+    registration: RequestHandler = async (req, res, next) => {
         try {
-            const user = await userService.signUpUser(req);
-            return res.status(200).json({
-                message: `user with id:${user.id} was succesfully signed up`,
-                data: user,
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return next(
+                    ApiError.badRequest(
+                        'Ошибка валидации при регистрации',
+                        errors.array()
+                    )
+                );
+            }
+            const userData: IRegistrationUserResponse =
+                await userService.registration(req);
+            res.cookie('refreshToken', userData.refreshToken, {
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                httpOnly: true,
             });
-        } catch (e: any) {
-            return res.status(409).json({
-                error: 409,
-                message: `user with email:${req.body.email} is already exist`,
-            });
+            return res.status(200).json(userData);
+        } catch (e) {
+            next(e);
         }
     };
 
     activate: RequestHandler = async (req, res, next) => {
         try {
-            console.log(process.env.CLIENT_URL);
-
             const activationLink = req.params.link;
             await userService.activate(activationLink);
             return res.redirect(`${process.env.CLIENT_URL}`);
-        } catch (e: any) {
-            return e.message;
+        } catch (e) {
+            next(e);
         }
     };
 
-    refreshToken: RequestHandler = async (req, res, next) => {
+    login: RequestHandler = async (req, res, next) => {
         try {
-            const { id } = req.params;
-            await User.update({ ...req.body }, { where: { id } });
-            const refreshTokenUser: User | null = await User.findByPk(id);
-            return res.status(200).json({
-                message: `token for user  with id: ${id} was refreshed`,
-                data: refreshTokenUser,
+            const { password, email } = req.body;
+
+            const userData = await userService.login(email, password);
+            res.cookie('refreshToken', userData.refreshToken, {
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                httpOnly: true,
             });
-        } catch (err: any) {
-            return err.message;
+            return res.status(200).json(userData);
+        } catch (e) {
+            next(e);
         }
     };
 
     logout: RequestHandler = async (req, res, next) => {
         try {
-            const { id } = req.params;
-            await User.update({ ...req.body }, { where: { id } });
-            const logoutUser: User | null = await User.findByPk(id);
-            return res.status(200).json({
-                message: `user with id: ${id} was logout`,
-                data: logoutUser,
-            });
-        } catch (err: any) {
-            return err.message;
+            const { refreshToken } = req.cookies;
+            const token = await userService.logout(refreshToken);
+            res.clearCookie('refreshToken');
+            return res.status(200).json(token);
+        } catch (e) {
+            next(e);
         }
     };
 
-    updateUser: RequestHandler = async (req, res, next) => {
+    refresh: RequestHandler = async (req, res, next) => {
         try {
-            const { id } = req.params;
-            await User.update({ ...req.body }, { where: { id } });
-            const updatedUser: User | null = await User.findByPk(id);
-            return res.status(200).json({
-                message: `user with id: ${id} was updated`,
-                data: updatedUser,
+            const { refreshToken } = req.cookies;
+            const userData = await userService.refresh(refreshToken);
+            res.cookie('refreshToken', userData.refreshToken, {
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                httpOnly: true,
             });
-        } catch (err: any) {
-            return err.message;
+            return res.status(200).json(userData);
+        } catch (e) {
+            next(e);
         }
     };
 
-    signIn: RequestHandler = async (req, res, next) => {
-        try {
-            const { password, email, login } = req.body;
-            const hash = new SHA3(256);
-            const hashpass = hash.update(password).digest('hex');
-            const user: User | null = await User.findOne({
-                where: { password: hashpass, email: email },
-            });
-            console.log('found user:', user);
-            if (user) {
-                if (user.blocked === false) {
-                    await User.update({ login: login }, { where: { email } });
-                    return res.status(200).json({
-                        message: `user with id:${user.id} was succesfully signed up`,
-                        data: user,
-                    });
-                } else throw Error;
-            } else throw Error;
-        } catch (err: any) {
-            return res.status(401).json({
-                error: 401,
-                message: `access is not allowed`,
-            });
-        }
-    };
+    // updateUser: RequestHandler = async (req, res, next) => {
+    //     try {
+    //         const { id } = req.params;
+    //         await User.update({ ...req.body }, { where: { id } });
+    //         const updatedUser: User | null = await User.findByPk(id);
+    //         return res.status(200).json({
+    //             message: `user with id: ${id} was updated`,
+    //             data: updatedUser,
+    //         });
+    //     } catch (err: any) {
+    //         return err.message;
+    //     }
+    // };
 
-    toggleBlock: RequestHandler = async (req, res, next) => {
-        try {
-            const { params } = req.body;
-            params.forEach(async (id: string) => {
-                const user = await User.findByPk(id);
-                if (user) {
-                    await User.update({ blocked: true }, { where: { id } });
-                    const updatedUser: User | null = await User.findByPk(id);
-                }
-            });
-            return res.status(200).json({
-                message: `user's status with id are changed`,
-                id: req.body,
-            });
-        } catch (err: any) {
-            return res.status(404).json({
-                error: 404,
-                message: `${err.message}`,
-            });
-        }
-    };
+    // toggleBlock: RequestHandler = async (req, res, next) => {
+    //     try {
+    //         const { params } = req.body;
+    //         params.forEach(async (id: string) => {
+    //             const user = await User.findByPk(id);
+    //             if (user) {
+    //                 await User.update({ blocked: true }, { where: { id } });
+    //                 const updatedUser: User | null = await User.findByPk(id);
+    //             }
+    //         });
+    //         return res.status(200).json({
+    //             message: `user's status with id are changed`,
+    //             id: req.body,
+    //         });
+    //     } catch (err: any) {
+    //         return res.status(404).json({
+    //             error: 404,
+    //             message: `${err.message}`,
+    //         });
+    //     }
+    // };
 
-    toggleUnblock: RequestHandler = async (req, res, next) => {
-        try {
-            const { params } = req.body;
-            params.forEach(async (id: string) => {
-                const user = await User.findByPk(id);
-                if (user) {
-                    await User.update({ blocked: false }, { where: { id } });
-                    const updatedUser: User | null = await User.findByPk(id);
-                }
-            });
-            return res.status(200).json({
-                message: `user's status with id are changed`,
-                id: req.body,
-            });
-        } catch (err: any) {
-            return res.status(404).json({
-                error: 404,
-                message: `${err.message}`,
-            });
-        }
-    };
+    // toggleUnblock: RequestHandler = async (req, res, next) => {
+    //     try {
+    //         const { params } = req.body;
+    //         params.forEach(async (id: string) => {
+    //             const user = await User.findByPk(id);
+    //             if (user) {
+    //                 await User.update({ blocked: false }, { where: { id } });
+    //                 const updatedUser: User | null = await User.findByPk(id);
+    //             }
+    //         });
+    //         return res.status(200).json({
+    //             message: `user's status with id are changed`,
+    //             id: req.body,
+    //         });
+    //     } catch (err: any) {
+    //         return res.status(404).json({
+    //             error: 404,
+    //             message: `${err.message}`,
+    //         });
+    //     }
+    // };
 
-    deleteUser: RequestHandler = async (req, res, next) => {
-        try {
-            const { params } = req.body;
-            console.log(params, 'test');
-            params.forEach(async (id: string) => {
-                await User.destroy({ where: { id } });
-            });
-            return res.status(200).json({
-                message: `users status with ids are deleted`,
-                id: req.body,
-            });
-        } catch (err: any) {
-            return err.message;
-        }
-    };
+    // deleteUser: RequestHandler = async (req, res, next) => {
+    //     try {
+    //         const { params } = req.body;
+    //         console.log(params, 'test');
+    //         params.forEach(async (id: string) => {
+    //             await User.destroy({ where: { id } });
+    //         });
+    //         return res.status(200).json({
+    //             message: `users status with ids are deleted`,
+    //             id: req.body,
+    //         });
+    //     } catch (err: any) {
+    //         return err.message;
+    //     }
+    // };
 
-    createUser: RequestHandler = async (req, res, next) => {
-        try {
-            let user = await User.create({ ...req.body });
-            console.log('user', user);
+    // createUser: RequestHandler = async (req, res, next) => {
+    //     try {
+    //         let user = await User.create({ ...req.body });
+    //         console.log('user', user);
 
-            return res
-                .status(200)
-                .json({ message: 'user created succesfully', data: user });
-        } catch (err: any) {
-            return err.message;
-        }
-    };
+    //         return res
+    //             .status(200)
+    //             .json({ message: 'user created succesfully', data: user });
+    //     } catch (err: any) {
+    //         return err.message;
+    //     }
+    // };
 
-    getAllUsers: RequestHandler = async (req, res, next) => {
-        try {
-            const allUsers: User[] = await User.findAll();
-            return res.status(200).json({
-                message: `users fetched successfully`,
-                data: allUsers,
-            });
-        } catch (err: any) {
-            return err.message;
-        }
-    };
+    // getAllUsers: RequestHandler = async (req, res, next) => {
+    //     try {
+    //         const allUsers: User[] = await User.findAll();
+    //         return res.status(200).json({
+    //             message: `users fetched successfully`,
+    //             data: allUsers,
+    //         });
+    //     } catch (err: any) {
+    //         return err.message;
+    //     }
+    // };
 
-    getUser: RequestHandler = async (req, res, next) => {
-        const id = req.params.id;
-        try {
-            const user: User | null = await User.findOne({
-                where: { id: id },
-            });
-            if (user) {
-                return res.status(200).json({
-                    message: `user with id:${id} is found`,
-                    user: user,
-                });
-            } else
-                return res.status(200).json({
-                    message: `user with id:${id} is not found`,
-                });
-        } catch (err: any) {
-            return res.status(404).json({
-                error: 404,
-                message: `${err.message}`,
-            });
-        }
-    };
+    // getUser: RequestHandler = async (req, res, next) => {
+    //     const id = req.params.id;
+    //     try {
+    //         const user: User | null = await User.findOne({
+    //             where: { id: id },
+    //         });
+    //         if (user) {
+    //             return res.status(200).json({
+    //                 message: `user with id:${id} is found`,
+    //                 user: user,
+    //             });
+    //         } else
+    //             return res.status(200).json({
+    //                 message: `user with id:${id} is not found`,
+    //             });
+    //     } catch (err: any) {
+    //         return res.status(404).json({
+    //             error: 404,
+    //             message: `${err.message}`,
+    //         });
+    //     }
+    // };
 
-    getUserStatus: RequestHandler = async (req, res, next) => {
-        try {
-            const { id } = req.params;
-            const user: User | null = await User.findByPk(id);
-            return res.status(200).json({
-                message: `user with id: ${id} was fetched`,
-                data: user,
-            });
-        } catch (err: any) {
-            return err.message;
-        }
-    };
+    // getUserStatus: RequestHandler = async (req, res, next) => {
+    //     try {
+    //         const { id } = req.params;
+    //         const user: User | null = await User.findByPk(id);
+    //         return res.status(200).json({
+    //             message: `user with id: ${id} was fetched`,
+    //             data: user,
+    //         });
+    //     } catch (err: any) {
+    //         return err.message;
+    //     }
+    // };
 }
 
 module.exports = new UserController();

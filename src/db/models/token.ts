@@ -19,7 +19,6 @@ export class Token extends sequelize.Model {
     @sequelize.Column({
         type: sequelize.DataType.TEXT,
         allowNull: true,
-        unique: true,
     })
     refreshToken!: string;
 
