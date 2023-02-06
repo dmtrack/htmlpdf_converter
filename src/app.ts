@@ -7,8 +7,9 @@ import itemRouter from './routes/item.routes';
 import { urlencoded, json } from 'body-parser';
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const errorHandlingMiddleware = require('./middleware/ErrorHandlingMiddleware');
 export const app = express();
+const errorMiddleware = require('./middleware/error-middleware');
+const authMiddleware = require('./middleware/auth-middleware');
 
 dotenv.config();
 app.use(cors());
@@ -18,10 +19,10 @@ app.use(urlencoded({ extended: true }));
 app.use('/api/user', userRouter);
 app.use('/api/collection', collectionRouter);
 app.use('/api/item', itemRouter);
-app.use(errorHandlingMiddleware);
+app.use(authMiddleware);
 
 connection
-    .sync({ force: true })
+    .sync()
     .then(() => {
         console.log('Database synced succesfully');
     })

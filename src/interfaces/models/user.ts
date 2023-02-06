@@ -8,11 +8,3 @@ export interface IUser {
         avatarUrl: string;
     };
 }
-
-// export interface IUserSignUp {
-//     body: {
-//         name: string;
-//         email: string;
-//         password: string;
-//     };
-// }

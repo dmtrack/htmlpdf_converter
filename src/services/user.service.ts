@@ -111,6 +111,11 @@ class UserService {
         const tokens = await tokenCreator(userDto);
         return { ...tokens, user: userDto };
     }
+
+    async getAllUsers() {
+        const users = await User.findAll();
+        return users;
+    }
 }
 
 module.exports = new UserService();

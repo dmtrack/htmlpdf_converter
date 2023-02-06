@@ -1,6 +1,5 @@
 import { RequestHandler } from 'express';
-import { IRegistrationUserResponse } from './interfaces/userController.interface';
-import { User } from '../db/models/users';
+import { IRegistrationUserResponse } from '../interfaces/controllers/userController.interface';
 const userService = require('../services/user.service');
 const { validationResult } = require('express-validator');
 const ApiError = require('../exceptions/api-error');
@@ -74,6 +73,15 @@ class UserController {
                 httpOnly: true,
             });
             return res.status(200).json(userData);
+        } catch (e) {
+            next(e);
+        }
+    };
+
+    getAllUsers: RequestHandler = async (req, res, next) => {
+        try {
+            const users = await userService.getAllUsers();
+            return res.json(users);
         } catch (e) {
             next(e);
         }

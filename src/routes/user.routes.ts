@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 const userRouter = Router();
 const userController = require('../controllers/userController');
+const authMiddleware = require('../middleware/auth-middleware');
 const { body } = require('express-validator');
 
 userRouter.post(
@@ -14,10 +15,11 @@ userRouter.post(
 userRouter.get('/activate/:link', userController.activate);
 userRouter.post('/login', userController.login);
 userRouter.post('/logout', userController.logout);
-userRouter.post('/refresh', userController.refresh);
+userRouter.get('/refresh', userController.refresh);
+userRouter.get('/getusers', authMiddleware, userController.getAllUsers);
 
 // userRouter.post('/createuser', userController.createUser);
-// userRouter.get('/getusers', userController.getAllUsers);
+
 // userRouter.get('/getuser/:id([0-9]+)', userController.getUser);
 // userRouter.get('/getuserstatus', userController.getUserStatus);
 // userRouter.delete('/deleteuser', userController.deleteUser);
