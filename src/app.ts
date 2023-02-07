@@ -12,7 +12,7 @@ const errorMiddleware = require('./middleware/error-middleware');
 const authMiddleware = require('./middleware/auth-middleware');
 
 dotenv.config();
-app.use(cors());
+app.use(cors({ credentials: true, origin: process.env.CLIENT_URL }));
 app.use(json());
 app.use(cookieParser());
 app.use(urlencoded({ extended: true }));
@@ -22,7 +22,7 @@ app.use('/api/item', itemRouter);
 app.use(authMiddleware);
 
 connection
-    .sync()
+    .sync({ force: true })
     .then(() => {
         console.log('Database synced succesfully');
     })
