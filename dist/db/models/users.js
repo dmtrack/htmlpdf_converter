@@ -1,0 +1,96 @@
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.User = void 0;
+const collections_1 = require("./collections");
+const comments_1 = require("./comments");
+const sequelize = __importStar(require("sequelize-typescript"));
+let User = class User extends sequelize.Model {
+};
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false,
+        unique: true,
+    })
+], User.prototype, "id", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.STRING,
+        allowNull: false,
+    })
+], User.prototype, "name", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.STRING,
+        allowNull: false,
+        unique: true,
+    })
+], User.prototype, "email", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.STRING,
+        allowNull: false,
+    })
+], User.prototype, "password", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.BOOLEAN,
+        allowNull: false,
+    })
+], User.prototype, "blocked", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.BOOLEAN,
+        allowNull: false,
+    })
+], User.prototype, "isAdmin", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.STRING,
+        allowNull: false,
+    })
+], User.prototype, "avatarUrl", void 0);
+__decorate([
+    sequelize.HasMany(() => collections_1.Collection)
+], User.prototype, "userCollections", void 0);
+__decorate([
+    sequelize.HasMany(() => comments_1.Comment)
+], User.prototype, "comments", void 0);
+User = __decorate([
+    sequelize.Table({
+        timestamps: false,
+        tableName: 'users',
+    })
+], User);
+exports.User = User;

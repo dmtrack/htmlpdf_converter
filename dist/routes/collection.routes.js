@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const collectionController_1 = require("../controllers/collectionController");
+const collectionRouter = (0, express_1.Router)();
+collectionRouter.post('/createcollection', collectionController_1.createCollection);
+// router.get('/getusers', getAllUsers);
+// router.get('/getuser/:id', getUser);
+// router.get('/getuserstatus', getUserStatus);
+// router.delete('/deleteuser', deleteUser);
+// router.post('/signup', signUp);
+// router.post('/signin', signIn);
+// router.put('/block', toggleBlock);
+// router.put('/unblock', toggleUnblock);
+exports.default = collectionRouter;

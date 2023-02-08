@@ -9,8 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserStatus = exports.getAllUsers = exports.createUser = exports.deleteUser = exports.toggleUnblock = exports.toggleBlock = exports.signIn = exports.signUp = exports.updateUser = void 0;
-const users_1 = require("../models/users");
+exports.getUserStatus = exports.getUser = exports.getAllUsers = exports.createUser = exports.deleteUser = exports.toggleUnblock = exports.toggleBlock = exports.signIn = exports.signUp = exports.updateUser = void 0;
+const users_1 = require("../db/models/users");
 const { SHA3 } = require('sha3');
 const updateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -152,6 +152,7 @@ exports.deleteUser = deleteUser;
 const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let user = yield users_1.User.create(Object.assign({}, req.body));
+        console.log('user', user);
         return res
             .status(200)
             .json({ message: 'user created succesfully', data: user });
@@ -173,6 +174,31 @@ const getAllUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.getAllUsers = getAllUsers;
+const getUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        const user = yield users_1.User.findOne({
+            where: { id: id },
+        });
+        if (user) {
+            return res.status(200).json({
+                message: `user with id:${id} is found`,
+                user: user,
+            });
+        }
+        else
+            return res.status(200).json({
+                message: `user with id:${id} is not found`,
+            });
+    }
+    catch (err) {
+        return res.status(404).json({
+            error: 404,
+            message: `${err.message}`,
+        });
+    }
+});
+exports.getUser = getUser;
 const getUserStatus = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;

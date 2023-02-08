@@ -1,24 +1,31 @@
 import { Router } from 'express';
-import {
-    createUser,
-    getUserStatus,
-    getAllUsers,
-    deleteUser,
-    signUp,
-    signIn,
-    toggleBlock,
-    toggleUnblock,
-} from '../controllers/userController';
-const router = Router();
 
-router.post('/createuser', createUser);
-router.get('/getusers', getAllUsers);
-router.get('/getuserstatus', getUserStatus);
-router.delete('/deleteuser', deleteUser);
+const userRouter = Router();
+const userController = require('../controllers/userController');
+const authMiddleware = require('../middleware/auth-middleware');
+const { body } = require('express-validator');
 
-router.post('/signup', signUp);
-router.post('/signin', signIn);
-router.put('/block', toggleBlock);
-router.put('/unblock', toggleUnblock);
+userRouter.post(
+    '/registration',
+    body('email').isEmail(),
+    body('password').isLength({ min: 3, max: 32 }),
+    userController.registration
+);
 
-export default router;
+userRouter.get('/activate/:link', userController.activate);
+userRouter.post('/login', userController.login);
+userRouter.post('/logout', userController.logout);
+userRouter.get('/refresh', userController.refresh);
+userRouter.get('/getusers', authMiddleware, userController.getAllUsers);
+
+// userRouter.post('/createuser', userController.createUser);
+
+// userRouter.get('/getuser/:id([0-9]+)', userController.getUser);
+// userRouter.get('/getuserstatus', userController.getUserStatus);
+// userRouter.delete('/deleteuser', userController.deleteUser);
+// userRouter.put('/block', userController.toggleBlock);
+// userRouter.put('/unblock', userController.toggleUnblock);
+
+export default userRouter;
+
+//

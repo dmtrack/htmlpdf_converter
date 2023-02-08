@@ -1,30 +1,28 @@
 import express from 'express';
 import connection from './db/config';
 import dotenv from 'dotenv';
-import router from './routes/user.routes';
+import userRouter from './routes/user.routes';
+import collectionRouter from './routes/collection.routes';
+import itemRouter from './routes/item.routes';
 import { urlencoded, json } from 'body-parser';
+const cookieParser = require('cookie-parser');
 const cors = require('cors');
-
 export const app = express();
+const errorMiddleware = require('./middleware/error-middleware');
+const authMiddleware = require('./middleware/auth-middleware');
 
 dotenv.config();
-app.use(cors());
+app.use(cors({ credentials: true, origin: process.env.CLIENT_URL }));
 app.use(json());
+app.use(cookieParser());
 app.use(urlencoded({ extended: true }));
-app.use('/api', router);
-app.use(
-    (
-        err: Error,
-        req: express.Request,
-        res: express.Response,
-        next: express.NextFunction
-    ) => {
-        res.status(500).json({ message: err.message });
-    }
-);
+app.use('/api/user', userRouter);
+app.use('/api/collection', collectionRouter);
+app.use('/api/item', itemRouter);
+app.use(authMiddleware);
 
 connection
-    .sync()
+    .sync({ force: true })
     .then(() => {
         console.log('Database synced succesfully');
     })
