@@ -48,8 +48,9 @@ class UserService {
                 userId: newUser.id,
             });
             yield users_1.User.update({ tokenId: token.id, accessId: accessRight.id }, { where: { id: userDto.id } });
-            userDto.accessId = yield accessRight.id;
+            userDto.access = yield accessRight.access;
             userDto.tokenId = yield token.id;
+            console.log('dto', userDto);
             return Object.assign(Object.assign({}, tokens), { user: userDto });
         });
     }
@@ -64,7 +65,11 @@ class UserService {
     }
     login(email, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield users_1.User.findOne({ where: { email } });
+            const user = yield users_1.User.findOne({
+                where: { email },
+                include: { model: user_access_1.Access },
+            });
+            console.log(user, 'user');
             if (!user) {
                 throw ApiError.badRequest('Пользователь с таким email не зарегистрирован');
             }
@@ -72,6 +77,17 @@ class UserService {
             if (!isPassEquals) {
                 throw ApiError.badRequest('Неверный пароль');
             }
+            const userDto = new UserDto(user);
+            const tokens = yield (0, token_utils_1.tokenCreator)(userDto);
+            return Object.assign(Object.assign({}, tokens), { user: userDto });
+        });
+    }
+    reconnect(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield users_1.User.findOne({
+                where: { id },
+                include: { model: user_access_1.Access },
+            });
             const userDto = new UserDto(user);
             const tokens = yield (0, token_utils_1.tokenCreator)(userDto);
             return Object.assign(Object.assign({}, tokens), { user: userDto });
@@ -101,8 +117,41 @@ class UserService {
     }
     getAllUsers() {
         return __awaiter(this, void 0, void 0, function* () {
-            const users = yield users_1.User.findAll();
+            const users = yield users_1.User.findAll({
+                include: { model: user_access_1.Access, required: true },
+            });
             return users;
+        });
+    }
+    toggleBlock(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield users_1.User.findByPk(id);
+            if (!user) {
+                throw ApiError.badRequest('пользователь с данным id найден');
+            }
+            yield users_1.User.update({ blocked: true }, { where: { id } });
+            const updatedUser = yield users_1.User.findByPk(id);
+            return updatedUser;
+        });
+    }
+    toggleUnBlock(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield users_1.User.findByPk(id);
+            if (!user) {
+                throw ApiError.badRequest('пользователь с данным id найден');
+            }
+            yield users_1.User.update({ blocked: false }, { where: { id } });
+            const updatedUser = yield users_1.User.findByPk(id);
+            return updatedUser;
+        });
+    }
+    deleteUser(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield users_1.User.findByPk(id);
+            if (!user) {
+                throw ApiError.badRequest('пользователь с данным id найден');
+            }
+            yield users_1.User.destroy({ where: { id } });
         });
     }
 }

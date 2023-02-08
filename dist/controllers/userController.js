@@ -66,6 +66,20 @@ class UserController {
                 next(e);
             }
         });
+        this.reconnect = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.body;
+                const userData = yield userService.reconnect(id);
+                res.cookie('refreshToken', userData.refreshToken, {
+                    maxAge: 30 * 24 * 60 * 60 * 1000,
+                    httpOnly: true,
+                });
+                return res.status(200).json(userData);
+            }
+            catch (e) {
+                next(e);
+            }
+        });
         this.refresh = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const { refreshToken } = req.cookies;
@@ -82,9 +96,54 @@ class UserController {
         });
         this.getAllUsers = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log('request', req);
                 const users = yield userService.getAllUsers();
                 return res.json(users);
+            }
+            catch (e) {
+                next(e);
+            }
+        });
+        this.toggleBlock = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { dataId } = req.body;
+                dataId.forEach((id) => __awaiter(this, void 0, void 0, function* () {
+                    yield userService.toggleBlock(id);
+                }));
+                return res.status(200).json({
+                    message: `users with ids:${dataId} are blocked`,
+                    userId: dataId,
+                });
+            }
+            catch (e) {
+                next(e);
+            }
+        });
+        this.toggleUnBlock = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { dataId } = req.body;
+                dataId.forEach((id) => __awaiter(this, void 0, void 0, function* () {
+                    yield userService.toggleUnBlock(id);
+                }));
+                return res.status(200).json({
+                    message: `users with ids:${dataId} are blocked`,
+                    userId: dataId,
+                });
+            }
+            catch (e) {
+                next(e);
+            }
+        });
+        this.deleteUser = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                console.log(req.body);
+                const { dataId } = req.body;
+                dataId.forEach((id) => __awaiter(this, void 0, void 0, function* () {
+                    yield userService.deleteUser(id);
+                }));
+                return res.status(200).json({
+                    message: `users with ids:${dataId} are deleted`,
+                    userId: dataId,
+                });
             }
             catch (e) {
                 next(e);
@@ -98,63 +157,6 @@ class UserController {
         //         return res.status(200).json({
         //             message: `user with id: ${id} was updated`,
         //             data: updatedUser,
-        //         });
-        //     } catch (err: any) {
-        //         return err.message;
-        //     }
-        // };
-        // toggleBlock: RequestHandler = async (req, res, next) => {
-        //     try {
-        //         const { params } = req.body;
-        //         params.forEach(async (id: string) => {
-        //             const user = await User.findByPk(id);
-        //             if (user) {
-        //                 await User.update({ blocked: true }, { where: { id } });
-        //                 const updatedUser: User | null = await User.findByPk(id);
-        //             }
-        //         });
-        //         return res.status(200).json({
-        //             message: `user's status with id are changed`,
-        //             id: req.body,
-        //         });
-        //     } catch (err: any) {
-        //         return res.status(404).json({
-        //             error: 404,
-        //             message: `${err.message}`,
-        //         });
-        //     }
-        // };
-        // toggleUnblock: RequestHandler = async (req, res, next) => {
-        //     try {
-        //         const { params } = req.body;
-        //         params.forEach(async (id: string) => {
-        //             const user = await User.findByPk(id);
-        //             if (user) {
-        //                 await User.update({ blocked: false }, { where: { id } });
-        //                 const updatedUser: User | null = await User.findByPk(id);
-        //             }
-        //         });
-        //         return res.status(200).json({
-        //             message: `user's status with id are changed`,
-        //             id: req.body,
-        //         });
-        //     } catch (err: any) {
-        //         return res.status(404).json({
-        //             error: 404,
-        //             message: `${err.message}`,
-        //         });
-        //     }
-        // };
-        // deleteUser: RequestHandler = async (req, res, next) => {
-        //     try {
-        //         const { params } = req.body;
-        //         console.log(params, 'test');
-        //         params.forEach(async (id: string) => {
-        //             await User.destroy({ where: { id } });
-        //         });
-        //         return res.status(200).json({
-        //             message: `users status with ids are deleted`,
-        //             id: req.body,
         //         });
         //     } catch (err: any) {
         //         return err.message;

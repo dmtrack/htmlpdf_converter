@@ -9,13 +9,14 @@ userRouter.post('/registration', body('email').isEmail(), body('password').isLen
 userRouter.get('/activate/:link', userController.activate);
 userRouter.post('/login', userController.login);
 userRouter.post('/logout', userController.logout);
+userRouter.post('/reconnect', userController.reconnect);
 userRouter.get('/refresh', userController.refresh);
 userRouter.get('/getusers', authMiddleware, userController.getAllUsers);
+userRouter.put('/block', userController.toggleBlock);
+userRouter.put('/unblock', userController.toggleUnBlock);
+userRouter.delete('/delete', userController.deleteUser);
 // userRouter.post('/createuser', userController.createUser);
 // userRouter.get('/getuser/:id([0-9]+)', userController.getUser);
 // userRouter.get('/getuserstatus', userController.getUserStatus);
-// userRouter.delete('/deleteuser', userController.deleteUser);
-// userRouter.put('/block', userController.toggleBlock);
-// userRouter.put('/unblock', userController.toggleUnblock);
 exports.default = userRouter;
 //

@@ -26,7 +26,7 @@ exports.app.use('/api/collection', collection_routes_1.default);
 exports.app.use('/api/item', item_routes_1.default);
 exports.app.use(authMiddleware);
 config_1.default
-    .sync({ force: true })
+    .sync()
     .then(() => {
     console.log('Database synced succesfully');
 })
