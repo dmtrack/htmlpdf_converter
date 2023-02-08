@@ -29,13 +29,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
-const collections_1 = require("./collections");
-const comments_1 = require("./comments");
+exports.Token = void 0;
 const sequelize = __importStar(require("sequelize-typescript"));
-const user_access_1 = require("./user_access");
-const token_1 = require("./token");
-let User = class User extends sequelize.Model {
+const users_1 = require("./users");
+let Token = class Token extends sequelize.Model {
 };
 __decorate([
     sequelize.Column({
@@ -45,78 +42,27 @@ __decorate([
         allowNull: false,
         unique: true,
     })
-], User.prototype, "id", void 0);
+], Token.prototype, "id", void 0);
 __decorate([
     sequelize.Column({
-        type: sequelize.DataType.STRING,
-        allowNull: false,
+        type: sequelize.DataType.TEXT,
+        allowNull: true,
     })
-], User.prototype, "name", void 0);
+], Token.prototype, "refreshToken", void 0);
 __decorate([
-    sequelize.Column({
-        type: sequelize.DataType.STRING,
-        allowNull: false,
-        unique: true,
-    })
-], User.prototype, "email", void 0);
+    sequelize.BelongsTo(() => users_1.User)
+], Token.prototype, "user", void 0);
 __decorate([
-    sequelize.Column({
-        type: sequelize.DataType.STRING,
-        allowNull: false,
-    })
-], User.prototype, "password", void 0);
-__decorate([
-    sequelize.Column({
-        type: sequelize.DataType.BOOLEAN,
-        allowNull: false,
-    })
-], User.prototype, "blocked", void 0);
-__decorate([
+    sequelize.ForeignKey(() => users_1.User),
     sequelize.Column({
         type: sequelize.DataType.INTEGER,
-        allowNull: true,
-    })
-], User.prototype, "accessId", void 0);
-__decorate([
-    sequelize.Column({
-        type: sequelize.DataType.INTEGER,
-        allowNull: true,
-    })
-], User.prototype, "tokenId", void 0);
-__decorate([
-    sequelize.Column({
-        type: sequelize.DataType.STRING,
-        allowNull: true,
-    })
-], User.prototype, "avatarUrl", void 0);
-__decorate([
-    sequelize.Column({
-        type: sequelize.DataType.BOOLEAN,
         allowNull: false,
     })
-], User.prototype, "isActivated", void 0);
-__decorate([
-    sequelize.Column({
-        type: sequelize.DataType.STRING,
-        allowNull: true,
-    })
-], User.prototype, "activationLink", void 0);
-__decorate([
-    sequelize.HasMany(() => collections_1.Collection)
-], User.prototype, "userCollections", void 0);
-__decorate([
-    sequelize.HasMany(() => comments_1.Comment)
-], User.prototype, "comments", void 0);
-__decorate([
-    sequelize.HasOne(() => user_access_1.Access)
-], User.prototype, "access", void 0);
-__decorate([
-    sequelize.HasOne(() => token_1.Token)
-], User.prototype, "token", void 0);
-User = __decorate([
+], Token.prototype, "userId", void 0);
+Token = __decorate([
     sequelize.Table({
         timestamps: false,
-        tableName: 'users',
+        tableName: 'tokens',
     })
-], User);
-exports.User = User;
+], Token);
+exports.Token = Token;
