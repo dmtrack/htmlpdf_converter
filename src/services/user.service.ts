@@ -1,4 +1,7 @@
-import { IUserRegistration } from '../db/models/interface/user.interface';
+import {
+    IUser,
+    IUserRegistration,
+} from '../db/models/interface/user.interface';
 import { RequestHandler } from 'express';
 
 import { User } from '../db/models/users';
@@ -27,7 +30,7 @@ class UserService {
         }
         const hashpass = await bcrypt.hash(password, 3);
         const activationLink = uuid.v4();
-        const newUser: IUserDto = await User.create({
+        const newUser: IUser = await User.create({
             name: name,
             email: email,
             password: hashpass,
@@ -41,7 +44,7 @@ class UserService {
             `${process.env.API_URL}/api/user/activate/${activationLink}`
         );
 
-        const userDto = new UserDto(newUser);
+        const userDto: IUserDto = new UserDto(newUser);
 
         const tokens = tokenService.generateTokens({ ...userDto });
         const token: IToken = await tokenService.saveToken(
@@ -56,8 +59,9 @@ class UserService {
             { tokenId: token.id, accessId: accessRight.id },
             { where: { id: userDto.id } }
         );
-        userDto.accessId = await accessRight.id;
+        userDto.access = await accessRight.access;
         userDto.tokenId = await token.id;
+        console.log('dto', userDto);
 
         return {
             ...tokens,
@@ -76,7 +80,12 @@ class UserService {
     }
 
     async login(email: string, password: string) {
-        const user = await User.findOne({ where: { email } });
+        const user = await User.findOne({
+            where: { email },
+            include: { model: Access },
+        });
+        console.log(user, 'user');
+
         if (!user) {
             throw ApiError.badRequest(
                 'Пользователь с таким email не зарегистрирован'
@@ -86,8 +95,19 @@ class UserService {
         if (!isPassEquals) {
             throw ApiError.badRequest('Неверный пароль');
         }
-        const userDto = new UserDto(user);
+        const userDto: IUserDto = new UserDto(user);
 
+        const tokens = await tokenCreator(userDto);
+        return { ...tokens, user: userDto };
+    }
+
+    async reconnect(id: number) {
+        const user = await User.findOne({
+            where: { id },
+            include: { model: Access },
+        });
+
+        const userDto: IUserDto = new UserDto(user);
         const tokens = await tokenCreator(userDto);
         return { ...tokens, user: userDto };
     }
@@ -113,7 +133,10 @@ class UserService {
     }
 
     async getAllUsers() {
-        const users = await User.findAll();
+        const users = await User.findAll({
+            include: { model: Access, required: true },
+        });
+
         return users;
     }
 

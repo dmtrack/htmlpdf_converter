@@ -12,7 +12,16 @@ export interface IUserDto {
     email: string;
     id: number;
     blocked: boolean;
-    accessId: number;
+    access: string;
+    tokenId: number;
+    avatarUrl: string;
+    isActivated: boolean;
+}
+export interface IUser {
+    name: string;
+    email: string;
+    id: number;
+    blocked: boolean;
     tokenId: number;
     avatarUrl: string;
     isActivated: boolean;
