@@ -80,8 +80,6 @@ class UserController {
 
     getAllUsers: RequestHandler = async (req, res, next) => {
         try {
-            console.log('request', req);
-
             const users = await userService.getAllUsers();
             return res.json(users);
         } catch (e) {
@@ -89,6 +87,52 @@ class UserController {
         }
     };
 
+    toggleBlock: RequestHandler = async (req, res, next) => {
+        try {
+            const { dataId } = req.body;
+            dataId.forEach(async (id: string) => {
+                await userService.toggleBlock(id);
+            });
+            return res.status(200).json({
+                message: `users with ids:${dataId} are blocked`,
+                userId: dataId,
+            });
+        } catch (e) {
+            next(e);
+        }
+    };
+
+    toggleUnBlock: RequestHandler = async (req, res, next) => {
+        try {
+            const { dataId } = req.body;
+            dataId.forEach(async (id: string) => {
+                await userService.toggleUnBlock(id);
+            });
+            return res.status(200).json({
+                message: `users with ids:${dataId} are blocked`,
+                userId: dataId,
+            });
+        } catch (e) {
+            next(e);
+        }
+    };
+
+    deleteUser: RequestHandler = async (req, res, next) => {
+        try {
+            console.log(req.body);
+
+            const { dataId } = req.body;
+            dataId.forEach(async (id: string) => {
+                await userService.deleteUser(id);
+            });
+            return res.status(200).json({
+                message: `users with ids:${dataId} are deleted`,
+                userId: dataId,
+            });
+        } catch (e) {
+            next(e);
+        }
+    };
     // updateUser: RequestHandler = async (req, res, next) => {
     //     try {
     //         const { id } = req.params;
@@ -100,28 +144,6 @@ class UserController {
     //         });
     //     } catch (err: any) {
     //         return err.message;
-    //     }
-    // };
-
-    // toggleBlock: RequestHandler = async (req, res, next) => {
-    //     try {
-    //         const { params } = req.body;
-    //         params.forEach(async (id: string) => {
-    //             const user = await User.findByPk(id);
-    //             if (user) {
-    //                 await User.update({ blocked: true }, { where: { id } });
-    //                 const updatedUser: User | null = await User.findByPk(id);
-    //             }
-    //         });
-    //         return res.status(200).json({
-    //             message: `user's status with id are changed`,
-    //             id: req.body,
-    //         });
-    //     } catch (err: any) {
-    //         return res.status(404).json({
-    //             error: 404,
-    //             message: `${err.message}`,
-    //         });
     //     }
     // };
 

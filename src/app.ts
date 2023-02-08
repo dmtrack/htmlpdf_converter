@@ -22,7 +22,7 @@ app.use('/api/item', itemRouter);
 app.use(authMiddleware);
 
 connection
-    .sync({ force: true })
+    .sync()
     .then(() => {
         console.log('Database synced succesfully');
     })
