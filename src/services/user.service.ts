@@ -116,6 +116,33 @@ class UserService {
         const users = await User.findAll();
         return users;
     }
+
+    async toggleBlock(id: number) {
+        const user = await User.findByPk(id);
+        if (!user) {
+            throw ApiError.badRequest('пользователь с данным id найден');
+        }
+        await User.update({ blocked: true }, { where: { id } });
+        const updatedUser: User | null = await User.findByPk(id);
+        return updatedUser;
+    }
+    async toggleUnBlock(id: number) {
+        const user = await User.findByPk(id);
+        if (!user) {
+            throw ApiError.badRequest('пользователь с данным id найден');
+        }
+        await User.update({ blocked: false }, { where: { id } });
+        const updatedUser: User | null = await User.findByPk(id);
+        return updatedUser;
+    }
+
+    async deleteUser(id: number) {
+        const user = await User.findByPk(id);
+        if (!user) {
+            throw ApiError.badRequest('пользователь с данным id найден');
+        }
+        await User.destroy({ where: { id } });
+    }
 }
 
 module.exports = new UserService();
