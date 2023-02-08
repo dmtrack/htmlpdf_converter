@@ -9,8 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createCollection = void 0;
+exports.getUser = exports.createCollection = void 0;
 const collections_1 = require("../db/models/collections");
+const users_1 = require("../db/models/users");
 const createCollection = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let collection = yield collections_1.Collection.create(Object.assign({}, req.body));
@@ -25,6 +26,31 @@ const createCollection = (req, res, next) => __awaiter(void 0, void 0, void 0, f
     }
 });
 exports.createCollection = createCollection;
+const getUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        const user = yield users_1.User.findOne({
+            where: { id: id },
+        });
+        if (user) {
+            return res.status(200).json({
+                message: `user with id:${id} is found`,
+                user: user,
+            });
+        }
+        else
+            return res.status(200).json({
+                message: `user with id:${id} is not found`,
+            });
+    }
+    catch (err) {
+        return res.status(404).json({
+            error: 404,
+            message: `${err.message}`,
+        });
+    }
+});
+exports.getUser = getUser;
 // export const updateUser: RequestHandler = async (req, res, next) => {
 //     try {
 //         const { id } = req.params;

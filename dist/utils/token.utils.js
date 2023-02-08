@@ -9,16 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const app_1 = require("./app");
-const port = process.env.PORT || 5000;
-const start = () => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        app_1.app.listen(port, () => {
-            console.log(`Server has succesfully started on port:${port}`);
-        });
-    }
-    catch (e) {
-        console.log(e);
-    }
+exports.tokenCreator = void 0;
+const tokenService = require('../services/token.service');
+const tokenCreator = (userDto) => __awaiter(void 0, void 0, void 0, function* () {
+    const tokens = tokenService.generateTokens(Object.assign({}, userDto));
+    yield tokenService.saveToken(userDto.id, tokens.refreshToken);
+    return tokens;
 });
-start();
+exports.tokenCreator = tokenCreator;
