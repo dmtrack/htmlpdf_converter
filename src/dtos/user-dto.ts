@@ -1,11 +1,10 @@
 import { IUserDto } from '../db/models/interface/user.interface';
-import { User } from '../db/models/users';
 
 module.exports = class UserDto {
     id;
     email;
     blocked;
-    accessId;
+    access;
     tokenId;
     avatarUrl;
     isActivated;
@@ -14,7 +13,7 @@ module.exports = class UserDto {
         this.id = model.id;
         this.email = model.email;
         this.blocked = model.blocked;
-        this.accessId = model.accessId;
+        this.access = model.access;
         this.tokenId = model.tokenId;
         this.avatarUrl = model.avatarUrl;
         this.isActivated = model.isActivated;
