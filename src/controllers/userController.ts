@@ -64,6 +64,7 @@ class UserController {
         }
     };
 
+
     reconnect: RequestHandler = async (req, res, next) => {
         try {
             const { id } = req.body;
@@ -77,7 +78,6 @@ class UserController {
             next(e);
         }
     };
-
     refresh: RequestHandler = async (req, res, next) => {
         try {
             const { refreshToken } = req.cookies;
@@ -155,6 +155,44 @@ class UserController {
     //         return res.status(200).json({
     //             message: `user with id: ${id} was updated`,
     //             data: updatedUser,
+    //         });
+    //     } catch (err: any) {
+    //         return err.message;
+    //     }
+    // };
+
+    // toggleUnblock: RequestHandler = async (req, res, next) => {
+    //     try {
+    //         const { params } = req.body;
+    //         params.forEach(async (id: string) => {
+    //             const user = await User.findByPk(id);
+    //             if (user) {
+    //                 await User.update({ blocked: false }, { where: { id } });
+    //                 const updatedUser: User | null = await User.findByPk(id);
+    //             }
+    //         });
+    //         return res.status(200).json({
+    //             message: `user's status with id are changed`,
+    //             id: req.body,
+    //         });
+    //     } catch (err: any) {
+    //         return res.status(404).json({
+    //             error: 404,
+    //             message: `${err.message}`,
+    //         });
+    //     }
+    // };
+
+    // deleteUser: RequestHandler = async (req, res, next) => {
+    //     try {
+    //         const { params } = req.body;
+    //         console.log(params, 'test');
+    //         params.forEach(async (id: string) => {
+    //             await User.destroy({ where: { id } });
+    //         });
+    //         return res.status(200).json({
+    //             message: `users status with ids are deleted`,
+    //             id: req.body,
     //         });
     //     } catch (err: any) {
     //         return err.message;
