@@ -69,10 +69,10 @@ class UserController {
             const { id } = req.body;
             const userData = await userService.reconnect(id);
 
-            res.cookie('refreshToken', userData.refreshToken, {
-                maxAge: 30 * 24 * 60 * 60 * 1000,
-                httpOnly: true,
-            });
+            // res.cookie('refreshToken', userData.refreshToken, {
+            //     maxAge: 30 * 24 * 60 * 60 * 1000,
+            //     httpOnly: true,
+            // });
             return res.status(200).json(userData);
         } catch (e) {
             next(e);
