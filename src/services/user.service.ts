@@ -106,7 +106,6 @@ class UserService {
             where: { id },
             include: { model: Access },
         });
-
         const userDto: IUserDto = new UserDto(user);
         const tokens = await tokenCreator(userDto);
         return { ...tokens, user: userDto };
