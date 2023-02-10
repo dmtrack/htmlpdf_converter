@@ -9,19 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const userService = require('../services/user.service');
-const { validationResult } = require('express-validator');
-const ApiError = require('../exceptions/api-error');
+const userService = require("../services/user.service");
+const { validationResult } = require("express-validator");
+const ApiError = require("../exceptions/api-error");
 class UserController {
     constructor() {
         this.registration = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const errors = validationResult(req);
                 if (!errors.isEmpty()) {
-                    return next(ApiError.badRequest('Ошибка валидации при регистрации', errors.array()));
+                    return next(ApiError.badRequest("Ошибка валидации при регистрации", errors.array()));
                 }
                 const userData = yield userService.registration(req);
-                res.cookie('refreshToken', userData.refreshToken, {
+                res.cookie("refreshToken", userData.refreshToken, {
                     maxAge: 30 * 24 * 60 * 60 * 1000,
                     httpOnly: true,
                 });
@@ -44,9 +44,8 @@ class UserController {
         this.login = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const { password, email } = req.body;
-                console.log('ok');
                 const userData = yield userService.login(email, password);
-                res.cookie('refreshToken', userData.refreshToken, {
+                res.cookie("refreshToken", userData.refreshToken, {
                     maxAge: 30 * 24 * 60 * 60 * 1000,
                     httpOnly: true,
                 });
@@ -60,7 +59,7 @@ class UserController {
             try {
                 const { refreshToken } = req.cookies;
                 const token = yield userService.logout(refreshToken);
-                res.clearCookie('refreshToken');
+                res.clearCookie("refreshToken");
                 return res.status(200).json(token);
             }
             catch (e) {
@@ -71,7 +70,7 @@ class UserController {
             try {
                 const { id } = req.body;
                 const userData = yield userService.reconnect(id);
-                res.cookie('refreshToken', userData.refreshToken, {
+                res.cookie("refreshToken", userData.refreshToken, {
                     maxAge: 30 * 24 * 60 * 60 * 1000,
                     httpOnly: true,
                 });
@@ -85,7 +84,7 @@ class UserController {
             try {
                 const { refreshToken } = req.cookies;
                 const userData = yield userService.refresh(refreshToken);
-                res.cookie('refreshToken', userData.refreshToken, {
+                res.cookie("refreshToken", userData.refreshToken, {
                     maxAge: 30 * 24 * 60 * 60 * 1000,
                     httpOnly: true,
                 });
@@ -150,75 +149,6 @@ class UserController {
                 next(e);
             }
         });
-        // updateUser: RequestHandler = async (req, res, next) => {
-        //     try {
-        //         const { id } = req.params;
-        //         await User.update({ ...req.body }, { where: { id } });
-        //         const updatedUser: User | null = await User.findByPk(id);
-        //         return res.status(200).json({
-        //             message: `user with id: ${id} was updated`,
-        //             data: updatedUser,
-        //         });
-        //     } catch (err: any) {
-        //         return err.message;
-        //     }
-        // };
-        // createUser: RequestHandler = async (req, res, next) => {
-        //     try {
-        //         let user = await User.create({ ...req.body });
-        //         console.log('user', user);
-        //         return res
-        //             .status(200)
-        //             .json({ message: 'user created succesfully', data: user });
-        //     } catch (err: any) {
-        //         return err.message;
-        //     }
-        // };
-        // getAllUsers: RequestHandler = async (req, res, next) => {
-        //     try {
-        //         const allUsers: User[] = await User.findAll();
-        //         return res.status(200).json({
-        //             message: `users fetched successfully`,
-        //             data: allUsers,
-        //         });
-        //     } catch (err: any) {
-        //         return err.message;
-        //     }
-        // };
-        // getUser: RequestHandler = async (req, res, next) => {
-        //     const id = req.params.id;
-        //     try {
-        //         const user: User | null = await User.findOne({
-        //             where: { id: id },
-        //         });
-        //         if (user) {
-        //             return res.status(200).json({
-        //                 message: `user with id:${id} is found`,
-        //                 user: user,
-        //             });
-        //         } else
-        //             return res.status(200).json({
-        //                 message: `user with id:${id} is not found`,
-        //             });
-        //     } catch (err: any) {
-        //         return res.status(404).json({
-        //             error: 404,
-        //             message: `${err.message}`,
-        //         });
-        //     }
-        // };
-        // getUserStatus: RequestHandler = async (req, res, next) => {
-        //     try {
-        //         const { id } = req.params;
-        //         const user: User | null = await User.findByPk(id);
-        //         return res.status(200).json({
-        //             message: `user with id: ${id} was fetched`,
-        //             data: user,
-        //         });
-        //     } catch (err: any) {
-        //         return err.message;
-        //     }
-        // };
     }
 }
 module.exports = new UserController();

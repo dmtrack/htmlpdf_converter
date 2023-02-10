@@ -40,17 +40,21 @@ class UserService {
                 avatarUrl: avatarUrl,
             });
             yield mailService.sendActivationMail(email, `${process.env.API_URL}/api/user/activate/${activationLink}`);
-            const userDto = new UserDto(newUser);
-            const tokens = tokenService.generateTokens(Object.assign({}, userDto));
-            const token = yield tokenService.saveToken(userDto.id, tokens.refreshToken);
             const accessRight = yield user_access_1.Access.create({
                 access: 'user',
                 userId: newUser.id,
             });
+            const userWithAccess = yield users_1.User.findOne({
+                where: { id: newUser.id },
+                include: { model: user_access_1.Access },
+            });
+            const userDto = new UserDto(userWithAccess);
+            console.log(userDto);
+            const tokens = tokenService.generateTokens(Object.assign({}, userDto));
+            const token = yield tokenService.saveToken(userDto.id, tokens.refreshToken);
             yield users_1.User.update({ tokenId: token.id, accessId: accessRight.id }, { where: { id: userDto.id } });
-            userDto.access = yield accessRight.access;
+            userDto.accessId = yield accessRight.id;
             userDto.tokenId = yield token.id;
-            console.log('dto', userDto);
             return Object.assign(Object.assign({}, tokens), { user: userDto });
         });
     }
@@ -69,7 +73,6 @@ class UserService {
                 where: { email },
                 include: { model: user_access_1.Access },
             });
-            console.log(user, 'user');
             if (!user) {
                 throw ApiError.badRequest('Пользователь с таким email не зарегистрирован');
             }
@@ -78,6 +81,7 @@ class UserService {
                 throw ApiError.badRequest('Неверный пароль');
             }
             const userDto = new UserDto(user);
+            console.log('dto', userDto);
             const tokens = yield (0, token_utils_1.tokenCreator)(userDto);
             return Object.assign(Object.assign({}, tokens), { user: userDto });
         });
@@ -117,9 +121,7 @@ class UserService {
     }
     getAllUsers() {
         return __awaiter(this, void 0, void 0, function* () {
-            const users = yield users_1.User.findAll({
-                include: { model: user_access_1.Access, required: true },
-            });
+            const users = yield users_1.User.findAll({ include: user_access_1.Access });
             return users;
         });
     }

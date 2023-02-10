@@ -4,18 +4,20 @@ module.exports = class UserDto {
     id;
     email;
     blocked;
-    access;
+    accessId;
     tokenId;
     avatarUrl;
     isActivated;
+    access;
 
     constructor(model: IUserDto) {
         this.id = model.id;
         this.email = model.email;
         this.blocked = model.blocked;
-        this.access = model.access;
+        this.accessId = model.accessId;
         this.tokenId = model.tokenId;
         this.avatarUrl = model.avatarUrl;
         this.isActivated = model.isActivated;
+        this.access = model.access;
     }
 };
