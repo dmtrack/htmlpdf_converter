@@ -21,9 +21,9 @@ exports.app.use(cors({ credentials: true, origin: process.env.CLIENT_URL }));
 exports.app.use((0, body_parser_1.json)());
 exports.app.use(cookieParser());
 exports.app.use((0, body_parser_1.urlencoded)({ extended: true }));
-exports.app.use('/api/user', user_routes_1.default);
-exports.app.use('/api/collection', collection_routes_1.default);
-exports.app.use('/api/item', item_routes_1.default);
+exports.app.use('/user', user_routes_1.default);
+exports.app.use('/collection', collection_routes_1.default);
+exports.app.use('/item', item_routes_1.default);
 exports.app.use(authMiddleware);
 config_1.default
     .sync()
