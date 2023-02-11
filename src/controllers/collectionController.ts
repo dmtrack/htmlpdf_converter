@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
-import { Collection } from '../db/models/collections';
-import { User } from '../db/models/users';
+import { Collection } from '../db/models/collection';
+import { User } from '../db/models/user';
 
 export const createCollection: RequestHandler = async (req, res, next) => {
     try {

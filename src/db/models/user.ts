@@ -1,16 +1,17 @@
-import { Collection } from './collections';
-import { Comment } from './comments';
+import { Collection } from './collection';
+import { Comment } from './comment';
 import * as sequelize from 'sequelize-typescript';
 import { Access } from './user_access';
 import { Token } from './token';
+import { Like } from './like';
 
 @sequelize.Table({
     timestamps: false,
-    tableName: 'users',
+    tableName: 'user',
 })
 export class User extends sequelize.Model {
     @sequelize.Column({
-        type: sequelize.DataType.INTEGER,
+        type: sequelize.DataType.BIGINT,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
@@ -44,13 +45,13 @@ export class User extends sequelize.Model {
     blocked!: boolean;
 
     @sequelize.Column({
-        type: sequelize.DataType.INTEGER,
+        type: sequelize.DataType.BIGINT,
         allowNull: true,
     })
     accessId!: number;
 
     @sequelize.Column({
-        type: sequelize.DataType.INTEGER,
+        type: sequelize.DataType.BIGINT,
         allowNull: true,
     })
     tokenId!: number;
@@ -84,4 +85,7 @@ export class User extends sequelize.Model {
 
     @sequelize.HasOne(() => Token)
     token!: Token;
+
+    @sequelize.HasMany(() => Like)
+    likes!: Like[];
 }

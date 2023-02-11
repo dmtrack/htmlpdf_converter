@@ -1,12 +1,12 @@
 import * as sequelize from 'sequelize-typescript';
+import { Field } from './field';
 import { Item } from './item';
-import { User } from './user';
 
 @sequelize.Table({
     timestamps: false,
-    tableName: 'tokens',
+    tableName: 'fielstypes',
 })
-export class Token extends sequelize.Model {
+export class FieldType extends sequelize.Model {
     @sequelize.Column({
         type: sequelize.DataType.BIGINT,
         autoIncrement: true,
@@ -17,18 +17,11 @@ export class Token extends sequelize.Model {
     id!: number;
 
     @sequelize.Column({
-        type: sequelize.DataType.TEXT,
-        allowNull: true,
-    })
-    refreshToken!: string;
-
-    @sequelize.BelongsTo(() => User)
-    user!: User;
-
-    @sequelize.ForeignKey(() => User)
-    @sequelize.Column({
-        type: sequelize.DataType.BIGINT,
+        type: sequelize.DataType.STRING(255),
         allowNull: false,
     })
-    userId!: number;
+    name!: string;
+
+    @sequelize.HasMany(() => Field)
+    fields!: Field[];
 }

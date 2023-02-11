@@ -1,6 +1,6 @@
 import * as sequelize from 'sequelize-typescript';
-import { Item } from './items';
-import { User } from './users';
+import { Item } from './item';
+import { User } from './user';
 
 @sequelize.Table({
     timestamps: false,
@@ -8,7 +8,7 @@ import { User } from './users';
 })
 export class Comment extends sequelize.Model {
     @sequelize.Column({
-        type: sequelize.DataType.INTEGER,
+        type: sequelize.DataType.BIGINT,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
@@ -22,20 +22,22 @@ export class Comment extends sequelize.Model {
     })
     text!: string;
 
-    @sequelize.BelongsTo(() => Item)
-    item!: Item;
+    @sequelize.Column({
+        type: sequelize.DataType.DATE,
+        allowNull: false,
+    })
+    date!: number;
+
     @sequelize.ForeignKey(() => Item)
     @sequelize.Column({
-        type: sequelize.DataType.INTEGER,
+        type: sequelize.DataType.BIGINT,
         allowNull: false,
     })
     itemId!: number;
 
-    @sequelize.BelongsTo(() => User)
-    user!: User;
     @sequelize.ForeignKey(() => User)
     @sequelize.Column({
-        type: sequelize.DataType.INTEGER,
+        type: sequelize.DataType.BIGINT,
         allowNull: false,
     })
     userId!: number;

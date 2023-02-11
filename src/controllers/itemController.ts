@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import { Item } from '../db/models/items';
+import { Item } from '../db/models/item';
 
 export const createItem: RequestHandler = async (req, res, next) => {
     try {

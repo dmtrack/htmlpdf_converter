@@ -1,5 +1,5 @@
 import * as sequelize from 'sequelize-typescript';
-import { User } from './users';
+import { User } from './user';
 
 @sequelize.Table({
     timestamps: false,
@@ -7,7 +7,7 @@ import { User } from './users';
 })
 export class Access extends sequelize.Model {
     @sequelize.Column({
-        type: sequelize.DataType.INTEGER,
+        type: sequelize.DataType.BIGINT,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
@@ -26,7 +26,7 @@ export class Access extends sequelize.Model {
 
     @sequelize.ForeignKey(() => User)
     @sequelize.Column({
-        type: sequelize.DataType.INTEGER,
+        type: sequelize.DataType.BIGINT,
         allowNull: false,
     })
     userId!: number;
