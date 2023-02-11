@@ -1,5 +1,4 @@
 import * as sequelize from 'sequelize-typescript';
-import { Item } from './items';
 
 @sequelize.Table({
     timestamps: false,
@@ -7,7 +6,7 @@ import { Item } from './items';
 })
 export class Tag extends sequelize.Model {
     @sequelize.Column({
-        type: sequelize.DataType.INTEGER,
+        type: sequelize.DataType.BIGINT,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
@@ -16,18 +15,8 @@ export class Tag extends sequelize.Model {
     id!: number;
 
     @sequelize.Column({
-        type: sequelize.DataType.STRING,
+        type: sequelize.DataType.STRING(255),
         allowNull: false,
     })
     name!: string;
-
-    @sequelize.BelongsTo(() => Item)
-    item!: Item;
-
-    @sequelize.ForeignKey(() => Item)
-    @sequelize.Column({
-        type: sequelize.DataType.INTEGER,
-        allowNull: false,
-    })
-    itemId!: number;
 }

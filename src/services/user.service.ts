@@ -1,7 +1,7 @@
 import { IUserRegistration } from '../db/models/interface/user.interface';
 import { RequestHandler } from 'express';
 
-import { User } from '../db/models/users';
+import { User } from '../db/models/user';
 import { IUserDto } from '../db/models/interface/user.interface';
 import { IToken } from '../db/models/interface/token.interface';
 import { Access } from '../db/models/user_access';
