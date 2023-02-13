@@ -10,10 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createItem = void 0;
-const items_1 = require("../db/models/items");
+const item_1 = require("../db/models/item");
 const createItem = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let item = yield items_1.Item.create(Object.assign({}, req.body));
+        let item = yield item_1.Item.create(Object.assign({}, req.body));
         console.log(`item ${item.name} is created`);
         return res.status(200).json({
             message: 'item is created succesfully',

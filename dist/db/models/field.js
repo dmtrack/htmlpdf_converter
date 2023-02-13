@@ -29,10 +29,16 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Token = void 0;
+exports.Field = void 0;
+const stringfield_1 = require("./field_types/stringfield");
+const collection_1 = require("./collection");
 const sequelize = __importStar(require("sequelize-typescript"));
-const user_1 = require("./user");
-let Token = class Token extends sequelize.Model {
+const fieldtype_1 = require("./fieldtype");
+const textfield_1 = require("./field_types/textfield");
+const booleanfield_1 = require("./field_types/booleanfield");
+const datefield_1 = require("./field_types/datefield");
+const numfield_1 = require("./field_types/numfield");
+let Field = class Field extends sequelize.Model {
 };
 __decorate([
     sequelize.Column({
@@ -42,27 +48,46 @@ __decorate([
         allowNull: false,
         unique: true,
     })
-], Token.prototype, "id", void 0);
+], Field.prototype, "id", void 0);
 __decorate([
     sequelize.Column({
-        type: sequelize.DataType.TEXT,
-        allowNull: true,
+        type: sequelize.DataType.STRING(255),
+        allowNull: false,
     })
-], Token.prototype, "refreshToken", void 0);
+], Field.prototype, "label", void 0);
 __decorate([
-    sequelize.BelongsTo(() => user_1.User)
-], Token.prototype, "user", void 0);
-__decorate([
-    sequelize.ForeignKey(() => user_1.User),
+    sequelize.ForeignKey(() => collection_1.Collection),
     sequelize.Column({
         type: sequelize.DataType.BIGINT,
         allowNull: false,
     })
-], Token.prototype, "userId", void 0);
-Token = __decorate([
+], Field.prototype, "collectionId", void 0);
+__decorate([
+    sequelize.ForeignKey(() => fieldtype_1.FieldType),
+    sequelize.Column({
+        type: sequelize.DataType.BIGINT,
+        allowNull: false,
+    })
+], Field.prototype, "typeId", void 0);
+__decorate([
+    sequelize.HasMany(() => stringfield_1.StringField)
+], Field.prototype, "stringfields", void 0);
+__decorate([
+    sequelize.HasMany(() => textfield_1.TextField)
+], Field.prototype, "textfields", void 0);
+__decorate([
+    sequelize.HasMany(() => booleanfield_1.BooleanField)
+], Field.prototype, "booleanfields", void 0);
+__decorate([
+    sequelize.HasMany(() => datefield_1.DateField)
+], Field.prototype, "datefields", void 0);
+__decorate([
+    sequelize.HasMany(() => numfield_1.NumField)
+], Field.prototype, "numfields", void 0);
+Field = __decorate([
     sequelize.Table({
         timestamps: false,
-        tableName: 'tokens',
+        tableName: 'fields',
     })
-], Token);
-exports.Token = Token;
+], Field);
+exports.Field = Field;

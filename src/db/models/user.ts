@@ -74,6 +74,12 @@ export class User extends sequelize.Model {
     })
     activationLink!: string;
 
+    @sequelize.Column({
+        type: sequelize.DataType.BIGINT,
+        allowNull: true,
+    })
+    created!: number;
+
     @sequelize.HasMany(() => Collection)
     userCollections!: Collection[];
 

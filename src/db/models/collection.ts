@@ -45,6 +45,12 @@ export class Collection extends sequelize.Model {
     })
     userId!: number;
 
+    @sequelize.Column({
+        type: sequelize.DataType.BIGINT,
+        allowNull: true,
+    })
+    created!: number;
+
     @sequelize.ForeignKey(() => Theme)
     @sequelize.Column({
         type: sequelize.DataType.BIGINT,
@@ -53,7 +59,7 @@ export class Collection extends sequelize.Model {
     themeId!: number;
 
     @sequelize.HasMany(() => Item)
-    userCollections!: Item[];
+    items!: Item[];
 
     @sequelize.HasMany(() => Field)
     fields!: Field[];

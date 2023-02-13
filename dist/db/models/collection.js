@@ -29,10 +29,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Token = void 0;
+exports.Collection = void 0;
+const field_1 = require("./field");
 const sequelize = __importStar(require("sequelize-typescript"));
+const item_1 = require("./item");
 const user_1 = require("./user");
-let Token = class Token extends sequelize.Model {
+const theme_1 = require("./theme");
+let Collection = class Collection extends sequelize.Model {
 };
 __decorate([
     sequelize.Column({
@@ -42,27 +45,49 @@ __decorate([
         allowNull: false,
         unique: true,
     })
-], Token.prototype, "id", void 0);
+], Collection.prototype, "id", void 0);
 __decorate([
     sequelize.Column({
-        type: sequelize.DataType.TEXT,
-        allowNull: true,
+        type: sequelize.DataType.STRING(255),
+        allowNull: false,
     })
-], Token.prototype, "refreshToken", void 0);
+], Collection.prototype, "name", void 0);
 __decorate([
-    sequelize.BelongsTo(() => user_1.User)
-], Token.prototype, "user", void 0);
+    sequelize.Column({
+        type: sequelize.DataType.STRING(4096),
+        allowNull: false,
+    })
+], Collection.prototype, "description", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.STRING(255),
+        allowNull: false,
+    })
+], Collection.prototype, "image", void 0);
 __decorate([
     sequelize.ForeignKey(() => user_1.User),
     sequelize.Column({
         type: sequelize.DataType.BIGINT,
         allowNull: false,
     })
-], Token.prototype, "userId", void 0);
-Token = __decorate([
+], Collection.prototype, "userId", void 0);
+__decorate([
+    sequelize.ForeignKey(() => theme_1.Theme),
+    sequelize.Column({
+        type: sequelize.DataType.BIGINT,
+        allowNull: false,
+    })
+], Collection.prototype, "themeId", void 0);
+__decorate([
+    sequelize.HasMany(() => item_1.Item)
+], Collection.prototype, "userCollections", void 0);
+__decorate([
+    sequelize.HasMany(() => field_1.Field)
+], Collection.prototype, "fields", void 0);
+Collection = __decorate([
     sequelize.Table({
         timestamps: false,
-        tableName: 'tokens',
+        tableName: 'collections',
     })
-], Token);
-exports.Token = Token;
+], Collection);
+exports.Collection = Collection;

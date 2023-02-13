@@ -29,6 +29,12 @@ export class Item extends sequelize.Model {
     })
     name!: string;
 
+    @sequelize.Column({
+        type: sequelize.DataType.BIGINT,
+        allowNull: true,
+    })
+    created!: number;
+
     @sequelize.ForeignKey(() => Collection)
     @sequelize.Column({
         type: sequelize.DataType.BIGINT,

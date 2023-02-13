@@ -27,6 +27,7 @@ class UserService {
         }
         const hashpass = await bcrypt.hash(password, 3);
         const activationLink = uuid.v4();
+        const created = new Date().getTime();
         const newUser: IUserDto = await User.create({
             name: name,
             email: email,
@@ -35,6 +36,7 @@ class UserService {
             blocked: false,
             isActivated: false,
             avatarUrl: avatarUrl,
+            created: created,
         });
         await mailService.sendActivationMail(
             email,

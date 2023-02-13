@@ -23,4 +23,5 @@ export interface IUserDto {
     avatarUrl: string;
     isActivated: boolean;
     access: IAccess;
+    created: number;
 }

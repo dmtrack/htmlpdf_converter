@@ -29,40 +29,69 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Token = void 0;
+exports.Item = void 0;
+const textfield_1 = require("./field_types/textfield");
+const stringfield_1 = require("./field_types/stringfield");
+const datefield_1 = require("./field_types/datefield");
 const sequelize = __importStar(require("sequelize-typescript"));
-const user_1 = require("./user");
-let Token = class Token extends sequelize.Model {
+const collection_1 = require("./collection");
+const comment_1 = require("./comment");
+const tag_item_1 = require("./tag_item");
+const booleanfield_1 = require("./field_types/booleanfield");
+const numfield_1 = require("./field_types/numfield");
+const like_1 = require("./like");
+let Item = class Item extends sequelize.Model {
 };
 __decorate([
     sequelize.Column({
         type: sequelize.DataType.BIGINT,
         autoIncrement: true,
-        primaryKey: true,
         allowNull: false,
         unique: true,
+        primaryKey: true,
     })
-], Token.prototype, "id", void 0);
+], Item.prototype, "id", void 0);
 __decorate([
     sequelize.Column({
-        type: sequelize.DataType.TEXT,
-        allowNull: true,
+        type: sequelize.DataType.STRING,
+        allowNull: false,
     })
-], Token.prototype, "refreshToken", void 0);
+], Item.prototype, "name", void 0);
 __decorate([
-    sequelize.BelongsTo(() => user_1.User)
-], Token.prototype, "user", void 0);
-__decorate([
-    sequelize.ForeignKey(() => user_1.User),
+    sequelize.ForeignKey(() => collection_1.Collection),
     sequelize.Column({
         type: sequelize.DataType.BIGINT,
         allowNull: false,
     })
-], Token.prototype, "userId", void 0);
-Token = __decorate([
+], Item.prototype, "collectionId", void 0);
+__decorate([
+    sequelize.HasMany(() => comment_1.Comment)
+], Item.prototype, "comments", void 0);
+__decorate([
+    sequelize.HasMany(() => tag_item_1.TagItem)
+], Item.prototype, "tags", void 0);
+__decorate([
+    sequelize.HasMany(() => like_1.Like)
+], Item.prototype, "likes", void 0);
+__decorate([
+    sequelize.HasMany(() => stringfield_1.StringField)
+], Item.prototype, "stringfields", void 0);
+__decorate([
+    sequelize.HasMany(() => textfield_1.TextField)
+], Item.prototype, "textfields", void 0);
+__decorate([
+    sequelize.HasMany(() => booleanfield_1.BooleanField)
+], Item.prototype, "boolean", void 0);
+__decorate([
+    sequelize.HasMany(() => numfield_1.NumField)
+], Item.prototype, "numfields", void 0);
+__decorate([
+    sequelize.HasMany(() => datefield_1.DateField)
+], Item.prototype, "datefields", void 0);
+Item = __decorate([
     sequelize.Table({
         timestamps: false,
-        tableName: 'tokens',
+        tableName: 'item',
     })
-], Token);
-exports.Token = Token;
+], Item);
+exports.Item = Item;

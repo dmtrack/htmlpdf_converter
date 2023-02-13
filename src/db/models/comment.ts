@@ -23,10 +23,10 @@ export class Comment extends sequelize.Model {
     text!: string;
 
     @sequelize.Column({
-        type: sequelize.DataType.DATE,
+        type: sequelize.DataType.BIGINT,
         allowNull: false,
     })
-    date!: number;
+    created!: number;
 
     @sequelize.ForeignKey(() => Item)
     @sequelize.Column({

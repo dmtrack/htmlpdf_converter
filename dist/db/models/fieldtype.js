@@ -29,10 +29,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Token = void 0;
+exports.FieldType = void 0;
 const sequelize = __importStar(require("sequelize-typescript"));
-const user_1 = require("./user");
-let Token = class Token extends sequelize.Model {
+const field_1 = require("./field");
+let FieldType = class FieldType extends sequelize.Model {
 };
 __decorate([
     sequelize.Column({
@@ -42,27 +42,20 @@ __decorate([
         allowNull: false,
         unique: true,
     })
-], Token.prototype, "id", void 0);
+], FieldType.prototype, "id", void 0);
 __decorate([
     sequelize.Column({
-        type: sequelize.DataType.TEXT,
-        allowNull: true,
-    })
-], Token.prototype, "refreshToken", void 0);
-__decorate([
-    sequelize.BelongsTo(() => user_1.User)
-], Token.prototype, "user", void 0);
-__decorate([
-    sequelize.ForeignKey(() => user_1.User),
-    sequelize.Column({
-        type: sequelize.DataType.BIGINT,
+        type: sequelize.DataType.STRING(255),
         allowNull: false,
     })
-], Token.prototype, "userId", void 0);
-Token = __decorate([
+], FieldType.prototype, "name", void 0);
+__decorate([
+    sequelize.HasMany(() => field_1.Field)
+], FieldType.prototype, "fields", void 0);
+FieldType = __decorate([
     sequelize.Table({
         timestamps: false,
-        tableName: 'tokens',
+        tableName: 'fielstypes',
     })
-], Token);
-exports.Token = Token;
+], FieldType);
+exports.FieldType = FieldType;

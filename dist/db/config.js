@@ -3,16 +3,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const stringfield_1 = require("./models/field_types/stringfield");
 const sequelize_typescript_1 = require("sequelize-typescript");
-const users_1 = require("./models/users");
+const user_1 = require("./models/user");
 const dotenv_1 = __importDefault(require("dotenv"));
-const collections_1 = require("./models/collections");
-const tags_1 = require("./models/tags");
-const items_1 = require("./models/items");
-const comments_1 = require("./models/comments");
-const item_configs_1 = require("./models/item_configs");
+const collection_1 = require("./models/collection");
+const tag_item_1 = require("./models/tag_item");
+const item_1 = require("./models/item");
+const comment_1 = require("./models/comment");
+const field_1 = require("./models/field");
+const fieldtype_1 = require("./models/fieldtype");
 const user_access_1 = require("./models/user_access");
 const token_1 = require("./models/token");
+const textfield_1 = require("./models/field_types/textfield");
+const booleanfield_1 = require("./models/field_types/booleanfield");
+const datefield_1 = require("./models/field_types/datefield");
+const numfield_1 = require("./models/field_types/numfield");
+const theme_1 = require("./models/theme");
+const like_1 = require("./models/like");
 dotenv_1.default.config();
 const connection = new sequelize_typescript_1.Sequelize({
     dialect: 'postgres',
@@ -21,7 +29,24 @@ const connection = new sequelize_typescript_1.Sequelize({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     logging: false,
-    models: [users_1.User, collections_1.Collection, items_1.Item, comments_1.Comment, tags_1.Tag, item_configs_1.Config, user_access_1.Access, token_1.Token],
+    models: [
+        user_1.User,
+        collection_1.Collection,
+        item_1.Item,
+        comment_1.Comment,
+        tag_item_1.TagItem,
+        field_1.Field,
+        fieldtype_1.FieldType,
+        user_access_1.Access,
+        token_1.Token,
+        stringfield_1.StringField,
+        textfield_1.TextField,
+        booleanfield_1.BooleanField,
+        datefield_1.DateField,
+        numfield_1.NumField,
+        theme_1.Theme,
+        like_1.Like,
+    ],
     dialectOptions: {
         ssl: true,
         native: true,

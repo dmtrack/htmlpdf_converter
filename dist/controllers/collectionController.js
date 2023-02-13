@@ -10,11 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUser = exports.createCollection = void 0;
-const collections_1 = require("../db/models/collections");
-const users_1 = require("../db/models/users");
+const collection_1 = require("../db/models/collection");
+const user_1 = require("../db/models/user");
 const createCollection = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let collection = yield collections_1.Collection.create(Object.assign({}, req.body));
+        let collection = yield collection_1.Collection.create(Object.assign({}, req.body));
         console.log(`collection ${collection.name} is created`);
         return res.status(200).json({
             message: 'collection created succesfully',
@@ -29,7 +29,7 @@ exports.createCollection = createCollection;
 const getUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        const user = yield users_1.User.findOne({
+        const user = yield user_1.User.findOne({
             where: { id: id },
         });
         if (user) {

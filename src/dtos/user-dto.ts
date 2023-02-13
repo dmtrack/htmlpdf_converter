@@ -9,6 +9,7 @@ module.exports = class UserDto {
     avatarUrl;
     isActivated;
     access;
+    created;
 
     constructor(model: IUserDto) {
         this.id = model.id;
@@ -19,5 +20,6 @@ module.exports = class UserDto {
         this.avatarUrl = model.avatarUrl;
         this.isActivated = model.isActivated;
         this.access = model.access;
+        this.created = model.created;
     }
 };

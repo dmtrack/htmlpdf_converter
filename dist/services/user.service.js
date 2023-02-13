@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const users_1 = require("../db/models/users");
+const user_1 = require("../db/models/user");
 const user_access_1 = require("../db/models/user_access");
 const token_utils_1 = require("../utils/token.utils");
 const bcrypt = require('bcrypt');
@@ -22,7 +22,7 @@ class UserService {
     registration(user) {
         return __awaiter(this, void 0, void 0, function* () {
             const { name, email, password, avatarUrl } = user.body;
-            const candidate = yield users_1.User.findOne({
+            const candidate = yield user_1.User.findOne({
                 where: { email: email },
             });
             if (candidate) {
@@ -30,7 +30,7 @@ class UserService {
             }
             const hashpass = yield bcrypt.hash(password, 3);
             const activationLink = uuid.v4();
-            const newUser = yield users_1.User.create({
+            const newUser = yield user_1.User.create({
                 name: name,
                 email: email,
                 password: hashpass,
@@ -44,7 +44,7 @@ class UserService {
                 access: 'user',
                 userId: newUser.id,
             });
-            const userWithAccess = yield users_1.User.findOne({
+            const userWithAccess = yield user_1.User.findOne({
                 where: { id: newUser.id },
                 include: { model: user_access_1.Access },
             });
@@ -52,7 +52,7 @@ class UserService {
             console.log(userDto);
             const tokens = tokenService.generateTokens(Object.assign({}, userDto));
             const token = yield tokenService.saveToken(userDto.id, tokens.refreshToken);
-            yield users_1.User.update({ tokenId: token.id, accessId: accessRight.id }, { where: { id: userDto.id } });
+            yield user_1.User.update({ tokenId: token.id, accessId: accessRight.id }, { where: { id: userDto.id } });
             userDto.accessId = yield accessRight.id;
             userDto.tokenId = yield token.id;
             return Object.assign(Object.assign({}, tokens), { user: userDto });
@@ -60,16 +60,16 @@ class UserService {
     }
     activate(activationLink) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield users_1.User.findOne({ where: { activationLink } });
+            const user = yield user_1.User.findOne({ where: { activationLink } });
             if (!user) {
                 throw ApiError.badRequest('Пользователь с таким email уже существует');
             }
-            yield users_1.User.update({ isActivated: true }, { where: { activationLink } });
+            yield user_1.User.update({ isActivated: true }, { where: { activationLink } });
         });
     }
     login(email, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield users_1.User.findOne({
+            const user = yield user_1.User.findOne({
                 where: { email },
                 include: { model: user_access_1.Access },
             });
@@ -88,7 +88,7 @@ class UserService {
     }
     reconnect(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield users_1.User.findOne({
+            const user = yield user_1.User.findOne({
                 where: { id },
                 include: { model: user_access_1.Access },
             });
@@ -113,7 +113,7 @@ class UserService {
             if (!userData || !tokenFromDb) {
                 throw ApiError.UnauthorizedError();
             }
-            const user = yield users_1.User.findByPk(userData.id);
+            const user = yield user_1.User.findByPk(userData.id);
             const userDto = new UserDto(user);
             const tokens = yield (0, token_utils_1.tokenCreator)(userDto);
             return Object.assign(Object.assign({}, tokens), { user: userDto });
@@ -121,39 +121,39 @@ class UserService {
     }
     getAllUsers() {
         return __awaiter(this, void 0, void 0, function* () {
-            const users = yield users_1.User.findAll({ include: user_access_1.Access });
+            const users = yield user_1.User.findAll({ include: user_access_1.Access });
             return users;
         });
     }
     toggleBlock(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield users_1.User.findByPk(id);
+            const user = yield user_1.User.findByPk(id);
             if (!user) {
                 throw ApiError.badRequest('пользователь с данным id найден');
             }
-            yield users_1.User.update({ blocked: true }, { where: { id } });
-            const updatedUser = yield users_1.User.findByPk(id);
+            yield user_1.User.update({ blocked: true }, { where: { id } });
+            const updatedUser = yield user_1.User.findByPk(id);
             return updatedUser;
         });
     }
     toggleUnBlock(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield users_1.User.findByPk(id);
+            const user = yield user_1.User.findByPk(id);
             if (!user) {
                 throw ApiError.badRequest('пользователь с данным id найден');
             }
-            yield users_1.User.update({ blocked: false }, { where: { id } });
-            const updatedUser = yield users_1.User.findByPk(id);
+            yield user_1.User.update({ blocked: false }, { where: { id } });
+            const updatedUser = yield user_1.User.findByPk(id);
             return updatedUser;
         });
     }
     deleteUser(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield users_1.User.findByPk(id);
+            const user = yield user_1.User.findByPk(id);
             if (!user) {
                 throw ApiError.badRequest('пользователь с данным id найден');
             }
-            yield users_1.User.destroy({ where: { id } });
+            yield user_1.User.destroy({ where: { id } });
         });
     }
 }

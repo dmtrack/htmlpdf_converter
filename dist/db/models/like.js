@@ -29,10 +29,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Token = void 0;
+exports.Like = void 0;
 const sequelize = __importStar(require("sequelize-typescript"));
+const item_1 = require("./item");
 const user_1 = require("./user");
-let Token = class Token extends sequelize.Model {
+let Like = class Like extends sequelize.Model {
 };
 __decorate([
     sequelize.Column({
@@ -42,27 +43,25 @@ __decorate([
         allowNull: false,
         unique: true,
     })
-], Token.prototype, "id", void 0);
+], Like.prototype, "id", void 0);
 __decorate([
+    sequelize.ForeignKey(() => item_1.Item),
     sequelize.Column({
-        type: sequelize.DataType.TEXT,
-        allowNull: true,
+        type: sequelize.DataType.BIGINT,
+        allowNull: false,
     })
-], Token.prototype, "refreshToken", void 0);
-__decorate([
-    sequelize.BelongsTo(() => user_1.User)
-], Token.prototype, "user", void 0);
+], Like.prototype, "itemId", void 0);
 __decorate([
     sequelize.ForeignKey(() => user_1.User),
     sequelize.Column({
         type: sequelize.DataType.BIGINT,
         allowNull: false,
     })
-], Token.prototype, "userId", void 0);
-Token = __decorate([
+], Like.prototype, "userId", void 0);
+Like = __decorate([
     sequelize.Table({
         timestamps: false,
-        tableName: 'tokens',
+        tableName: 'likes',
     })
-], Token);
-exports.Token = Token;
+], Like);
+exports.Like = Like;
