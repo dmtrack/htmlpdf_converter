@@ -1,6 +1,9 @@
 import { RequestHandler } from 'express';
 import { Collection } from '../db/models/collection';
-import { ICollection } from '../interfaces/models/collection';
+import {
+    ICollection,
+    ICollectionUpdate,
+} from '../interfaces/models/collection';
 const CollectionService = require('../services/collection.service');
 
 export const createCollection: RequestHandler = async (req, res, next) => {
@@ -82,19 +85,18 @@ export const deleteOneCollection: RequestHandler = async (req, res, next) => {
     }
 };
 
-// export const updateUser: RequestHandler = async (req, res, next) => {
-//     try {
-//         const { id } = req.params;
-//         await User.update({ ...req.body }, { where: { id } });
-//         const updatedUser: User | null = await User.findByPk(id);
-//         return res.status(200).json({
-//             message: `user with id: ${id} was updated`,
-//             data: updatedUser,
-//         });
-//     } catch (err: any) {
-//         return err.message;
-//     }
-// };
+export const updateCollection: RequestHandler = async (req, res, next) => {
+    try {
+        const updatedCollection: ICollectionUpdate =
+            await CollectionService.updateCollection(req.body);
+        return res.status(200).json({
+            message: `collection with id: ${req.body.id} was updated`,
+            data: updatedCollection,
+        });
+    } catch (err: any) {
+        return err.message;
+    }
+};
 
 // export const signUp: RequestHandler = async (req, res, next) => {
 //     try {

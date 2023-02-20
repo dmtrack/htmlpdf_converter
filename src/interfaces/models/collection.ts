@@ -6,12 +6,21 @@ export interface ICollectionCreate {
     image: string;
 }
 
-export interface ICollection {
+export interface ICollectionUpdate {
     id: number;
     name: string;
     description: string;
     userId: number;
     themeId: number;
     image: string;
+}
+
+export interface ICollection {
+    id: number;
+    name: string;
+    description: string;
+    userId: number;
+    themeId: number;
+    image?: string;
     created: number;
 }

@@ -5,6 +5,7 @@ import {
     getOneCollection,
     deleteOneCollection,
     getUserCollections,
+    updateCollection,
     //     getUserStatus,
     //     getAllUsers,
     //     getUser,
@@ -19,7 +20,8 @@ const collectionRouter = Router();
 collectionRouter.post('/create', createCollection);
 collectionRouter.get('/getcollections', getCollections);
 collectionRouter.get('/getusercollections/:userId', getUserCollections);
-collectionRouter.get('/getonecollection/:id', getOneCollection);
+collectionRouter.get('/getone/:id', getOneCollection);
+collectionRouter.put('/update', updateCollection);
 collectionRouter.delete('/deleteone/:id', deleteOneCollection);
 
 // router.get('/getusers', getAllUsers);

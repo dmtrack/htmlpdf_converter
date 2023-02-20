@@ -3,6 +3,7 @@ import { Collection } from '../db/models/collection';
 import {
     ICollection,
     ICollectionCreate,
+    ICollectionUpdate,
 } from '../interfaces/models/collection';
 
 const ApiError = require('../exceptions/api-error');
@@ -58,6 +59,14 @@ class CollectionService {
         await Collection.destroy({
             where: { id: id },
         });
+    }
+
+    async updateCollection(newData: ICollectionUpdate) {
+        await Collection.update({ ...newData }, { where: { id: newData.id } });
+        const updatedCollection: ICollectionUpdate | null =
+            await Collection.findByPk(newData.id);
+
+        return updatedCollection;
     }
 
     // async activate(activationLink: string) {
