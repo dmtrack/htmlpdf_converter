@@ -4,7 +4,7 @@ import { Item } from './item';
 
 @sequelize.Table({
     timestamps: false,
-    tableName: 'fielstypes',
+    tableName: 'fieldtypes',
 })
 export class FieldType extends sequelize.Model {
     @sequelize.Column({

@@ -12,7 +12,6 @@ export class Theme extends sequelize.Model {
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
-        unique: true,
     })
     id!: number;
 

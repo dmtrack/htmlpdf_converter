@@ -7,7 +7,7 @@ import { Like } from './like';
 
 @sequelize.Table({
     timestamps: false,
-    tableName: 'user',
+    tableName: 'users',
 })
 export class User extends sequelize.Model {
     @sequelize.Column({

@@ -5,6 +5,8 @@ import userRouter from './routes/user.routes';
 import collectionRouter from './routes/collection.routes';
 import itemRouter from './routes/item.routes';
 import { urlencoded, json } from 'body-parser';
+import { Theme } from './db/models/theme';
+import { themeCheck } from './utils/collection.utils';
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 export const app = express();
@@ -23,7 +25,8 @@ app.use(authMiddleware);
 
 connection
     .sync({ force: true })
-    .then(() => {
+    .then(async () => {
+        themeCheck();
         console.log('Database synced succesfully');
     })
     .catch((err) => {

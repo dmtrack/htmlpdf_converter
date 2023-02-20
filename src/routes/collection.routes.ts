@@ -1,26 +1,19 @@
 import { Router } from 'express';
 import {
     createCollection,
-    //     getUserStatus,
-    //     getAllUsers,
-    //     getUser,
-    //     deleteUser,
-    //     signUp,
-    //     signIn,
-    //     toggleBlock,
-    //     toggleUnblock,
+    getCollections,
+    getOneCollection,
+    deleteOneCollection,
+    getUserCollections,
+    updateCollection,
 } from '../controllers/collectionController';
 const collectionRouter = Router();
 
-collectionRouter.post('/createcollection', createCollection);
-// router.get('/getusers', getAllUsers);
-// router.get('/getuser/:id', getUser);
-// router.get('/getuserstatus', getUserStatus);
-// router.delete('/deleteuser', deleteUser);
-
-// router.post('/signup', signUp);
-// router.post('/signin', signIn);
-// router.put('/block', toggleBlock);
-// router.put('/unblock', toggleUnblock);
+collectionRouter.post('/create', createCollection);
+collectionRouter.get('/getcollections', getCollections);
+collectionRouter.get('/getusercollections/:userId', getUserCollections);
+collectionRouter.get('/getone/:id', getOneCollection);
+collectionRouter.put('/update', updateCollection);
+collectionRouter.delete('/deleteone/:id', deleteOneCollection);
 
 export default collectionRouter;
