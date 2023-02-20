@@ -1,6 +1,10 @@
 import { Router } from 'express';
 import {
     createCollection,
+    getCollections,
+    getOneCollection,
+    deleteOneCollection,
+    getUserCollections,
     //     getUserStatus,
     //     getAllUsers,
     //     getUser,
@@ -12,7 +16,12 @@ import {
 } from '../controllers/collectionController';
 const collectionRouter = Router();
 
-collectionRouter.post('/createcollection', createCollection);
+collectionRouter.post('/create', createCollection);
+collectionRouter.get('/getcollections', getCollections);
+collectionRouter.get('/getusercollections/:userId', getUserCollections);
+collectionRouter.get('/getonecollection/:id', getOneCollection);
+collectionRouter.delete('/deleteone/:id', deleteOneCollection);
+
 // router.get('/getusers', getAllUsers);
 // router.get('/getuser/:id', getUser);
 // router.get('/getuserstatus', getUserStatus);

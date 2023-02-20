@@ -1,14 +1,13 @@
 import { RequestHandler } from 'express';
 import { Collection } from '../db/models/collection';
-import { User } from '../db/models/user';
+import { ICollection } from '../interfaces/models/collection';
+const CollectionService = require('../services/collection.service');
 
 export const createCollection: RequestHandler = async (req, res, next) => {
     try {
-        let collection = await Collection.create({ ...req.body });
-        console.log(`collection ${collection.name} is created`);
-
+        let collection = await CollectionService.create(req.body);
         return res.status(200).json({
-            message: 'collection created succesfully',
+            message: 'collection was created succesfully',
             data: collection,
         });
     } catch (err: any) {
@@ -16,26 +15,70 @@ export const createCollection: RequestHandler = async (req, res, next) => {
     }
 };
 
-export const getUser: RequestHandler = async (req, res, next) => {
-    const id = req.params.id;
+export const getCollections: RequestHandler = async (req, res, next) => {
     try {
-        const user: User | null = await User.findOne({
-            where: { id: id },
+        const collections: ICollection[] =
+            await CollectionService.getAllCollections();
+        return res.status(200).json({
+            message: `collections fetched successfully`,
+            data: collections,
         });
-        if (user) {
+    } catch (err: any) {
+        return err.message;
+    }
+};
+
+export const getUserCollections: RequestHandler = async (req, res, next) => {
+    try {
+        const id = req.params.userId;
+        const collections: ICollection[] =
+            await CollectionService.getUserCollections(id);
+        return res.status(200).json({
+            message: `collections fetched successfully`,
+            data: collections,
+        });
+    } catch (err: any) {
+        return err.message;
+    }
+};
+
+export const getOneCollection: RequestHandler = async (req, res, next) => {
+    const id = req.params.id;
+
+    try {
+        const collection: ICollection =
+            await CollectionService.getOneCollection(id);
+
+        if (collection) {
             return res.status(200).json({
-                message: `user with id:${id} is found`,
-                user: user,
+                message: `collection with id:${id} is found`,
+                user: collection,
             });
         } else
             return res.status(200).json({
-                message: `user with id:${id} is not found`,
+                message: `collection with id:${id} is not found`,
             });
     } catch (err: any) {
         return res.status(404).json({
             error: 404,
             message: `${err.message}`,
         });
+    }
+};
+
+export const deleteOneCollection: RequestHandler = async (req, res, next) => {
+    console.log('delete collection!');
+    try {
+        console.log('delete collection!');
+        const id = req.params.id;
+        await CollectionService.deleteOneCollection(id);
+
+        return res.status(200).json({
+            message: `collection with id:${id} was deleted`,
+            id: req.body,
+        });
+    } catch (err: any) {
+        return err.message;
     }
 };
 

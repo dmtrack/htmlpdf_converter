@@ -1,17 +1,22 @@
-import { createItem } from './../controllers/itemController';
 import { Router } from 'express';
-
+const itemController = require('../controllers/itemController');
+const authMiddleware = require('../middleware/auth-middleware');
 const itemRouter = Router();
 
-itemRouter.post('/createitem', createItem);
-// router.get('/getusers', getAllUsers);
-// router.get('/getuser/:id', getUser);
-// router.get('/getuserstatus', getUserStatus);
-// router.delete('/deleteuser', deleteUser);
+itemRouter.post('/createitem', itemController.createItem);
 
-// router.post('/signup', signUp);
-// router.post('/signin', signIn);
-// router.put('/block', toggleBlock);
-// router.put('/unblock', toggleUnblock);
+// userRouter.get('/activate/:link', userController.activate);
+// userRouter.post('/login', userController.login);
+// userRouter.post('/logout', userController.logout);
+// userRouter.post('/reconnect', userController.reconnect);
+// userRouter.get('/refresh', userController.refresh);
+// userRouter.get('/getusers', authMiddleware, userController.getAllUsers);
+// userRouter.put('/block', userController.toggleBlock);
+// userRouter.put('/unblock', userController.toggleUnBlock);
+// userRouter.delete('/delete', userController.deleteUser);
+
+// userRouter.get('/getuser/:id([0-9]+)', userController.getUser);
 
 export default itemRouter;
+
+//

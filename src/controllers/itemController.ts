@@ -3,6 +3,7 @@ import { Item } from '../db/models/item';
 
 export const createItem: RequestHandler = async (req, res, next) => {
     try {
+        console.log('🚀 ~ constcreateItem:RequestHandler= ~ item');
         let item = await Item.create({ ...req.body });
         console.log(`item ${item.name} is created`);
 
