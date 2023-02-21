@@ -27,7 +27,7 @@ connection
     .sync({ force: true })
     .then(async () => {
         themeCheck();
-        console.log('Database synced succesfully');
+        console.log('Database synced successfully');
     })
     .catch((err) => {
         console.log('Err', err);
