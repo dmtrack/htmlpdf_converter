@@ -43,10 +43,10 @@ const connection = new Sequelize({
         Theme,
         Like,
     ],
-    // dialectOptions: {
-    //     ssl: true,
-    //     native: true,
-    // },
+    dialectOptions: {
+        ssl: true,
+        native: true,
+    },
 });
 
 export default connection;
