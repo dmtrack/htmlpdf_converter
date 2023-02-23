@@ -18,7 +18,6 @@ export class Item extends sequelize.Model {
         type: sequelize.DataType.BIGINT,
         autoIncrement: true,
         allowNull: false,
-        unique: true,
         primaryKey: true,
     })
     id!: number;
@@ -42,27 +41,33 @@ export class Item extends sequelize.Model {
     })
     collectionId!: number;
 
-    @sequelize.HasMany(() => Comment)
+    @sequelize.Column({
+        type: sequelize.DataType.STRING(255),
+        allowNull: true,
+    })
+    image!: string;
+
+    @sequelize.HasMany(() => Comment, { onDelete: 'cascade' })
     comments!: Comment[];
 
     @sequelize.HasMany(() => TagItem)
     tags!: TagItem[];
 
-    @sequelize.HasMany(() => Like)
+    @sequelize.HasMany(() => Like, { onDelete: 'cascade' })
     likes!: Like[];
 
-    @sequelize.HasMany(() => StringField)
+    @sequelize.HasMany(() => StringField, { onDelete: 'cascade' })
     stringfields!: StringField[];
 
-    @sequelize.HasMany(() => TextField)
+    @sequelize.HasMany(() => TextField, { onDelete: 'cascade' })
     textfields!: TextField[];
 
-    @sequelize.HasMany(() => BooleanField)
+    @sequelize.HasMany(() => BooleanField, { onDelete: 'cascade' })
     boolean!: BooleanField[];
 
-    @sequelize.HasMany(() => NumField)
+    @sequelize.HasMany(() => NumField, { onDelete: 'cascade' })
     numfields!: NumField[];
 
-    @sequelize.HasMany(() => DateField)
+    @sequelize.HasMany(() => DateField, { onDelete: 'cascade' })
     datefields!: DateField[];
 }

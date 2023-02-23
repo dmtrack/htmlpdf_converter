@@ -58,7 +58,7 @@ export class Collection extends sequelize.Model {
     })
     themeId!: number;
 
-    @sequelize.HasMany(() => Item)
+    @sequelize.HasMany(() => Item, { onDelete: 'cascade' })
     items!: Item[];
 
     @sequelize.HasMany(() => Field)
