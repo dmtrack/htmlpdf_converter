@@ -25,6 +25,8 @@ export class Like extends sequelize.Model {
     })
     itemId!: number;
 
+    @sequelize.BelongsTo(() => User)
+    user?: User;
     @sequelize.ForeignKey(() => User)
     @sequelize.Column({
         type: sequelize.DataType.BIGINT,

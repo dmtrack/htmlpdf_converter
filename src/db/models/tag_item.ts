@@ -16,6 +16,8 @@ export class TagItem extends sequelize.Model {
     })
     id!: number;
 
+    @sequelize.BelongsTo(() => Item)
+    item?: Item;
     @sequelize.ForeignKey(() => Item)
     @sequelize.Column({
         type: sequelize.DataType.BIGINT,

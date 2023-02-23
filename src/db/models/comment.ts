@@ -28,6 +28,8 @@ export class Comment extends sequelize.Model {
     })
     created!: number;
 
+    @sequelize.BelongsTo(() => Item)
+    item?: Item;
     @sequelize.ForeignKey(() => Item)
     @sequelize.Column({
         type: sequelize.DataType.BIGINT,
@@ -35,6 +37,8 @@ export class Comment extends sequelize.Model {
     })
     itemId!: number;
 
+    @sequelize.BelongsTo(() => User)
+    user?: User;
     @sequelize.ForeignKey(() => User)
     @sequelize.Column({
         type: sequelize.DataType.BIGINT,
