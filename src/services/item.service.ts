@@ -18,7 +18,6 @@ class ItemService {
                 created: created,
                 image: image,
             });
-
             return newItem;
         } catch (e: any) {
             return e.message;
@@ -27,7 +26,10 @@ class ItemService {
 
     async getAllItems() {
         try {
-            const items = await Item.findAll({ include: { model: Like } });
+            const items = await Item.findAll({
+                include: { model: Like },
+                order: [['created', 'DESC']],
+            });
             return items;
         } catch (e: any) {
             return e.message;
@@ -51,12 +53,6 @@ class ItemService {
                 raw: true,
                 nest: true,
             });
-
-            // const updatedLikes = likes.map((element) => {
-            //     console.log(element['itemId']);
-            // });
-            // // console.log(updatedLikes);
-
             return likes;
         } catch (e: any) {
             return e.message;
