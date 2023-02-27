@@ -13,10 +13,11 @@ export class Like extends sequelize.Model {
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
-        unique: true,
     })
     id!: number;
 
+    @sequelize.BelongsTo(() => Item)
+    item?: Item;
     @sequelize.ForeignKey(() => Item)
     @sequelize.Column({
         type: sequelize.DataType.BIGINT,
@@ -24,6 +25,8 @@ export class Like extends sequelize.Model {
     })
     itemId!: number;
 
+    @sequelize.BelongsTo(() => User)
+    user?: User;
     @sequelize.ForeignKey(() => User)
     @sequelize.Column({
         type: sequelize.DataType.BIGINT,

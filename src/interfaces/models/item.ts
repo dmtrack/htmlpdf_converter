@@ -3,6 +3,7 @@ export interface IItemCreate {
     description: string;
     userId: number;
     collectionId: number;
+    image: string;
 }
 
 export interface IItemUpdate {

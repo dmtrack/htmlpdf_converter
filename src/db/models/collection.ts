@@ -42,6 +42,8 @@ export class Collection extends sequelize.Model {
     })
     created!: number;
 
+    @sequelize.BelongsTo(() => User)
+    user?: User;
     @sequelize.ForeignKey(() => User)
     @sequelize.Column({
         type: sequelize.DataType.BIGINT,
@@ -58,7 +60,7 @@ export class Collection extends sequelize.Model {
     })
     themeId!: number;
 
-    @sequelize.HasMany(() => Item)
+    @sequelize.HasMany(() => Item, { onDelete: 'cascade' })
     items!: Item[];
 
     @sequelize.HasMany(() => Field)
