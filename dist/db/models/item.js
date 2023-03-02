@@ -47,7 +47,6 @@ __decorate([
         type: sequelize.DataType.BIGINT,
         autoIncrement: true,
         allowNull: false,
-        unique: true,
         primaryKey: true,
     })
 ], Item.prototype, "id", void 0);
@@ -58,6 +57,15 @@ __decorate([
     })
 ], Item.prototype, "name", void 0);
 __decorate([
+    sequelize.Column({
+        type: sequelize.DataType.BIGINT,
+        allowNull: true,
+    })
+], Item.prototype, "created", void 0);
+__decorate([
+    sequelize.BelongsTo(() => collection_1.Collection)
+], Item.prototype, "collection", void 0);
+__decorate([
     sequelize.ForeignKey(() => collection_1.Collection),
     sequelize.Column({
         type: sequelize.DataType.BIGINT,
@@ -65,33 +73,39 @@ __decorate([
     })
 ], Item.prototype, "collectionId", void 0);
 __decorate([
-    sequelize.HasMany(() => comment_1.Comment)
+    sequelize.Column({
+        type: sequelize.DataType.STRING(255),
+        allowNull: true,
+    })
+], Item.prototype, "image", void 0);
+__decorate([
+    sequelize.HasMany(() => comment_1.Comment, { onDelete: 'cascade' })
 ], Item.prototype, "comments", void 0);
 __decorate([
     sequelize.HasMany(() => tag_item_1.TagItem)
 ], Item.prototype, "tags", void 0);
 __decorate([
-    sequelize.HasMany(() => like_1.Like)
+    sequelize.HasMany(() => like_1.Like, { onDelete: 'cascade' })
 ], Item.prototype, "likes", void 0);
 __decorate([
-    sequelize.HasMany(() => stringfield_1.StringField)
+    sequelize.HasMany(() => stringfield_1.StringField, { onDelete: 'cascade' })
 ], Item.prototype, "stringfields", void 0);
 __decorate([
-    sequelize.HasMany(() => textfield_1.TextField)
+    sequelize.HasMany(() => textfield_1.TextField, { onDelete: 'cascade' })
 ], Item.prototype, "textfields", void 0);
 __decorate([
-    sequelize.HasMany(() => booleanfield_1.BooleanField)
+    sequelize.HasMany(() => booleanfield_1.BooleanField, { onDelete: 'cascade' })
 ], Item.prototype, "boolean", void 0);
 __decorate([
-    sequelize.HasMany(() => numfield_1.NumField)
+    sequelize.HasMany(() => numfield_1.NumField, { onDelete: 'cascade' })
 ], Item.prototype, "numfields", void 0);
 __decorate([
-    sequelize.HasMany(() => datefield_1.DateField)
+    sequelize.HasMany(() => datefield_1.DateField, { onDelete: 'cascade' })
 ], Item.prototype, "datefields", void 0);
 Item = __decorate([
     sequelize.Table({
         timestamps: false,
-        tableName: 'item',
+        tableName: 'items',
     })
 ], Item);
 exports.Item = Item;

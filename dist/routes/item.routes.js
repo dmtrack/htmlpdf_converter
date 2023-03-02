@@ -1,15 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const itemController_1 = require("./../controllers/itemController");
 const express_1 = require("express");
+const itemController_1 = require("../controllers/itemController");
 const itemRouter = (0, express_1.Router)();
-itemRouter.post('/createitem', itemController_1.createItem);
-// router.get('/getusers', getAllUsers);
-// router.get('/getuser/:id', getUser);
-// router.get('/getuserstatus', getUserStatus);
-// router.delete('/deleteuser', deleteUser);
-// router.post('/signup', signUp);
-// router.post('/signin', signIn);
-// router.put('/block', toggleBlock);
-// router.put('/unblock', toggleUnblock);
+itemRouter.post('/create', itemController_1.createItem);
+itemRouter.post('/setlike', itemController_1.setLike);
+itemRouter.post('/unsetlike', itemController_1.unsetLike);
+itemRouter.get('/getitems', itemController_1.getItems);
+itemRouter.get('/toprated', itemController_1.getTopRatedItems);
+itemRouter.get('/getcollectionitems/:collectionId', itemController_1.getCollectionItems);
+itemRouter.get('/getone/:id', itemController_1.getOneItem);
+itemRouter.put('/update', itemController_1.updateItem);
+itemRouter.delete('/deleteone/:id', itemController_1.deleteOneItem);
 exports.default = itemRouter;
+//

@@ -3,7 +3,7 @@ import { Item } from '../db/models/item';
 import { Like } from '../db/models/like';
 import { IItemCreate, IItemUpdate } from '../interfaces/models/item';
 
-const ApiError = require('../exceptions/api-error');
+const ApiError = require('../errors/api-error');
 
 class ItemService {
     async create(item: IItemCreate) {
@@ -45,10 +45,10 @@ class ItemService {
                 include: [
                     {
                         model: Item,
-                        attributes: ['name', 'image'],
+                        attributes: ['name', 'image', 'created'],
                     },
                 ],
-                group: ['Like.itemId', 'name', 'image'],
+                group: ['Like.itemId', 'name', 'image', 'created'],
                 order: Sequelize.literal('count DESC'),
                 raw: true,
                 nest: true,

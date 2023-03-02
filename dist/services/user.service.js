@@ -17,7 +17,7 @@ const uuid = require('uuid');
 const mailService = require('../services/mail.service');
 const tokenService = require('../services/token.service');
 const UserDto = require('../dtos/user-dto');
-const ApiError = require('../exceptions/api-error');
+const ApiError = require('../errors/api-error');
 class UserService {
     registration(user) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -30,6 +30,7 @@ class UserService {
             }
             const hashpass = yield bcrypt.hash(password, 3);
             const activationLink = uuid.v4();
+            const created = new Date().getTime();
             const newUser = yield user_1.User.create({
                 name: name,
                 email: email,
@@ -38,6 +39,7 @@ class UserService {
                 blocked: false,
                 isActivated: false,
                 avatarUrl: avatarUrl,
+                created: created,
             });
             yield mailService.sendActivationMail(email, `${process.env.API_URL}/api/user/activate/${activationLink}`);
             const accessRight = yield user_access_1.Access.create({

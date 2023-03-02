@@ -103,6 +103,12 @@ __decorate([
     })
 ], User.prototype, "activationLink", void 0);
 __decorate([
+    sequelize.Column({
+        type: sequelize.DataType.BIGINT,
+        allowNull: true,
+    })
+], User.prototype, "created", void 0);
+__decorate([
     sequelize.HasMany(() => collection_1.Collection)
 ], User.prototype, "userCollections", void 0);
 __decorate([
@@ -120,7 +126,7 @@ __decorate([
 User = __decorate([
     sequelize.Table({
         timestamps: false,
-        tableName: 'user',
+        tableName: 'users',
     })
 ], User);
 exports.User = User;

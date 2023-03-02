@@ -43,7 +43,6 @@ __decorate([
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
-        unique: true,
     })
 ], Collection.prototype, "id", void 0);
 __decorate([
@@ -65,12 +64,24 @@ __decorate([
     })
 ], Collection.prototype, "image", void 0);
 __decorate([
+    sequelize.Column({
+        type: sequelize.DataType.BIGINT,
+        allowNull: true,
+    })
+], Collection.prototype, "created", void 0);
+__decorate([
+    sequelize.BelongsTo(() => user_1.User)
+], Collection.prototype, "user", void 0);
+__decorate([
     sequelize.ForeignKey(() => user_1.User),
     sequelize.Column({
         type: sequelize.DataType.BIGINT,
         allowNull: false,
     })
 ], Collection.prototype, "userId", void 0);
+__decorate([
+    sequelize.BelongsTo(() => theme_1.Theme)
+], Collection.prototype, "theme", void 0);
 __decorate([
     sequelize.ForeignKey(() => theme_1.Theme),
     sequelize.Column({
@@ -79,8 +90,8 @@ __decorate([
     })
 ], Collection.prototype, "themeId", void 0);
 __decorate([
-    sequelize.HasMany(() => item_1.Item)
-], Collection.prototype, "userCollections", void 0);
+    sequelize.HasMany(() => item_1.Item, { onDelete: 'cascade' })
+], Collection.prototype, "items", void 0);
 __decorate([
     sequelize.HasMany(() => field_1.Field)
 ], Collection.prototype, "fields", void 0);

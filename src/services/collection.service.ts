@@ -1,12 +1,15 @@
 import { RequestHandler } from 'express';
+import { Sequelize } from 'sequelize-typescript';
 import { Collection } from '../db/models/collection';
+import { Item } from '../db/models/item';
 import {
     ICollection,
     ICollectionCreate,
     ICollectionUpdate,
 } from '../interfaces/models/collection';
 
-const ApiError = require('../exceptions/api-error');
+const ApiError = require('../errors/api-error');
+const DataBaseError = require('../errors/db-error');
 
 class CollectionService {
     async create(collection: ICollectionCreate) {
@@ -34,6 +37,37 @@ class CollectionService {
             return collections;
         } catch (e: any) {
             return e.message;
+        }
+    }
+
+    async getTopAmountOfItemsCollection() {
+        try {
+            const items = await Item.findAll({
+                attributes: [
+                    'collectionId',
+                    [
+                        Sequelize.fn('count', Sequelize.col('collectionId')),
+                        'count',
+                    ],
+                ],
+                include: [
+                    {
+                        model: Collection,
+                        attributes: [
+                            'name',
+                            'image',
+                            'themeId',
+                            'created',
+                            'id',
+                        ],
+                    },
+                ],
+                group: ['Item.collectionId', 'collection.id'],
+                order: Sequelize.literal('count DESC'),
+            });
+            return items;
+        } catch (e: any) {
+            throw DataBaseError.badRequest(e.message, e);
         }
     }
 

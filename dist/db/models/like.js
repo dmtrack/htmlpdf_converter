@@ -41,9 +41,11 @@ __decorate([
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
-        unique: true,
     })
 ], Like.prototype, "id", void 0);
+__decorate([
+    sequelize.BelongsTo(() => item_1.Item)
+], Like.prototype, "item", void 0);
 __decorate([
     sequelize.ForeignKey(() => item_1.Item),
     sequelize.Column({
@@ -51,6 +53,9 @@ __decorate([
         allowNull: false,
     })
 ], Like.prototype, "itemId", void 0);
+__decorate([
+    sequelize.BelongsTo(() => user_1.User)
+], Like.prototype, "user", void 0);
 __decorate([
     sequelize.ForeignKey(() => user_1.User),
     sequelize.Column({

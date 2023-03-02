@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { IApiError } from '../interfaces/other/other.interface';
 
-const ApiError = require('../exceptions/api-error');
+const ApiError = require('../errors/api-error');
 
 module.exports = function (
     err: IApiError,

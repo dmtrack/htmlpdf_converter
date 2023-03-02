@@ -9,15 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUser = exports.createCollection = void 0;
-const collection_1 = require("../db/models/collection");
-const user_1 = require("../db/models/user");
+exports.updateCollection = exports.deleteOneCollection = exports.getOneCollection = exports.getUserCollections = exports.getTopAmountOfItemsCollection = exports.getCollections = exports.createCollection = void 0;
+const CollectionService = require('../services/collection.service');
 const createCollection = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let collection = yield collection_1.Collection.create(Object.assign({}, req.body));
-        console.log(`collection ${collection.name} is created`);
+        let collection = yield CollectionService.create(req.body);
         return res.status(200).json({
-            message: 'collection created succesfully',
+            message: 'collection was created succesfully',
             data: collection,
         });
     }
@@ -26,21 +24,59 @@ const createCollection = (req, res, next) => __awaiter(void 0, void 0, void 0, f
     }
 });
 exports.createCollection = createCollection;
-const getUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const getCollections = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const collections = yield CollectionService.getAllCollections();
+        return res.status(200).json({
+            message: `collections fetched successfully`,
+            data: collections,
+        });
+    }
+    catch (err) {
+        return err.message;
+    }
+});
+exports.getCollections = getCollections;
+const getTopAmountOfItemsCollection = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const collections = yield CollectionService.getTopAmountOfItemsCollection();
+        return res.status(200).json({
+            message: `Collections are fetched successfully`,
+            data: collections,
+        });
+    }
+    catch (err) {
+        return res.status(400).json({ type: `Database error`, message: err });
+    }
+});
+exports.getTopAmountOfItemsCollection = getTopAmountOfItemsCollection;
+const getUserCollections = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = req.params.userId;
+        const collections = yield CollectionService.getUserCollections(id);
+        return res.status(200).json({
+            message: `collections fetched successfully`,
+            data: collections,
+        });
+    }
+    catch (err) {
+        return err.message;
+    }
+});
+exports.getUserCollections = getUserCollections;
+const getOneCollection = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        const user = yield user_1.User.findOne({
-            where: { id: id },
-        });
-        if (user) {
+        const collection = yield CollectionService.getOneCollection(id);
+        if (collection) {
             return res.status(200).json({
-                message: `user with id:${id} is found`,
-                user: user,
+                message: `collection with id:${id} is found`,
+                user: collection,
             });
         }
         else
             return res.status(200).json({
-                message: `user with id:${id} is not found`,
+                message: `collection with id:${id} is not found`,
             });
     }
     catch (err) {
@@ -50,20 +86,36 @@ const getUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
         });
     }
 });
-exports.getUser = getUser;
-// export const updateUser: RequestHandler = async (req, res, next) => {
-//     try {
-//         const { id } = req.params;
-//         await User.update({ ...req.body }, { where: { id } });
-//         const updatedUser: User | null = await User.findByPk(id);
-//         return res.status(200).json({
-//             message: `user with id: ${id} was updated`,
-//             data: updatedUser,
-//         });
-//     } catch (err: any) {
-//         return err.message;
-//     }
-// };
+exports.getOneCollection = getOneCollection;
+const deleteOneCollection = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('delete collection!');
+    try {
+        console.log('delete collection!');
+        const id = req.params.id;
+        yield CollectionService.deleteOneCollection(id);
+        return res.status(200).json({
+            message: `collection with id:${id} was deleted`,
+            id: req.body,
+        });
+    }
+    catch (err) {
+        return err.message;
+    }
+});
+exports.deleteOneCollection = deleteOneCollection;
+const updateCollection = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const updatedCollection = yield CollectionService.updateCollection(req.body);
+        return res.status(200).json({
+            message: `collection with id: ${req.body.id} was updated`,
+            data: updatedCollection,
+        });
+    }
+    catch (err) {
+        return err.message;
+    }
+});
+exports.updateCollection = updateCollection;
 // export const signUp: RequestHandler = async (req, res, next) => {
 //     try {
 //         const { email, password } = req.body;

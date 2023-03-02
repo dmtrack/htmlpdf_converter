@@ -9,19 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const userService = require("../services/user.service");
-const { validationResult } = require("express-validator");
-const ApiError = require("../exceptions/api-error");
+const userService = require('../services/user.service');
+const { validationResult } = require('express-validator');
+const ApiError = require('../errors/api-error');
 class UserController {
     constructor() {
         this.registration = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const errors = validationResult(req);
                 if (!errors.isEmpty()) {
-                    return next(ApiError.badRequest("Ошибка валидации при регистрации", errors.array()));
+                    return next(ApiError.badRequest('Ошибка валидации при регистрации', errors.array()));
                 }
                 const userData = yield userService.registration(req);
-                res.cookie("refreshToken", userData.refreshToken, {
+                res.cookie('refreshToken', userData.refreshToken, {
                     maxAge: 30 * 24 * 60 * 60 * 1000,
                     httpOnly: true,
                 });
@@ -41,25 +41,36 @@ class UserController {
                 next(e);
             }
         });
+        // login: RequestHandler = async (req, res, next) => {
+        //   try {
+        //     const { password, email } = req.body;
+        //     const userData = await userService.login(email, password);
+        //     res.cookie("refreshToken", userData.refreshToken, {
+        //       maxAge: 30 * 24 * 60 * 60 * 1000,
+        //       httpOnly: true,
+        //     });
+        //     return res.status(200).json(userData);
+        //   } catch (e) {
+        //     next(e);
+        //   }
+        // };
         this.login = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { password, email } = req.body;
-                const userData = yield userService.login(email, password);
-                res.cookie("refreshToken", userData.refreshToken, {
-                    maxAge: 30 * 24 * 60 * 60 * 1000,
-                    httpOnly: true,
-                });
-                return res.status(200).json(userData);
-            }
-            catch (e) {
-                next(e);
-            }
+            const { password, email } = req.body;
+            const response = yield userService.login(email, password);
+            res.cookie('refreshToken', response.refreshToken, {
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                httpOnly: true,
+            });
+            response
+                .mapRight((user) => res.json(user))
+                .mapLeft((e) => res.status(401).json(e));
+            return res.status(200).json(response);
         });
         this.logout = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const { refreshToken } = req.cookies;
                 const token = yield userService.logout(refreshToken);
-                res.clearCookie("refreshToken");
+                res.clearCookie('refreshToken');
                 return res.status(200).json(token);
             }
             catch (e) {
@@ -70,7 +81,7 @@ class UserController {
             try {
                 const { id } = req.body;
                 const userData = yield userService.reconnect(id);
-                res.cookie("refreshToken", userData.refreshToken, {
+                res.cookie('refreshToken', userData.refreshToken, {
                     maxAge: 30 * 24 * 60 * 60 * 1000,
                     httpOnly: true,
                 });
@@ -84,7 +95,7 @@ class UserController {
             try {
                 const { refreshToken } = req.cookies;
                 const userData = yield userService.refresh(refreshToken);
-                res.cookie("refreshToken", userData.refreshToken, {
+                res.cookie('refreshToken', userData.refreshToken, {
                     maxAge: 30 * 24 * 60 * 60 * 1000,
                     httpOnly: true,
                 });
