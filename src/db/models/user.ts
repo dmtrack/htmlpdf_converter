@@ -80,18 +80,18 @@ export class User extends sequelize.Model {
     })
     created!: number;
 
-    @sequelize.HasMany(() => Collection)
+    @sequelize.HasMany(() => Collection, { onDelete: 'cascade' })
     userCollections!: Collection[];
 
-    @sequelize.HasMany(() => Comment)
+    @sequelize.HasMany(() => Comment, { onDelete: 'cascade' })
     comments!: Comment[];
 
-    @sequelize.HasOne(() => Access)
+    @sequelize.HasOne(() => Access, { onDelete: 'cascade' })
     access!: Access;
 
-    @sequelize.HasOne(() => Token)
+    @sequelize.HasOne(() => Token, { onDelete: 'cascade' })
     token!: Token;
 
-    @sequelize.HasMany(() => Like)
+    @sequelize.HasMany(() => Like, { onDelete: 'cascade' })
     likes!: Like[];
 }

@@ -45,6 +45,9 @@ __decorate([
     })
 ], TagItem.prototype, "id", void 0);
 __decorate([
+    sequelize.BelongsTo(() => item_1.Item)
+], TagItem.prototype, "item", void 0);
+__decorate([
     sequelize.ForeignKey(() => item_1.Item),
     sequelize.Column({
         type: sequelize.DataType.BIGINT,

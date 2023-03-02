@@ -52,10 +52,13 @@ __decorate([
 ], Comment.prototype, "text", void 0);
 __decorate([
     sequelize.Column({
-        type: sequelize.DataType.DATE,
+        type: sequelize.DataType.BIGINT,
         allowNull: false,
     })
-], Comment.prototype, "date", void 0);
+], Comment.prototype, "created", void 0);
+__decorate([
+    sequelize.BelongsTo(() => item_1.Item)
+], Comment.prototype, "item", void 0);
 __decorate([
     sequelize.ForeignKey(() => item_1.Item),
     sequelize.Column({
@@ -63,6 +66,9 @@ __decorate([
         allowNull: false,
     })
 ], Comment.prototype, "itemId", void 0);
+__decorate([
+    sequelize.BelongsTo(() => user_1.User)
+], Comment.prototype, "user", void 0);
 __decorate([
     sequelize.ForeignKey(() => user_1.User),
     sequelize.Column({

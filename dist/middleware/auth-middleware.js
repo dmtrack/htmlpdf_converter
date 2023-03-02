@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ApiError = require('../exceptions/api-error');
+const ApiError = require('../errors/api-error');
 const tokenService = require('../services//token.service');
 module.exports = function (req, res, next) {
     try {

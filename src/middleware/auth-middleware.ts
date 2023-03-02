@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-const ApiError = require('../exceptions/api-error');
+const ApiError = require('../errors/api-error');
 const tokenService = require('../services//token.service');
 
 interface IMiddlewareRequest extends Request {

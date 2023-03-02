@@ -1,86 +1,93 @@
+import { AuthError } from './../errors/AuthError';
+import { left, right } from '@sweet-monads/either';
 import { IUserRegistration } from '../db/models/interface/user.interface';
-import { RequestHandler } from 'express';
-
 import { User } from '../db/models/user';
 import { IUserDto } from '../db/models/interface/user.interface';
 import { IToken } from '../db/models/interface/token.interface';
 import { Access } from '../db/models/user_access';
 import { tokenCreator } from '../utils/token.utils';
+import { DBError } from '../errors/DBError';
 
 const bcrypt = require('bcrypt');
 const uuid = require('uuid');
 const mailService = require('../services/mail.service');
 const tokenService = require('../services/token.service');
 const UserDto = require('../dtos/user-dto');
-const ApiError = require('../exceptions/api-error');
+const ApiError = require('../errors/api-error');
 
 class UserService {
     async registration(user: IUserRegistration) {
-        const { name, email, password, avatarUrl } = user.body;
-        const candidate: User | null = await User.findOne({
-            where: { email: email },
-        });
-        if (candidate) {
-            throw ApiError.badRequest(
-                'Пользователь с таким email уже существует'
+        try {
+            const { name, email, password, avatarUrl } = user.body;
+            const candidate: User | null = await User.findOne({
+                where: { email: email },
+            });
+            if (candidate) {
+                left(
+                    new AuthError('User with this email is already registered')
+                );
+            }
+            const hashpass = await bcrypt.hash(password, 3);
+            const activationLink = uuid.v4();
+            const created = new Date().getTime();
+            const newUser: IUserDto = await User.create({
+                name: name,
+                email: email,
+                password: hashpass,
+                activationLink: activationLink,
+                blocked: false,
+                isActivated: false,
+                avatarUrl: avatarUrl,
+                created: created,
+            });
+            await mailService.sendActivationMail(
+                email,
+                `${process.env.API_URL}/api/user/activate/${activationLink}`
             );
+
+            const accessRight = await Access.create({
+                access: 'user',
+                userId: newUser.id,
+            });
+
+            const userWithAccess = await User.findOne({
+                where: { id: newUser.id },
+                include: { model: Access },
+            });
+
+            const userDto = new UserDto(userWithAccess);
+            console.log(userDto);
+
+            const tokens = tokenService.generateTokens({ ...userDto });
+            const token: IToken = await tokenService.saveToken(
+                userDto.id,
+                tokens.refreshToken
+            );
+
+            await User.update(
+                { tokenId: token.id, accessId: accessRight.id },
+                { where: { id: userDto.id } }
+            );
+            userDto.accessId = await accessRight.id;
+            userDto.tokenId = await token.id;
+
+            return right({
+                ...tokens,
+                user: userDto,
+            });
+        } catch (e: any) {
+            if (e.name === 'SequelizeUniqueConstraintError') {
+                return left(
+                    new AuthError(`${e.errors[0].path} already exists`)
+                );
+            } else return left(new DBError('Register user error', e));
         }
-        const hashpass = await bcrypt.hash(password, 3);
-        const activationLink = uuid.v4();
-        const created = new Date().getTime();
-        const newUser: IUserDto = await User.create({
-            name: name,
-            email: email,
-            password: hashpass,
-            activationLink: activationLink,
-            blocked: false,
-            isActivated: false,
-            avatarUrl: avatarUrl,
-            created: created,
-        });
-        await mailService.sendActivationMail(
-            email,
-            `${process.env.API_URL}/api/user/activate/${activationLink}`
-        );
-
-        const accessRight = await Access.create({
-            access: 'user',
-            userId: newUser.id,
-        });
-
-        const userWithAccess = await User.findOne({
-            where: { id: newUser.id },
-            include: { model: Access },
-        });
-
-        const userDto = new UserDto(userWithAccess);
-        console.log(userDto);
-
-        const tokens = tokenService.generateTokens({ ...userDto });
-        const token: IToken = await tokenService.saveToken(
-            userDto.id,
-            tokens.refreshToken
-        );
-
-        await User.update(
-            { tokenId: token.id, accessId: accessRight.id },
-            { where: { id: userDto.id } }
-        );
-        userDto.accessId = await accessRight.id;
-        userDto.tokenId = await token.id;
-
-        return {
-            ...tokens,
-            user: userDto,
-        };
     }
 
     async activate(activationLink: string) {
         const user = await User.findOne({ where: { activationLink } });
-        if (!user) {
-            throw ApiError.badRequest(
-                'Пользователь с таким email уже существует'
-            );
+        if (user) {
+            throw new AuthError('Пользователь с таким email уже существует');
         }
         await User.update({ isActivated: true }, { where: { activationLink } });
     }
@@ -92,20 +99,18 @@ class UserService {
         });
 
         if (!user) {
-            throw ApiError.badRequest(
-                'Пользователь с таким email не зарегистрирован'
+            return left(
+                new AuthError('User with such email is not registered')
             );
         }
         const isPassEquals = await bcrypt.compare(password, user.password);
         if (!isPassEquals) {
-            throw ApiError.badRequest('Неверный пароль');
+            return left(new AuthError('wrong password'));
         }
 
         const userDto: IUserDto = new UserDto(user);
-        console.log('dto', userDto);
-
         const tokens = await tokenCreator(userDto);
-        return { ...tokens, user: userDto };
+        return right({ ...tokens, user: userDto });
     }
 
     async reconnect(id: number) {
@@ -113,9 +118,15 @@ class UserService {
             where: { id },
             include: { model: Access },
         });
+
+        if (!user) {
+            return left(
+                new AuthError('User with such email is not registered')
+            );
+        }
         const userDto = new UserDto(user);
         const tokens = await tokenCreator(userDto);
-        return { ...tokens, user: userDto };
+        return right({ ...tokens, user: userDto });
     }
 
     async logout(refreshToken: string) {

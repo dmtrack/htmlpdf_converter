@@ -6,11 +6,13 @@ import {
     deleteOneCollection,
     getUserCollections,
     updateCollection,
+    getTopAmountOfItemsCollection,
 } from '../controllers/collectionController';
 const collectionRouter = Router();
 
 collectionRouter.post('/create', createCollection);
 collectionRouter.get('/getcollections', getCollections);
+collectionRouter.get('/topamountofitems', getTopAmountOfItemsCollection);
 collectionRouter.get('/getusercollections/:userId', getUserCollections);
 collectionRouter.get('/getone/:id', getOneCollection);
 collectionRouter.put('/update', updateCollection);

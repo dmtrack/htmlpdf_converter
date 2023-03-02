@@ -55,7 +55,7 @@ __decorate([
 FieldType = __decorate([
     sequelize.Table({
         timestamps: false,
-        tableName: 'fielstypes',
+        tableName: 'fieldtypes',
     })
 ], FieldType);
 exports.FieldType = FieldType;

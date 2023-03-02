@@ -31,6 +31,23 @@ export const getCollections: RequestHandler = async (req, res, next) => {
     }
 };
 
+export const getTopAmountOfItemsCollection: RequestHandler = async (
+    req,
+    res,
+    next
+) => {
+    try {
+        const collections: ICollection[] =
+            await CollectionService.getTopAmountOfItemsCollection();
+        return res.status(200).json({
+            message: `Collections are fetched successfully`,
+            data: collections,
+        });
+    } catch (err: any) {
+        return res.status(400).json({ type: `Database error`, message: err });
+    }
+};
+
 export const getUserCollections: RequestHandler = async (req, res, next) => {
     try {
         const id = req.params.userId;

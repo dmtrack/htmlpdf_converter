@@ -40,7 +40,6 @@ __decorate([
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
-        unique: true,
     })
 ], Theme.prototype, "id", void 0);
 __decorate([
