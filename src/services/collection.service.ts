@@ -1,22 +1,25 @@
+import { left, right } from '@sweet-monads/either';
 import { RequestHandler } from 'express';
 import { Sequelize } from 'sequelize-typescript';
 import { Collection } from '../db/models/collection';
 import { Item } from '../db/models/item';
+import { AuthError } from '../errors/AuthError';
+import { DBError } from '../errors/DBError';
+import { EntityError } from '../errors/EntityError';
 import {
     ICollection,
     ICollectionCreate,
     ICollectionUpdate,
 } from '../interfaces/models/collection';
 
-const ApiError = require('../errors/api-error');
 const DataBaseError = require('../errors/db-error');
 
 class CollectionService {
     async create(collection: ICollectionCreate) {
+        const { name, description, userId, image, themeId } = collection;
+        const created = new Date().getTime();
         try {
-            const { name, description, userId, image, themeId } = collection;
-            const created = new Date().getTime();
-            const newCollection = await Collection.create({
+            const response = await Collection.create({
                 name: name,
                 description: description,
                 image: image,
@@ -24,19 +27,18 @@ class CollectionService {
                 userId: userId,
                 created: created,
             });
-
-            return newCollection;
+            return right(response);
         } catch (e: any) {
-            return e.message;
+            return left(new DBError('create collection error', e));
         }
     }
 
     async getAllCollections() {
         try {
             const collections = await Collection.findAll();
-            return collections;
+            return right(collections);
         } catch (e: any) {
-            return e.message;
+            return left(new DBError('get collection error', e));
         }
     }
 
@@ -65,9 +67,9 @@ class CollectionService {
                 group: ['Item.collectionId', 'collection.id'],
                 order: Sequelize.literal('count DESC'),
             });
-            return items;
+            return right(items);
         } catch (e: any) {
-            throw DataBaseError.badRequest(e.message, e);
+            return left(new DBError('getTopAmountOfItemsCollection error', e));
         }
     }
 
@@ -75,32 +77,56 @@ class CollectionService {
         const collection: ICollection | null = await Collection.findOne({
             where: { id: id },
         });
-        if (collection) {
-            return collection;
-        } else return `collection with id:${id} is not found`;
+        if (!collection) {
+            return left(
+                new EntityError(
+                    `there is no collection with id:${id} in data-base`
+                )
+            );
+        }
+        return right(collection);
     }
 
-    async getUserCollections(userId: number) {
+    async getUserCollections(id: number) {
         const collections: ICollection[] | null = await Collection.findAll({
-            where: { userId: userId },
+            where: { userId: id },
         });
-        if (collections) {
-            return collections;
-        } else return `collections for user with id:${userId} are not found`;
+        if (!collections) {
+            return left(
+                new EntityError(`there is no user with id:${id} in data-base`)
+            );
+        }
+        return right(collections);
     }
 
     async deleteOneCollection(id: number) {
-        await Collection.destroy({
+        const collection = await Collection.destroy({
             where: { id: id },
         });
+        if (!collection) {
+            return left(
+                new EntityError(
+                    `there is no collection with id:${id} in data-base`
+                )
+            );
+        }
+        return right(`collection with id:${id} was deleted`);
     }
 
     async updateCollection(newData: ICollectionUpdate) {
-        await Collection.update({ ...newData }, { where: { id: newData.id } });
-        const updatedCollection: ICollectionUpdate | null =
-            await Collection.findByPk(newData.id);
-
-        return updatedCollection;
+        const collection = await Collection.update(
+            { ...newData },
+            { where: { id: newData.id } }
+        );
+        if (collection.length === 1) {
+            return left(
+                new EntityError(
+                    `there is no collection with id:${newData.id} in data-base`
+                )
+            );
+        }
+        const updatedCollection = await Collection.findByPk(newData.id);
+        return right(updatedCollection);
     }
 }
 module.exports = new CollectionService();
