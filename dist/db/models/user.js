@@ -109,19 +109,19 @@ __decorate([
     })
 ], User.prototype, "created", void 0);
 __decorate([
-    sequelize.HasMany(() => collection_1.Collection)
+    sequelize.HasMany(() => collection_1.Collection, { onDelete: 'cascade' })
 ], User.prototype, "userCollections", void 0);
 __decorate([
-    sequelize.HasMany(() => comment_1.Comment)
+    sequelize.HasMany(() => comment_1.Comment, { onDelete: 'cascade' })
 ], User.prototype, "comments", void 0);
 __decorate([
-    sequelize.HasOne(() => user_access_1.Access)
+    sequelize.HasOne(() => user_access_1.Access, { onDelete: 'cascade' })
 ], User.prototype, "access", void 0);
 __decorate([
-    sequelize.HasOne(() => token_1.Token)
+    sequelize.HasOne(() => token_1.Token, { onDelete: 'cascade' })
 ], User.prototype, "token", void 0);
 __decorate([
-    sequelize.HasMany(() => like_1.Like)
+    sequelize.HasMany(() => like_1.Like, { onDelete: 'cascade' })
 ], User.prototype, "likes", void 0);
 User = __decorate([
     sequelize.Table({

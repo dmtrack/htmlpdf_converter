@@ -1,9 +1,7 @@
 import { left, right } from '@sweet-monads/either';
-import { RequestHandler } from 'express';
 import { Sequelize } from 'sequelize-typescript';
 import { Collection } from '../db/models/collection';
 import { Item } from '../db/models/item';
-import { AuthError } from '../errors/AuthError';
 import { DBError } from '../errors/DBError';
 import { EntityError } from '../errors/EntityError';
 import {
@@ -12,13 +10,11 @@ import {
     ICollectionUpdate,
 } from '../interfaces/models/collection';
 
-const DataBaseError = require('../errors/db-error');
-
 class CollectionService {
     async create(collection: ICollectionCreate) {
-        const { name, description, userId, image, themeId } = collection;
-        const created = new Date().getTime();
         try {
+            const { name, description, userId, image, themeId } = collection;
+            const created = new Date().getTime();
             const response = await Collection.create({
                 name: name,
                 description: description,
@@ -38,7 +34,7 @@ class CollectionService {
             const collections = await Collection.findAll();
             return right(collections);
         } catch (e: any) {
-            return left(new DBError('get collection error', e));
+            return left(new DBError('get collections error', e));
         }
     }
 
@@ -91,7 +87,9 @@ class CollectionService {
         const collections: ICollection[] | null = await Collection.findAll({
             where: { userId: id },
         });
-        if (!collections) {
+        console.log(collections);
+
+        if (collections.length === 0) {
             return left(
                 new EntityError(`there is no user with id:${id} in data-base`)
             );
@@ -118,7 +116,8 @@ class CollectionService {
             { ...newData },
             { where: { id: newData.id } }
         );
-        if (collection.length === 1) {
+
+        if (collection[0] === 0) {
             return left(
                 new EntityError(
                     `there is no collection with id:${newData.id} in data-base`

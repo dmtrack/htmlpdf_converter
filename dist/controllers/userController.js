@@ -20,16 +20,40 @@ class UserController {
                 if (!errors.isEmpty()) {
                     return next(ApiError.badRequest('Ошибка валидации при регистрации', errors.array()));
                 }
-                const userData = yield userService.registration(req);
-                res.cookie('refreshToken', userData.refreshToken, {
+                const response = yield userService.registration(req);
+                res.cookie('refreshToken', response.refreshToken, {
                     maxAge: 30 * 24 * 60 * 60 * 1000,
                     httpOnly: true,
                 });
-                return res.status(200).json(userData);
+                response
+                    .mapRight((user) => res.status(200).json(user))
+                    .mapLeft((e) => res.status(401).json(e.message));
             }
             catch (e) {
                 next(e);
             }
+        });
+        this.login = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            const { password, email } = req.body;
+            const response = yield userService.login(email, password);
+            res.cookie('refreshToken', response === null || response === void 0 ? void 0 : response.refreshToken, {
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                httpOnly: true,
+            });
+            response
+                .mapRight((user) => res.status(200).json(user))
+                .mapLeft((e) => res.status(401).json(e));
+        });
+        this.reconnect = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.body;
+            const response = yield userService.reconnect(id);
+            res.cookie('refreshToken', response.refreshToken, {
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                httpOnly: true,
+            });
+            response
+                .mapRight((user) => res.status(200).json(user))
+                .mapLeft((e) => res.status(401).json(e));
         });
         this.activate = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
@@ -41,51 +65,12 @@ class UserController {
                 next(e);
             }
         });
-        // login: RequestHandler = async (req, res, next) => {
-        //   try {
-        //     const { password, email } = req.body;
-        //     const userData = await userService.login(email, password);
-        //     res.cookie("refreshToken", userData.refreshToken, {
-        //       maxAge: 30 * 24 * 60 * 60 * 1000,
-        //       httpOnly: true,
-        //     });
-        //     return res.status(200).json(userData);
-        //   } catch (e) {
-        //     next(e);
-        //   }
-        // };
-        this.login = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
-            const { password, email } = req.body;
-            const response = yield userService.login(email, password);
-            res.cookie('refreshToken', response.refreshToken, {
-                maxAge: 30 * 24 * 60 * 60 * 1000,
-                httpOnly: true,
-            });
-            response
-                .mapRight((user) => res.json(user))
-                .mapLeft((e) => res.status(401).json(e));
-            return res.status(200).json(response);
-        });
         this.logout = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const { refreshToken } = req.cookies;
                 const token = yield userService.logout(refreshToken);
                 res.clearCookie('refreshToken');
                 return res.status(200).json(token);
-            }
-            catch (e) {
-                next(e);
-            }
-        });
-        this.reconnect = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { id } = req.body;
-                const userData = yield userService.reconnect(id);
-                res.cookie('refreshToken', userData.refreshToken, {
-                    maxAge: 30 * 24 * 60 * 60 * 1000,
-                    httpOnly: true,
-                });
-                return res.status(200).json(userData);
             }
             catch (e) {
                 next(e);

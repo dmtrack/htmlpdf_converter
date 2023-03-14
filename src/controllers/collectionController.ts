@@ -34,17 +34,11 @@ export const getTopAmountOfItemsCollection: RequestHandler = async (
 };
 
 export const getUserCollections: RequestHandler = async (req, res, next) => {
-    try {
-        const id = req.params.userId;
-        const collections: ICollection[] =
-            await CollectionService.getUserCollections(id);
-        return res.status(200).json({
-            message: `collections fetched successfully`,
-            data: collections,
-        });
-    } catch (err: any) {
-        return err.message;
-    }
+    const id = req.params.userId;
+    const response = await CollectionService.getUserCollections(id);
+    response
+        .mapRight((collection: ICollection) => res.status(200).json(collection))
+        .mapLeft((e: any) => res.status(401).json(e));
 };
 
 export const getOneCollection: RequestHandler = async (req, res, next) => {
