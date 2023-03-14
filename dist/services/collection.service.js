@@ -9,18 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const either_1 = require("@sweet-monads/either");
 const sequelize_typescript_1 = require("sequelize-typescript");
 const collection_1 = require("../db/models/collection");
 const item_1 = require("../db/models/item");
-const ApiError = require('../errors/api-error');
-const DataBaseError = require('../errors/db-error');
+const DBError_1 = require("../errors/DBError");
+const EntityError_1 = require("../errors/EntityError");
 class CollectionService {
     create(collection) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { name, description, userId, image, themeId } = collection;
                 const created = new Date().getTime();
-                const newCollection = yield collection_1.Collection.create({
+                const response = yield collection_1.Collection.create({
                     name: name,
                     description: description,
                     image: image,
@@ -28,10 +29,10 @@ class CollectionService {
                     userId: userId,
                     created: created,
                 });
-                return newCollection;
+                return (0, either_1.right)(response);
             }
             catch (e) {
-                return e.message;
+                return (0, either_1.left)(new DBError_1.DBError('create collection error', e));
             }
         });
     }
@@ -39,10 +40,10 @@ class CollectionService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const collections = yield collection_1.Collection.findAll();
-                return collections;
+                return (0, either_1.right)(collections);
             }
             catch (e) {
-                return e.message;
+                return (0, either_1.left)(new DBError_1.DBError('get collections error', e));
             }
         });
     }
@@ -72,10 +73,10 @@ class CollectionService {
                     group: ['Item.collectionId', 'collection.id'],
                     order: sequelize_typescript_1.Sequelize.literal('count DESC'),
                 });
-                return items;
+                return (0, either_1.right)(items);
             }
             catch (e) {
-                throw DataBaseError.badRequest(e.message, e);
+                return (0, either_1.left)(new DBError_1.DBError('getTopAmountOfItemsCollection error', e));
             }
         });
     }
@@ -84,37 +85,43 @@ class CollectionService {
             const collection = yield collection_1.Collection.findOne({
                 where: { id: id },
             });
-            if (collection) {
-                return collection;
+            if (!collection) {
+                return (0, either_1.left)(new EntityError_1.EntityError(`there is no collection with id:${id} in data-base`));
             }
-            else
-                return `collection with id:${id} is not found`;
+            return (0, either_1.right)(collection);
         });
     }
-    getUserCollections(userId) {
+    getUserCollections(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const collections = yield collection_1.Collection.findAll({
-                where: { userId: userId },
+                where: { userId: id },
             });
-            if (collections) {
-                return collections;
+            console.log(collections);
+            if (collections.length === 0) {
+                return (0, either_1.left)(new EntityError_1.EntityError(`there is no user with id:${id} in data-base`));
             }
-            else
-                return `collections for user with id:${userId} are not found`;
+            return (0, either_1.right)(collections);
         });
     }
     deleteOneCollection(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield collection_1.Collection.destroy({
+            const collection = yield collection_1.Collection.destroy({
                 where: { id: id },
             });
+            if (!collection) {
+                return (0, either_1.left)(new EntityError_1.EntityError(`there is no collection with id:${id} in data-base`));
+            }
+            return (0, either_1.right)(`collection with id:${id} was deleted`);
         });
     }
     updateCollection(newData) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield collection_1.Collection.update(Object.assign({}, newData), { where: { id: newData.id } });
+            const collection = yield collection_1.Collection.update(Object.assign({}, newData), { where: { id: newData.id } });
+            if (collection[0] === 0) {
+                return (0, either_1.left)(new EntityError_1.EntityError(`there is no collection with id:${newData.id} in data-base`));
+            }
             const updatedCollection = yield collection_1.Collection.findByPk(newData.id);
-            return updatedCollection;
+            return (0, either_1.right)(updatedCollection);
         });
     }
 }
