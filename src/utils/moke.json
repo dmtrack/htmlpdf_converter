@@ -1,0 +1,105 @@
+{
+    "users": {
+        "user1": {
+            "body": {
+                "name": "dmtrack",
+                "email": "dmtrack3.dev@gmail.com",
+                "password": "12345",
+                "blocked": false,
+                "accessId": 1,
+                "tokenId": 123,
+                "avatarUrl": "www.image.com/1",
+                "isActivated": false,
+                "activationLink": "www.activation.ru"
+            }
+        },
+        "user2": {
+            "body": {
+                "name": "ivan",
+                "email": "ivan@gmail.com",
+                "password": "12345",
+                "blocked": false,
+                "accessId": 1,
+                "tokenId": 12345,
+                "avatarUrl": "www.image.com/2",
+                "isActivated": false,
+                "activationLink": "www.activation.ru"
+            }
+        }
+    },
+
+    "collections": {
+        "collection1": {
+            "name": "Nissan",
+            "description": "all cool rare old Nissan-cars",
+            "image": "https://a.d-cd.net/RAAAAgEECeA-960.jpg",
+            "userId": 1,
+            "themeId": 1
+        },
+        "collection2": {
+            "name": "Wine",
+            "description": "all tasty rare wines",
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFt7qnc2zMo5Mpx0FWRoXMvbkxKPX8F3eE7g&usqp=CAU",
+            "userId": 1,
+            "themeId": 2
+        }
+    },
+    "items": {
+        "item1": {
+            "name": "GTR32",
+            "description": "the most light sport nissan car",
+            "image": "https://s.auto.drom.ru/i24208/pubs/4/52062/2582524.jpeg",
+            "userId": 1,
+            "collectionId": 1
+        },
+        "item2": {
+            "name": "GTR34",
+            "description": "the most famous model",
+            "image": "https://avatars.mds.yandex.net/get-vertis-journal/4220003/this-nissan-skyline-r34-gt-r-v-spec-ii-driven-by-paul-walker-just-sold-for-577000_1.jpg_1661166315142/orig",
+            "userId": 1,
+            "collectionId": 1
+        },
+        "item3": {
+            "name": "GTR35",
+            "description": "the most powerfull sport nissan car",
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKqItdRc34gYNPrAxJChEcqdetUiLFEWu8oA&usqp=CAU",
+            "userId": 1,
+            "collectionId": 1
+        },
+        "item4": {
+            "name": "fairlady z30",
+            "description": "first Nissan's sportscar",
+            "image": "https://xn--80aafe9bhdrpm.com/wp-content/uploads/2016/09/maxresdefault-1-1.jpg",
+            "userId": 1,
+            "collectionId": 1
+        },
+        "item5": {
+            "name": "180sx",
+            "description": "first Nissan's sportscar",
+            "image": "https://www.torque-gt.co.uk/media/magefan_blog/RocketBunny180SXLead.jpg",
+            "userId": 1,
+            "collectionId": 1
+        },
+        "item6": {
+            "name": "silvia s15",
+            "description": "drift queen",
+            "image": "https://lowdaily.ru/wp-content/uploads/2016/08/%D0%BE%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8-%D0%BD%D0%B0-lowdaily1-1024x423.jpg",
+            "userId": 1,
+            "collectionId": 1
+        },
+        "item7": {
+            "name": "SilverOak",
+            "description": "France",
+            "image": "https://silveroak.com/wp-content/uploads/2023/01/18Napa-18Alex-sq-600x400.jpg",
+            "userId": 1,
+            "collectionId": 2
+        },
+        "item8": {
+            "name": "La Crema",
+            "description": "Oregon",
+            "image": "https://www.lacrema.com/wp-content/uploads/2017/12/DIY-wine-bottle-floating-candle-holders-701x1030.jpg",
+            "userId": 1,
+            "collectionId": 2
+        }
+    }
+}
