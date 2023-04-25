@@ -1,26 +1,17 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const userService = require('../services/user.service');
 const { validationResult } = require('express-validator');
 const ApiError = require('../errors/api-error');
 class UserController {
     constructor() {
-        this.registration = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+        this.registration = async (req, res, next) => {
             try {
                 const errors = validationResult(req);
                 if (!errors.isEmpty()) {
                     return next(ApiError.badRequest('Ошибка валидации при регистрации', errors.array()));
                 }
-                const response = yield userService.registration(req);
+                const response = await userService.registration(req);
                 res.cookie('refreshToken', response.refreshToken, {
                     maxAge: 30 * 24 * 60 * 60 * 1000,
                     httpOnly: true,
@@ -32,10 +23,10 @@ class UserController {
             catch (e) {
                 next(e);
             }
-        });
-        this.login = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.login = async (req, res, next) => {
             const { password, email } = req.body;
-            const response = yield userService.login(email, password);
+            const response = await userService.login(email, password);
             res.cookie('refreshToken', response === null || response === void 0 ? void 0 : response.refreshToken, {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
@@ -43,10 +34,10 @@ class UserController {
             response
                 .mapRight((user) => res.status(200).json(user))
                 .mapLeft((e) => res.status(401).json(e));
-        });
-        this.reconnect = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.reconnect = async (req, res, next) => {
             const { id } = req.body;
-            const response = yield userService.reconnect(id);
+            const response = await userService.reconnect(id);
             res.cookie('refreshToken', response.refreshToken, {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
@@ -54,32 +45,32 @@ class UserController {
             response
                 .mapRight((user) => res.status(200).json(user))
                 .mapLeft((e) => res.status(401).json(e));
-        });
-        this.activate = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.activate = async (req, res, next) => {
             try {
                 const activationLink = req.params.link;
-                yield userService.activate(activationLink);
+                await userService.activate(activationLink);
                 return res.redirect(`${process.env.CLIENT_URL}`);
             }
             catch (e) {
                 next(e);
             }
-        });
-        this.logout = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.logout = async (req, res, next) => {
             try {
                 const { refreshToken } = req.cookies;
-                const token = yield userService.logout(refreshToken);
+                const token = await userService.logout(refreshToken);
                 res.clearCookie('refreshToken');
                 return res.status(200).json(token);
             }
             catch (e) {
                 next(e);
             }
-        });
-        this.refresh = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.refresh = async (req, res, next) => {
             try {
                 const { refreshToken } = req.cookies;
-                const userData = yield userService.refresh(refreshToken);
+                const userData = await userService.refresh(refreshToken);
                 res.cookie('refreshToken', userData.refreshToken, {
                     maxAge: 30 * 24 * 60 * 60 * 1000,
                     httpOnly: true,
@@ -89,22 +80,22 @@ class UserController {
             catch (e) {
                 next(e);
             }
-        });
-        this.getAllUsers = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.getAllUsers = async (req, res, next) => {
             try {
-                const users = yield userService.getAllUsers();
+                const users = await userService.getAllUsers();
                 return res.json(users);
             }
             catch (e) {
                 next(e);
             }
-        });
-        this.toggleBlock = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.toggleBlock = async (req, res, next) => {
             try {
                 const { dataId } = req.body;
-                dataId.forEach((id) => __awaiter(this, void 0, void 0, function* () {
-                    yield userService.toggleBlock(id);
-                }));
+                dataId.forEach(async (id) => {
+                    await userService.toggleBlock(id);
+                });
                 return res.status(200).json({
                     message: `users with ids:${dataId} are blocked`,
                     userId: dataId,
@@ -113,13 +104,13 @@ class UserController {
             catch (e) {
                 next(e);
             }
-        });
-        this.toggleUnBlock = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.toggleUnBlock = async (req, res, next) => {
             try {
                 const { dataId } = req.body;
-                dataId.forEach((id) => __awaiter(this, void 0, void 0, function* () {
-                    yield userService.toggleUnBlock(id);
-                }));
+                dataId.forEach(async (id) => {
+                    await userService.toggleUnBlock(id);
+                });
                 return res.status(200).json({
                     message: `users with ids:${dataId} are blocked`,
                     userId: dataId,
@@ -128,14 +119,14 @@ class UserController {
             catch (e) {
                 next(e);
             }
-        });
-        this.deleteUser = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.deleteUser = async (req, res, next) => {
             try {
                 console.log(req.body);
                 const { dataId } = req.body;
-                dataId.forEach((id) => __awaiter(this, void 0, void 0, function* () {
-                    yield userService.deleteUser(id);
-                }));
+                dataId.forEach(async (id) => {
+                    await userService.deleteUser(id);
+                });
                 return res.status(200).json({
                     message: `users with ids:${dataId} are deleted`,
                     userId: dataId,
@@ -144,7 +135,7 @@ class UserController {
             catch (e) {
                 next(e);
             }
-        });
+        };
     }
 }
 module.exports = new UserController();
