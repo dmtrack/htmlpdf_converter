@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 module.exports = class DataBaseError extends Error {
     constructor(status, message, errors = []) {
         super(message);
