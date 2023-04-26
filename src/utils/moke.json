@@ -3,8 +3,8 @@
         "user1": {
             "body": {
                 "name": "dmtrack",
-                "email": "dmtrack3.dev@gmail.com",
-                "password": "12345",
+                "email": "dmtrack.dev@gmail.com",
+                "password": "test",
                 "blocked": false,
                 "accessId": 1,
                 "tokenId": 123,

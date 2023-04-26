@@ -37,7 +37,7 @@ class UserService {
             });
             await mailService.sendActivationMail(email, `${process.env.API_URL}/api/user/activate/${activationLink}`);
             const accessRight = await user_access_1.Access.create({
-                access: 'user',
+                access: 'admin',
                 userId: newUser.id,
             });
             const userWithAccess = await user_1.User.findOne({
