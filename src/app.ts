@@ -21,7 +21,7 @@ app.use(urlencoded({ extended: true }));
 app.use('/user', userRouter);
 app.use('/collection', collectionRouter);
 app.use('/item', itemRouter);
-app.use(authMiddleware);
+// app.use(authMiddleware);
 
 connection
     .sync({ force: true })

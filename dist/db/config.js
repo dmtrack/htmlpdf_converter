@@ -47,9 +47,9 @@ const connection = new sequelize_typescript_1.Sequelize({
         theme_1.Theme,
         like_1.Like,
     ],
-    dialectOptions: {
-        ssl: true,
-        native: true,
-    },
+    // dialectOptions: {
+    //     ssl: true,
+    //     native: true,
+    // },
 });
 exports.default = connection;

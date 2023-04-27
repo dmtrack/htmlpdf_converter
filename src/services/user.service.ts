@@ -7,6 +7,7 @@ import { IToken } from '../db/models/interface/token.interface';
 import { Access } from '../db/models/user_access';
 import { tokenCreator } from '../utils/token.utils';
 import { DBError } from '../errors/DBError';
+import { EntityError } from '../errors/EntityError';
 
 const bcrypt = require('bcrypt');
 const uuid = require('uuid');
@@ -154,29 +155,51 @@ class UserService {
         return users;
     }
 
+    async getOneUser(id: number) {
+        const user = await User.findOne({
+            where: { id: id },
+        });
+
+        console.log(user);
+        const userDto = new UserDto(user);
+
+        if (!user) {
+            return left(
+                new EntityError(`there is no user with id:${id} in data-base`)
+            );
+        }
+        return right(userDto);
+    }
+
     async toggleBlock(id: number) {
         const user = await User.findByPk(id);
         if (!user) {
-            throw ApiError.badRequest('пользователь с данным id найден');
+            return left(
+                new EntityError(`there is no user with id:${id} in data-base`)
+            );
         }
         await User.update({ blocked: true }, { where: { id } });
         const updatedUser: User | null = await User.findByPk(id);
-        return updatedUser;
+        return right(updatedUser);
     }
     async toggleUnBlock(id: number) {
         const user = await User.findByPk(id);
         if (!user) {
-            throw ApiError.badRequest('пользователь с данным id найден');
+            return left(
+                new EntityError(`there is no user with id:${id} in data-base`)
+            );
         }
         await User.update({ blocked: false }, { where: { id } });
         const updatedUser: User | null = await User.findByPk(id);
-        return updatedUser;
+        return right(updatedUser);
     }
 
     async deleteUser(id: number) {
         const user = await User.findByPk(id);
         if (!user) {
-            throw ApiError.badRequest('пользователь с данным id найден');
+            return left(
+                new EntityError(`there is no user with id:${id} in data-base`)
+            );
         }
         await User.destroy({ where: { id } });
     }

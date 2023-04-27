@@ -1,6 +1,7 @@
 import { IUserDto } from '../db/models/interface/user.interface';
 
 module.exports = class UserDto {
+    name;
     id;
     email;
     blocked;
@@ -12,6 +13,7 @@ module.exports = class UserDto {
     created;
 
     constructor(model: IUserDto) {
+        this.name = model.name;
         this.id = model.id;
         this.email = model.email;
         this.blocked = model.blocked;

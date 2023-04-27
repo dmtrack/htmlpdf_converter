@@ -6,6 +6,7 @@ const user_1 = require("../db/models/user");
 const user_access_1 = require("../db/models/user_access");
 const token_utils_1 = require("../utils/token.utils");
 const DBError_1 = require("../errors/DBError");
+const EntityError_1 = require("../errors/EntityError");
 const bcrypt = require('bcrypt');
 const uuid = require('uuid');
 const mailService = require('../services/mail.service');
@@ -117,6 +118,16 @@ class UserService {
     async getAllUsers() {
         const users = await user_1.User.findAll({ include: user_access_1.Access });
         return users;
+    }
+    async getOneUser(id) {
+        const user = await user_1.User.findOne({
+            where: { id: id },
+        });
+        const userDto = new UserDto(user);
+        if (!user) {
+            return (0, either_1.left)(new EntityError_1.EntityError(`there is no user with id:${id} in data-base`));
+        }
+        return (0, either_1.right)(userDto);
     }
     async toggleBlock(id) {
         const user = await user_1.User.findByPk(id);
