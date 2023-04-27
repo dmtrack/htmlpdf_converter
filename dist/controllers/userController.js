@@ -90,6 +90,24 @@ class UserController {
                 next(e);
             }
         };
+        this.getUser = async (req, res, next) => {
+            const id = req.params.id;
+            const response = await userService.getOneUser(id);
+            response
+                .mapRight((user) => {
+                res.status(200).json(user);
+            })
+                .mapLeft((e) => res.status(401).json(e));
+        };
+        // getOneItem: RequestHandler = async (req, res, next) => {
+        //     const id = req.params.id;
+        //     const response = await ItemService.getOneItem(id);
+        //     response
+        //         .mapRight((item: IItem) => {
+        //             res.status(200).json(item);
+        //         })
+        //         .mapLeft((e: any) => res.status(401).json(e));
+        // };
         this.toggleBlock = async (req, res, next) => {
             try {
                 const { dataId } = req.body;

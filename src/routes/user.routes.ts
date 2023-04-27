@@ -18,11 +18,10 @@ userRouter.post('/logout', userController.logout);
 userRouter.post('/reconnect', userController.reconnect);
 userRouter.get('/refresh', userController.refresh);
 userRouter.get('/getusers', userController.getAllUsers);
+userRouter.get('/getuser/:id([0-9]+)', userController.getUser);
 userRouter.put('/block', userController.toggleBlock);
 userRouter.put('/unblock', userController.toggleUnBlock);
 userRouter.delete('/delete', userController.deleteUser);
-
-// userRouter.get('/getuser/:id([0-9]+)', userController.getUser);
 
 export default userRouter;
 

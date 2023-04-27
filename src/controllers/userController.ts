@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { IUserResponse } from './../interfaces/controllers/userController.interface';
 import { RequestHandler } from 'express';
+import { IUser } from '../interfaces/models/user';
 const userService = require('../services/user.service');
 const { validationResult } = require('express-validator');
 const ApiError = require('../errors/api-error');
@@ -98,10 +99,20 @@ class UserController {
         }
     };
 
+    getUser: RequestHandler = async (req, res, next) => {
+        const id = req.params.id;
+        const response = await userService.getOneUser(id);
+        response
+            .mapRight((user: IUser) => {
+                res.status(200).json(user);
+            })
+            .mapLeft((e: any) => res.status(401).json(e));
+    };
+
     toggleBlock: RequestHandler = async (req, res, next) => {
         try {
-            const { dataId } = req.body;
-            dataId.forEach(async (id: string) => {
+            const dataId = req.body;
+            dataId.forEach(async (id: number) => {
                 await userService.toggleBlock(id);
             });
             return res.status(200).json({
@@ -109,30 +120,29 @@ class UserController {
                 userId: dataId,
             });
         } catch (e) {
-            next(e);
+            return res.json(e);
         }
     };
 
     toggleUnBlock: RequestHandler = async (req, res, next) => {
+        const dataId = req.body;
         try {
-            const { dataId } = req.body;
-            dataId.forEach(async (id: string) => {
+            dataId.forEach(async (id: number) => {
                 await userService.toggleUnBlock(id);
             });
             return res.status(200).json({
-                message: `users with ids:${dataId} are blocked`,
+                message: `users with ids:${dataId} are unblocked`,
                 userId: dataId,
             });
         } catch (e) {
-            next(e);
+            return res.json(e);
         }
     };
 
     deleteUser: RequestHandler = async (req, res, next) => {
-        try {
-            console.log(req.body);
+        const dataId = req.body;
 
-            const { dataId } = req.body;
+        try {
             dataId.forEach(async (id: string) => {
                 await userService.deleteUser(id);
             });
