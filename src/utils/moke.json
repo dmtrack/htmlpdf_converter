@@ -42,6 +42,27 @@
             "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFt7qnc2zMo5Mpx0FWRoXMvbkxKPX8F3eE7g&usqp=CAU",
             "userId": 1,
             "themeId": 2
+        },
+        "collection3": {
+            "name": "MyCoins",
+            "description": "all my coins",
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFt7qnc2zMo5Mpx0FWRoXMvbkxKPX8F3eE7g&usqp=CAU",
+            "userId": 2,
+            "themeId": 3
+        },
+        "collection4": {
+            "name": "MyBestMovies",
+            "description": "all rare coins",
+            "image": "https://cdn.gobankingrates.com/wp-content/uploads/2023/04/assorted-coins_iStock-96371133-scaled-e1681251562424.jpg",
+            "userId": 2,
+            "themeId": 4
+        },
+        "collection5": {
+            "name": "MyFavouriteMusic",
+            "description": "all music i love",
+            "image": "https://cs8.pikabu.ru/post_img/big/2016/02/07/2/145480950521624183.jpg",
+            "userId": 1,
+            "themeId": 5
         }
     },
     "items": {
