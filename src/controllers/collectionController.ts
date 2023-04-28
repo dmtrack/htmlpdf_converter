@@ -37,7 +37,9 @@ export const getUserCollections: RequestHandler = async (req, res, next) => {
     const id = req.params.userId;
     const response = await CollectionService.getUserCollections(id);
     response
-        .mapRight((collection: ICollection) => res.status(200).json(collection))
+        .mapRight((collections: ICollection[]) =>
+            res.status(200).json(collections)
+        )
         .mapLeft((e: any) => res.status(401).json(e));
 };
 
