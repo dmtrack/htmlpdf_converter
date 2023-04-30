@@ -91,7 +91,9 @@ class CollectionService {
 
         if (collections.length === 0) {
             return left(
-                new EntityError(`there is no user with id:${id} in data-base`)
+                new EntityError(
+                    `there is no collections for user with id:${id} in data-base`
+                )
             );
         }
         return right(collections);
