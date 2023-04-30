@@ -78,10 +78,13 @@ class CollectionService {
         const collections = await collection_1.Collection.findAll({
             where: { userId: id },
         });
-        console.log(collections);
-        if (collections.length === 0) {
-            return (0, either_1.left)(new EntityError_1.EntityError(`there is no user with id:${id} in data-base`));
-        }
+        // if (collections.length === 0) {
+        //     return left(
+        //         new EntityError(
+        //             `there is no collections for user with id:${id} in data-base`
+        //         )
+        //     );
+        // }
         return (0, either_1.right)(collections);
     }
     async deleteOneCollection(id) {

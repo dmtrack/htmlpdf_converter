@@ -87,13 +87,14 @@ class CollectionService {
         const collections: ICollection[] | null = await Collection.findAll({
             where: { userId: id },
         });
-        console.log(collections);
 
-        if (collections.length === 0) {
-            return left(
-                new EntityError(`there is no user with id:${id} in data-base`)
-            );
-        }
+        // if (collections.length === 0) {
+        //     return left(
+        //         new EntityError(
+        //             `there is no collections for user with id:${id} in data-base`
+        //         )
+        //     );
+        // }
         return right(collections);
     }
 

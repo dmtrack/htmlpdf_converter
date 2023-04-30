@@ -25,7 +25,7 @@ exports.app.use((0, body_parser_1.urlencoded)({ extended: true }));
 exports.app.use('/user', user_routes_1.default);
 exports.app.use('/collection', collection_routes_1.default);
 exports.app.use('/item', item_routes_1.default);
-exports.app.use(authMiddleware);
+// app.use(authMiddleware);
 config_1.default
     .sync({ force: true })
     .then(async () => {

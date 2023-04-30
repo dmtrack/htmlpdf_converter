@@ -16,10 +16,14 @@ const ApiError = require('../errors/api-error');
 class UserService {
     async registration(user) {
         try {
-            const { name, email, password, avatarUrl } = user.body;
+            let { name, email, password, avatarUrl } = user.body;
             const candidate = await user_1.User.findOne({
                 where: { email: email },
             });
+            if (!avatarUrl) {
+                avatarUrl =
+                    'https://github.com/dmtrack/collections_client/blob/dev-client/public/defaultAvatarFinal.png?raw=true';
+            }
             if (candidate) {
                 (0, either_1.left)(new AuthError_1.AuthError('User with this email is already registered'));
             }
@@ -123,6 +127,7 @@ class UserService {
         const user = await user_1.User.findOne({
             where: { id: id },
         });
+        console.log(user);
         const userDto = new UserDto(user);
         if (!user) {
             return (0, either_1.left)(new EntityError_1.EntityError(`there is no user with id:${id} in data-base`));
@@ -132,25 +137,25 @@ class UserService {
     async toggleBlock(id) {
         const user = await user_1.User.findByPk(id);
         if (!user) {
-            throw ApiError.badRequest('пользователь с данным id найден');
+            return (0, either_1.left)(new EntityError_1.EntityError(`there is no user with id:${id} in data-base`));
         }
         await user_1.User.update({ blocked: true }, { where: { id } });
         const updatedUser = await user_1.User.findByPk(id);
-        return updatedUser;
+        return (0, either_1.right)(updatedUser);
     }
     async toggleUnBlock(id) {
         const user = await user_1.User.findByPk(id);
         if (!user) {
-            throw ApiError.badRequest('пользователь с данным id найден');
+            return (0, either_1.left)(new EntityError_1.EntityError(`there is no user with id:${id} in data-base`));
         }
         await user_1.User.update({ blocked: false }, { where: { id } });
         const updatedUser = await user_1.User.findByPk(id);
-        return updatedUser;
+        return (0, either_1.right)(updatedUser);
     }
     async deleteUser(id) {
         const user = await user_1.User.findByPk(id);
         if (!user) {
-            throw ApiError.badRequest('пользователь с данным id найден');
+            return (0, either_1.left)(new EntityError_1.EntityError(`there is no user with id:${id} in data-base`));
         }
         await user_1.User.destroy({ where: { id } });
     }
