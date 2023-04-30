@@ -8,7 +8,7 @@
                 "blocked": false,
                 "accessId": 1,
                 "tokenId": 123,
-                "avatarUrl": "www.image.com/1",
+                "avatarUrl": "https://github.com/dmtrack/collections_client/blob/dev-client/public/myAvatar.png?raw=true",
                 "isActivated": false,
                 "activationLink": "www.activation.ru"
             }
@@ -21,7 +21,7 @@
                 "blocked": false,
                 "accessId": 1,
                 "tokenId": 12345,
-                "avatarUrl": "www.image.com/2",
+                "avatarUrl": "https://github.com/dmtrack/collections_client/blob/dev-client/public/ivanAvatar.png?raw=true",
                 "isActivated": false,
                 "activationLink": "www.activation.ru"
             }
@@ -41,6 +41,27 @@
             "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFt7qnc2zMo5Mpx0FWRoXMvbkxKPX8F3eE7g&usqp=CAU",
             "userId": 1,
             "themeId": 2
+        },
+        "collection3": {
+            "name": "MyMovies",
+            "description": "all watched movies",
+            "image": "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-760w,f_auto,q_auto:best/streams/2012/June/120627/434085-111228-dark-knight-rises.jpg",
+            "userId": 2,
+            "themeId": 3
+        },
+        "collection4": {
+            "name": "MyCoins",
+            "description": "all rare coins",
+            "image": "https://cdn.gobankingrates.com/wp-content/uploads/2023/04/assorted-coins_iStock-96371133-scaled-e1681251562424.jpg",
+            "userId": 2,
+            "themeId": 4
+        },
+        "collection5": {
+            "name": "MyFavouriteMusic",
+            "description": "all music i love",
+            "image": "https://cs8.pikabu.ru/post_img/big/2016/02/07/2/145480950521624183.jpg",
+            "userId": 1,
+            "themeId": 5
         }
     },
     "items": {

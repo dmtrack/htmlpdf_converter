@@ -20,10 +20,29 @@ const themeCheck = async () => {
     if (!vineTheme) {
         await theme_1.Theme.create({ name: 'rareVine' });
     }
+    const coinTheme = await theme_1.Theme.findOne({ where: { name: 'rareCoins' } });
+    if (!coinTheme) {
+        await theme_1.Theme.create({ name: 'rareCoins' });
+    }
+    const moviesTheme = await theme_1.Theme.findOne({
+        where: { name: 'Movies' },
+    });
+    if (!moviesTheme) {
+        await theme_1.Theme.create({ name: 'Movies' });
+    }
+    const recordsTheme = await theme_1.Theme.findOne({
+        where: { name: 'Records' },
+    });
+    if (!recordsTheme) {
+        await theme_1.Theme.create({ name: 'Records' });
+    }
     await UserService.registration(moke_json_1.default.users.user1);
     await UserService.registration(moke_json_1.default.users.user2);
     await CollectionService.create(moke_json_1.default.collections.collection1);
     await CollectionService.create(moke_json_1.default.collections.collection2);
+    await CollectionService.create(moke_json_1.default.collections.collection3);
+    await CollectionService.create(moke_json_1.default.collections.collection4);
+    await CollectionService.create(moke_json_1.default.collections.collection5);
     await ItemService.create(moke_json_1.default.items.item1);
     await ItemService.create(moke_json_1.default.items.item2);
     await ItemService.create(moke_json_1.default.items.item3);

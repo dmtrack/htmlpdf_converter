@@ -99,18 +99,9 @@ class UserController {
             })
                 .mapLeft((e) => res.status(401).json(e));
         };
-        // getOneItem: RequestHandler = async (req, res, next) => {
-        //     const id = req.params.id;
-        //     const response = await ItemService.getOneItem(id);
-        //     response
-        //         .mapRight((item: IItem) => {
-        //             res.status(200).json(item);
-        //         })
-        //         .mapLeft((e: any) => res.status(401).json(e));
-        // };
         this.toggleBlock = async (req, res, next) => {
             try {
-                const { dataId } = req.body;
+                const dataId = req.body;
                 dataId.forEach(async (id) => {
                     await userService.toggleBlock(id);
                 });
@@ -120,28 +111,27 @@ class UserController {
                 });
             }
             catch (e) {
-                next(e);
+                return res.json(e);
             }
         };
         this.toggleUnBlock = async (req, res, next) => {
+            const dataId = req.body;
             try {
-                const { dataId } = req.body;
                 dataId.forEach(async (id) => {
                     await userService.toggleUnBlock(id);
                 });
                 return res.status(200).json({
-                    message: `users with ids:${dataId} are blocked`,
+                    message: `users with ids:${dataId} are unblocked`,
                     userId: dataId,
                 });
             }
             catch (e) {
-                next(e);
+                return res.json(e);
             }
         };
         this.deleteUser = async (req, res, next) => {
+            const dataId = req.body;
             try {
-                console.log(req.body);
-                const { dataId } = req.body;
                 dataId.forEach(async (id) => {
                     await userService.deleteUser(id);
                 });

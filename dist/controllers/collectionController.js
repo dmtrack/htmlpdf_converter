@@ -27,7 +27,7 @@ const getUserCollections = async (req, res, next) => {
     const id = req.params.userId;
     const response = await CollectionService.getUserCollections(id);
     response
-        .mapRight((collection) => res.status(200).json(collection))
+        .mapRight((collections) => res.status(200).json(collections))
         .mapLeft((e) => res.status(401).json(e));
 };
 exports.getUserCollections = getUserCollections;
