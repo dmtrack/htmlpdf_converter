@@ -19,10 +19,15 @@ const ApiError = require('../errors/api-error');
 class UserService {
     async registration(user: IUserRegistration) {
         try {
-            const { name, email, password, avatarUrl } = user.body;
+            let { name, email, password, avatarUrl } = user.body;
             const candidate: User | null = await User.findOne({
                 where: { email: email },
             });
+            if (!avatarUrl) {
+                avatarUrl =
+                    'https://github.com/dmtrack/collections_client/blob/dev-client/public/defaultAvatarFinal.png?raw=true';
+            }
+
             if (candidate) {
                 left(
                     new AuthError('User with this email is already registered')
