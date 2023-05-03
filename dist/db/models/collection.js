@@ -65,6 +65,12 @@ __decorate([
 ], Collection.prototype, "image", void 0);
 __decorate([
     sequelize.Column({
+        type: sequelize.DataType.STRING(255),
+        allowNull: false,
+    })
+], Collection.prototype, "themeName", void 0);
+__decorate([
+    sequelize.Column({
         type: sequelize.DataType.BIGINT,
         allowNull: true,
     })
