@@ -9,20 +9,27 @@ import {
     ICollectionCreate,
     ICollectionUpdate,
 } from '../interfaces/models/collection';
+import { Theme } from '../db/models/theme';
+import { ITheme } from '../interfaces/models/theme';
 
 class CollectionService {
     async create(collection: ICollectionCreate) {
         try {
             const { name, description, userId, image, themeId } = collection;
             const created = new Date().getTime();
+            const themeName = await Theme.findOne({
+                where: { id: themeId },
+            });
             const response = await Collection.create({
                 name: name,
                 description: description,
                 image: image,
                 themeId: themeId,
+                themeName: themeName?.name,
                 userId: userId,
                 created: created,
             });
+
             return right(response);
         } catch (e: any) {
             return left(new DBError('create collection error', e));

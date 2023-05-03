@@ -35,6 +35,11 @@ export class Collection extends sequelize.Model {
         allowNull: false,
     })
     image!: string;
+    @sequelize.Column({
+        type: sequelize.DataType.STRING(255),
+        allowNull: false,
+    })
+    themeName!: string;
 
     @sequelize.Column({
         type: sequelize.DataType.BIGINT,
