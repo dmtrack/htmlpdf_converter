@@ -47,14 +47,14 @@
             "description": "all watched movies",
             "image": "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-760w,f_auto,q_auto:best/streams/2012/June/120627/434085-111228-dark-knight-rises.jpg",
             "userId": 2,
-            "themeId": 3
+            "themeId": 4
         },
         "collection4": {
             "name": "MyCoins",
             "description": "all rare coins",
             "image": "https://cdn.gobankingrates.com/wp-content/uploads/2023/04/assorted-coins_iStock-96371133-scaled-e1681251562424.jpg",
             "userId": 2,
-            "themeId": 4
+            "themeId": 3
         },
         "collection5": {
             "name": "MyFavouriteMusic",

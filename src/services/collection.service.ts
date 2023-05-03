@@ -44,6 +44,14 @@ class CollectionService {
             return left(new DBError('get collections error', e));
         }
     }
+    async getThemes() {
+        try {
+            const themes = await Theme.findAll();
+            return right(themes);
+        } catch (e: any) {
+            return left(new DBError('get themes error', e));
+        }
+    }
 
     async getTopAmountOfItemsCollection() {
         try {

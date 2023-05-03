@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateCollection = exports.deleteOneCollection = exports.getOneCollection = exports.getUserCollections = exports.getTopAmountOfItemsCollection = exports.getCollections = exports.createCollection = void 0;
+exports.updateCollection = exports.deleteOneCollection = exports.getOneCollection = exports.getUserCollections = exports.getTopAmountOfItemsCollection = exports.getThemes = exports.getCollections = exports.createCollection = void 0;
 const CollectionService = require('../services/collection.service');
 const createCollection = async (req, res, next) => {
     const response = await CollectionService.create(req.body);
@@ -16,6 +16,13 @@ const getCollections = async (req, res, next) => {
         .mapLeft((e) => res.status(401).json(e));
 };
 exports.getCollections = getCollections;
+const getThemes = async (req, res, next) => {
+    const response = await CollectionService.getThemes();
+    response
+        .mapRight((themes) => res.status(200).json(themes))
+        .mapLeft((e) => res.status(401).json(e));
+};
+exports.getThemes = getThemes;
 const getTopAmountOfItemsCollection = async (req, res, next) => {
     const response = await CollectionService.getTopAmountOfItemsCollection();
     response

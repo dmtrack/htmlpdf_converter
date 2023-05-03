@@ -6,16 +6,21 @@ const collection_1 = require("../db/models/collection");
 const item_1 = require("../db/models/item");
 const DBError_1 = require("../errors/DBError");
 const EntityError_1 = require("../errors/EntityError");
+const theme_1 = require("../db/models/theme");
 class CollectionService {
     async create(collection) {
         try {
             const { name, description, userId, image, themeId } = collection;
             const created = new Date().getTime();
+            const themeName = await theme_1.Theme.findOne({
+                where: { id: themeId },
+            });
             const response = await collection_1.Collection.create({
                 name: name,
                 description: description,
                 image: image,
                 themeId: themeId,
+                themeName: themeName === null || themeName === void 0 ? void 0 : themeName.name,
                 userId: userId,
                 created: created,
             });
@@ -32,6 +37,15 @@ class CollectionService {
         }
         catch (e) {
             return (0, either_1.left)(new DBError_1.DBError('get collections error', e));
+        }
+    }
+    async getThemes() {
+        try {
+            const themes = await theme_1.Theme.findAll();
+            return (0, either_1.right)(themes);
+        }
+        catch (e) {
+            return (0, either_1.left)(new DBError_1.DBError('get themes error', e));
         }
     }
     async getTopAmountOfItemsCollection() {

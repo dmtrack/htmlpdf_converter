@@ -4,6 +4,7 @@ import {
     ICollection,
     ICollectionUpdate,
 } from '../interfaces/models/collection';
+import { ITheme } from '../interfaces/models/theme';
 const CollectionService = require('../services/collection.service');
 
 export const createCollection: RequestHandler = async (req, res, next) => {
@@ -17,6 +18,12 @@ export const getCollections: RequestHandler = async (req, res, next) => {
     const response = await CollectionService.getAllCollections();
     response
         .mapRight((collection: ICollection) => res.status(200).json(collection))
+        .mapLeft((e: any) => res.status(401).json(e));
+};
+export const getThemes: RequestHandler = async (req, res, next) => {
+    const response = await CollectionService.getThemes();
+    response
+        .mapRight((themes: ITheme[]) => res.status(200).json(themes))
         .mapLeft((e: any) => res.status(401).json(e));
 };
 
