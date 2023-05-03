@@ -21,6 +21,7 @@ export interface ICollection {
     description: string;
     userId: number;
     themeId: number;
+    themeName: string;
     image?: string;
     created: number;
 }
