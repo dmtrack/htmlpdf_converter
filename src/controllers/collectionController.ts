@@ -1,5 +1,4 @@
 import { RequestHandler } from 'express';
-import { Collection } from '../db/models/collection';
 import {
     ICollection,
     ICollectionUpdate,

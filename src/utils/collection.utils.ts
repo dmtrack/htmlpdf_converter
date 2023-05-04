@@ -20,23 +20,77 @@ export const themeCheck = async () => {
         await Theme.create({ name: 'rareVine' });
     }
 
-    const coinTheme = await Theme.findOne({ where: { name: 'rareCoins' } });
+    const coinTheme = await Theme.findOne({ where: { name: 'coins' } });
     if (!coinTheme) {
-        await Theme.create({ name: 'rareCoins' });
+        await Theme.create({ name: 'coins' });
     }
 
     const moviesTheme = await Theme.findOne({
-        where: { name: 'Movies' },
+        where: { name: 'movies' },
     });
     if (!moviesTheme) {
-        await Theme.create({ name: 'Movies' });
+        await Theme.create({ name: 'movies' });
     }
 
     const recordsTheme = await Theme.findOne({
-        where: { name: 'Records' },
+        where: { name: 'vynil' },
     });
     if (!recordsTheme) {
-        await Theme.create({ name: 'Records' });
+        await Theme.create({ name: 'vynil' });
+    }
+    const otherTheme = await Theme.findOne({
+        where: { name: 'other' },
+    });
+    if (!otherTheme) {
+        await Theme.create({ name: 'other' });
+    }
+
+    const comicsTheme = await Theme.findOne({
+        where: { name: 'comics' },
+    });
+    if (!comicsTheme) {
+        await Theme.create({ name: 'comics' });
+    }
+
+    const flowersTheme = await Theme.findOne({
+        where: { name: 'flowers' },
+    });
+    if (!flowersTheme) {
+        await Theme.create({ name: 'flowers' });
+    }
+    const antiquesTheme = await Theme.findOne({
+        where: { name: 'antiques' },
+    });
+    if (!antiquesTheme) {
+        await Theme.create({ name: 'antiques' });
+    }
+
+    const stampsTheme = await Theme.findOne({
+        where: { name: 'stamps' },
+    });
+    if (!stampsTheme) {
+        await Theme.create({ name: 'stamps' });
+    }
+
+    const autographsTheme = await Theme.findOne({
+        where: { name: 'autographs' },
+    });
+    if (!autographsTheme) {
+        await Theme.create({ name: 'autographs' });
+    }
+
+    const mapsTheme = await Theme.findOne({
+        where: { name: 'maps' },
+    });
+    if (!mapsTheme) {
+        await Theme.create({ name: 'maps' });
+    }
+
+    const eventsTheme = await Theme.findOne({
+        where: { name: 'events' },
+    });
+    if (!eventsTheme) {
+        await Theme.create({ name: 'events' });
     }
 
     await UserService.registration(mokeData.users.user1);
