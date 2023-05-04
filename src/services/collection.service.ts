@@ -10,7 +10,6 @@ import {
     ICollectionUpdate,
 } from '../interfaces/models/collection';
 import { Theme } from '../db/models/theme';
-import { ITheme } from '../interfaces/models/theme';
 
 class CollectionService {
     async create(collection: ICollectionCreate) {
