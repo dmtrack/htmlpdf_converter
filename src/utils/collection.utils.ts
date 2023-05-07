@@ -1,11 +1,9 @@
-import { log } from 'console';
 import { Theme } from '../db/models/theme';
 const CollectionService = require('../services/collection.service');
 const UserService = require('../services/user.service');
 const ItemService = require('../services/item.service');
 
 import mokeData from '../utils/moke.json';
-import { Item } from '../db/models/item';
 
 export const themeCheck = async () => {
     const carTheme = await Theme.findOne({
@@ -16,6 +14,7 @@ export const themeCheck = async () => {
     }
 
     const vineTheme = await Theme.findOne({ where: { name: 'rareVine' } });
+
     if (!vineTheme) {
         await Theme.create({ name: 'rareVine' });
     }

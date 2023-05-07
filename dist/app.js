@@ -12,6 +12,7 @@ const collection_routes_1 = __importDefault(require("./routes/collection.routes"
 const item_routes_1 = __importDefault(require("./routes/item.routes"));
 const body_parser_1 = require("body-parser");
 const collection_utils_1 = require("./utils/collection.utils");
+const field_utils_1 = require("./utils/field.utils");
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 exports.app = (0, express_1.default)();
@@ -30,6 +31,7 @@ config_1.default
     .sync({ force: true })
     .then(async () => {
     (0, collection_utils_1.themeCheck)();
+    (0, field_utils_1.fieldCheck)();
     console.log('Database synced successfully');
 })
     .catch((err) => {

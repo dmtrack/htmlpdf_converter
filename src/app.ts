@@ -7,6 +7,7 @@ import itemRouter from './routes/item.routes';
 import { urlencoded, json } from 'body-parser';
 import { Theme } from './db/models/theme';
 import { themeCheck } from './utils/collection.utils';
+import { fieldCheck } from './utils/field.utils';
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 export const app = express();
@@ -27,6 +28,7 @@ connection
     .sync({ force: true })
     .then(async () => {
         themeCheck();
+        fieldCheck();
         console.log('Database synced successfully');
     })
     .catch((err) => {
