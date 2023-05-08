@@ -34,6 +34,7 @@ export const getItems: RequestHandler = async (req, res, next) => {
 };
 export const getTopRatedItems: RequestHandler = async (req, res, next) => {
     const response = await ItemService.getTopRatedItems();
+
     response
         .mapRight((item: IItem) => {
             res.status(200).json(item);
