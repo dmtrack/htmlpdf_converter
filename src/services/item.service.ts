@@ -46,10 +46,21 @@ class ItemService {
                 include: [
                     {
                         model: Item,
-                        attributes: ['name', 'image', 'created'],
+                        attributes: [
+                            'name',
+                            'image',
+                            'created',
+                            'collectionId',
+                        ],
                     },
                 ],
-                group: ['Like.itemId', 'name', 'image', 'created'],
+                group: [
+                    'Like.itemId',
+                    'name',
+                    'image',
+                    'created',
+                    'collectionId',
+                ],
                 order: Sequelize.literal('count DESC'),
                 raw: true,
                 nest: true,
@@ -106,7 +117,6 @@ class ItemService {
             { ...newData },
             { where: { id: newData.id } }
         );
-        console.log('itemUpd', item);
 
         if (item[0] === 0) {
             return left(
