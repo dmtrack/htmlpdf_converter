@@ -14,7 +14,7 @@ userRouter.post(
 
 userRouter.get('/activate/:link', userController.activate);
 userRouter.post('/login', userController.login);
-userRouter.post('/logout', userController.logout);
+userRouter.get('/logout', userController.logout);
 userRouter.post('/reconnect', userController.reconnect);
 userRouter.get('/refresh', userController.refresh);
 userRouter.get('/getusers', userController.getAllUsers);
