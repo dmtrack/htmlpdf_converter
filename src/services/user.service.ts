@@ -137,7 +137,7 @@ class UserService {
 
     async logout(refreshToken: string) {
         const response = await tokenService.removeToken(refreshToken);
-        return response;
+        return right(response)
     }
 
     async refresh(refreshToken: string) {

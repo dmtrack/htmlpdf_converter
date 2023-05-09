@@ -19,9 +19,10 @@ class UserController {
                 );
             }
             const response = await userService.registration(req);
-            res.cookie('refreshToken', response.refreshToken, {
+            res.cookie('refreshToken', response.value.refreshToken, {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
+                sameSite: true,
             });
             response
                 .mapRight((user: IUserResponse) => res.status(200).json(user))
@@ -34,9 +35,10 @@ class UserController {
     login: RequestHandler = async (req: Request, res: Response, next) => {
         const { password, email } = req.body;
         const response = await userService.login(email, password);
-        res.cookie('refreshToken', response?.refreshToken, {
+        res.cookie('refreshToken', response.value.refreshToken, {
             maxAge: 30 * 24 * 60 * 60 * 1000,
             httpOnly: true,
+            sameSite: true,
         });
         response
             .mapRight((user: IUserResponse) => res.status(200).json(user))
@@ -46,9 +48,11 @@ class UserController {
     reconnect: RequestHandler = async (req, res, next) => {
         const { id } = req.body;
         const response = await userService.reconnect(id);
-        res.cookie('refreshToken', response.refreshToken, {
+
+        res.cookie('refreshToken', response.value.refreshToken, {
             maxAge: 30 * 24 * 60 * 60 * 1000,
             httpOnly: true,
+            sameSite: true,
         });
 
         response
@@ -69,7 +73,9 @@ class UserController {
         try {
             const { refreshToken } = req.cookies;
             const token = await userService.logout(refreshToken);
-            res.clearCookie('refreshToken');
+            res.clearCookie('refreshToken', {
+                sameSite: true,
+            });
             return res.status(200).json(token);
         } catch (e) {
             next(e);

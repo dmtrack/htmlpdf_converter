@@ -14,15 +14,17 @@ import { Theme } from '../db/models/theme';
 class CollectionService {
     async create(collection: ICollectionCreate) {
         try {
-            const { name, description, userId, image, themeId } = collection;
+            let { name, description, userId, image, themeId } = collection;
+
             const created = new Date().getTime();
             const themeName = await Theme.findOne({
                 where: { id: themeId },
             });
+
             const response = await Collection.create({
                 name: name,
                 description: description,
-                image: image,
+                image: image ? image : themeName?.defaultImg,
                 themeId: themeId,
                 themeName: themeName?.name,
                 userId: userId,
@@ -37,7 +39,11 @@ class CollectionService {
 
     async getAllCollections() {
         try {
+            console.log('request collectio');
+
             const collections = await Collection.findAll();
+            console.log('collections', collections);
+
             return right(collections);
         } catch (e: any) {
             return left(new DBError('get collections error', e));

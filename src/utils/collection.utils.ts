@@ -9,87 +9,150 @@ export const themeCheck = async () => {
     const carTheme = await Theme.findOne({
         where: { name: 'rareJDMCars' },
     });
-    if (!carTheme) {
-        await Theme.create({ name: 'rareJDMCars' });
+
+    if (!!!carTheme) {
+        console.log('NP CAR');
+        await Theme.create({
+            name: 'rareJDMCars',
+            defaultImg:
+                'https://github.com/dmtrack/collections_client/blob/dev-client/public/rareJDMTheme.png?raw=true',
+        });
     }
 
     const vineTheme = await Theme.findOne({ where: { name: 'rareVine' } });
 
     if (!vineTheme) {
-        await Theme.create({ name: 'rareVine' });
+        await Theme.create({
+            name: 'rareVine',
+            defaultImg:
+                'https://github.com/dmtrack/collections_client/blob/dev-client/public/rareVineTheme2.png?raw=true',
+        });
     }
 
-    const coinTheme = await Theme.findOne({ where: { name: 'coins' } });
+    const coinTheme = await Theme.findOne({
+        where: {
+            name: 'coins',
+        },
+    });
     if (!coinTheme) {
-        await Theme.create({ name: 'coins' });
+        await Theme.create({
+            name: 'coins',
+            defaultImg:
+                'https://github.com/dmtrack/collections_client/blob/dev-client/public/coinsTheme.jpg?raw=true',
+        });
     }
 
     const moviesTheme = await Theme.findOne({
-        where: { name: 'movies' },
+        where: {
+            name: 'movies',
+        },
     });
     if (!moviesTheme) {
-        await Theme.create({ name: 'movies' });
+        await Theme.create({
+            name: 'movies',
+            defaultImg:
+                'https://github.com/dmtrack/collections_client/blob/dev-client/public/movieTheme.png?raw=true',
+        });
     }
 
     const recordsTheme = await Theme.findOne({
         where: { name: 'vynil' },
     });
     if (!recordsTheme) {
-        await Theme.create({ name: 'vynil' });
-    }
-    const otherTheme = await Theme.findOne({
-        where: { name: 'other' },
-    });
-    if (!otherTheme) {
-        await Theme.create({ name: 'other' });
+        await Theme.create({
+            name: 'vynil',
+            defaultImg:
+                'https://github.com/dmtrack/collections_client/blob/dev-client/public/vynilTheme.jpg?raw=true',
+        });
     }
 
     const comicsTheme = await Theme.findOne({
         where: { name: 'comics' },
     });
     if (!comicsTheme) {
-        await Theme.create({ name: 'comics' });
+        await Theme.create({
+            name: 'comics',
+            defaultImg:
+                'https://github.com/dmtrack/collections_client/blob/dev-client/public/comicsTheme.png?raw=true',
+        });
     }
 
     const flowersTheme = await Theme.findOne({
         where: { name: 'flowers' },
     });
     if (!flowersTheme) {
-        await Theme.create({ name: 'flowers' });
+        await Theme.create({
+            name: 'flowers',
+            defaultImg:
+                'https://github.com/dmtrack/collections_client/blob/dev-client/public/flowersTheme.png?raw=true',
+        });
     }
     const antiquesTheme = await Theme.findOne({
         where: { name: 'antiques' },
     });
     if (!antiquesTheme) {
-        await Theme.create({ name: 'antiques' });
+        await Theme.create({
+            name: 'antiques',
+            defaultImg:
+                'https://github.com/dmtrack/collections_client/blob/dev-client/public/antiquesTheme.jpg?raw=true',
+        });
     }
 
     const stampsTheme = await Theme.findOne({
         where: { name: 'stamps' },
     });
     if (!stampsTheme) {
-        await Theme.create({ name: 'stamps' });
+        await Theme.create({
+            name: 'stamps',
+            defaultImg:
+                'https://github.com/dmtrack/collections_client/blob/dev-client/public/stampsTheme.png?raw=true',
+        });
     }
 
     const autographsTheme = await Theme.findOne({
         where: { name: 'autographs' },
     });
     if (!autographsTheme) {
-        await Theme.create({ name: 'autographs' });
+        await Theme.create({
+            name: 'autographs',
+            defaultImg:
+                'https://github.com/dmtrack/collections_client/blob/dev-client/public/autographsTheme.png?raw=true',
+        });
     }
 
     const mapsTheme = await Theme.findOne({
-        where: { name: 'maps' },
+        where: {
+            name: 'maps',
+        },
     });
     if (!mapsTheme) {
-        await Theme.create({ name: 'maps' });
+        await Theme.create({
+            name: 'maps',
+            defaultImg:
+                'https://github.com/dmtrack/collections_client/blob/dev-client/public/mapsTheme.png?raw=true',
+        });
     }
 
     const eventsTheme = await Theme.findOne({
         where: { name: 'events' },
     });
     if (!eventsTheme) {
-        await Theme.create({ name: 'events' });
+        await Theme.create({
+            name: 'events',
+            defaultImg:
+                'https://github.com/dmtrack/collections_client/blob/dev-client/public/eventsTheme.png?raw=true',
+        });
+    }
+
+    const otherTheme = await Theme.findOne({
+        where: { name: 'other' },
+    });
+    if (!otherTheme) {
+        await Theme.create({
+            name: 'other',
+            defaultImg:
+                'https://github.com/dmtrack/collections_client/blob/dev-client/public/otherTheme.png?raw=true',
+        });
     }
 
     await UserService.registration(mokeData.users.user1);

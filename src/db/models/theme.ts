@@ -20,6 +20,11 @@ export class Theme extends sequelize.Model {
         allowNull: false,
     })
     name!: string;
+    @sequelize.Column({
+        type: sequelize.DataType.STRING(255),
+        allowNull: false,
+    })
+    defaultImg!: string;
 
     @sequelize.HasMany(() => Collection)
     collections!: Collection[];

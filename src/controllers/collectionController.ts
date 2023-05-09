@@ -8,6 +8,8 @@ const CollectionService = require('../services/collection.service');
 
 export const createCollection: RequestHandler = async (req, res, next) => {
     const response = await CollectionService.create(req.body);
+    console.log(response);
+
     response
         .mapRight((collection: ICollection) => res.status(200).json(collection))
         .mapLeft((e: any) => res.status(401).json(e));
