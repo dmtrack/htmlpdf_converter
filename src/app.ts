@@ -25,7 +25,7 @@ app.use('/item', itemRouter);
 // app.use(authMiddleware);
 
 connection
-    .sync({ alter: true })
+    .sync({ force: true })
     .then(async () => {
         // themeCheck();
         // fieldCheck();

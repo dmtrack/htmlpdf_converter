@@ -33,6 +33,7 @@ class UserService {
                     new AuthError('User with this email is already registered')
                 );
             }
+
             const hashpass = await bcrypt.hash(password, 3);
             const activationLink = uuid.v4();
             const created = new Date().getTime();
@@ -52,7 +53,7 @@ class UserService {
             );
 
             const accessRight = await Access.create({
-                access: 'admin',
+                access: 'user',
                 userId: newUser.id,
             });
 
@@ -103,12 +104,20 @@ class UserService {
             where: { email },
             include: { model: Access },
         });
+        if (user?.blocked) {
+            console.log('hello block');
+
+            return left(
+                new AuthError('Sorry, but are blocked. Ask administrator why')
+            );
+        }
 
         if (!user) {
             return left(
                 new AuthError('User with such email is not registered')
             );
         }
+
         const isPassEquals = await bcrypt.compare(password, user.password);
         if (!isPassEquals) {
             return left(new AuthError('wrong password'));
@@ -137,7 +146,7 @@ class UserService {
 
     async logout(refreshToken: string) {
         const response = await tokenService.removeToken(refreshToken);
-        return right(response)
+        return right(response);
     }
 
     async refresh(refreshToken: string) {
