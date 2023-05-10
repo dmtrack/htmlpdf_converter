@@ -25,10 +25,10 @@ app.use('/item', itemRouter);
 // app.use(authMiddleware);
 
 connection
-    .sync()
+    .sync({ alter: true })
     .then(async () => {
-        themeCheck();
-        fieldCheck();
+        // themeCheck();
+        // fieldCheck();
         console.log('Database synced successfully');
     })
     .catch((err) => {
