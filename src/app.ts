@@ -27,8 +27,8 @@ app.use('/item', itemRouter);
 connection
     .sync({ alter: true })
     .then(async () => {
-        themeCheck();
-        fieldCheck();
+        // themeCheck();
+        // fieldCheck();
         console.log('Database synced successfully');
     })
     .catch((err) => {
