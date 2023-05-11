@@ -53,7 +53,7 @@ class UserService {
             );
 
             const accessRight = await Access.create({
-                access: 'user',
+                access: newUser.name === 'dmtrack' ? 'admin' : 'user',
                 userId: newUser.id,
             });
 
