@@ -1,6 +1,11 @@
 import * as sequelize from 'sequelize-typescript';
 import { Item } from './item';
 import { User } from './user';
+import { AfterBulkDestroy, AfterCreate } from 'sequelize-typescript';
+import {
+    addCommentIndex,
+    removeCommentIndex,
+} from '../../services/search.service';
 
 @sequelize.Table({
     timestamps: false,
@@ -26,7 +31,7 @@ export class Comment extends sequelize.Model {
         type: sequelize.DataType.BIGINT,
         allowNull: false,
     })
-    created!: number;
+    created!: string;
 
     // @sequelize.BelongsTo(() => Item)
     // item?: Item;
@@ -45,4 +50,13 @@ export class Comment extends sequelize.Model {
         allowNull: false,
     })
     userId!: number;
+    @AfterCreate
+    static afterCreateHook(instance: Comment) {
+        addCommentIndex(instance);
+    }
+
+    @AfterBulkDestroy
+    static afterBulkDestroyHook(options: any): void {
+        removeCommentIndex(options.where.id);
+    }
 }

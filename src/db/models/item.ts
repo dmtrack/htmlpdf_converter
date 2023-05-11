@@ -8,6 +8,16 @@ import { TagItem } from './tag_item';
 import { BooleanField } from './field_types/booleanfield';
 import { NumField } from './field_types/numfield';
 import { Like } from './like';
+import {
+    AfterBulkDestroy,
+    AfterBulkUpdate,
+    AfterCreate,
+} from 'sequelize-typescript';
+import {
+    addItemIndex,
+    removeItemIndex,
+    uploadItemIndex,
+} from '../../services/search.service';
 
 @sequelize.Table({
     timestamps: false,
@@ -72,4 +82,19 @@ export class Item extends sequelize.Model {
 
     @sequelize.HasMany(() => DateField, { onDelete: 'cascade' })
     datefields!: DateField[];
+
+    @AfterCreate
+    static afterCreateHook(instance: Item) {
+        addItemIndex(instance);
+    }
+
+    @AfterBulkUpdate
+    static afterBulkUpdateHook(options: any) {
+        uploadItemIndex(options.attributes);
+    }
+
+    @AfterBulkDestroy
+    static afterBulkDestroyHook(options: any): void {
+        removeItemIndex(options.where.id);
+    }
 }

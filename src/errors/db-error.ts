@@ -1,4 +1,4 @@
-module.exports = class DataBaseError extends Error {
+export class DataBaseError extends Error {
     status;
     errors;
     constructor(status: number, message: string, errors: [] = []) {
@@ -10,4 +10,4 @@ module.exports = class DataBaseError extends Error {
     static badRequest(message: string, errors: []) {
         return new DataBaseError(400, message, errors);
     }
-};
+}
