@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import userRouter from './routes/user.routes';
 import collectionRouter from './routes/collection.routes';
 import itemRouter from './routes/item.routes';
+import { devRouter } from './routes/dev.routes';
 import { urlencoded, json } from 'body-parser';
 import { Theme } from './db/models/theme';
 import { themeCheck } from './utils/collection.utils';
@@ -22,13 +23,14 @@ app.use(urlencoded({ extended: true }));
 app.use('/user', userRouter);
 app.use('/collection', collectionRouter);
 app.use('/item', itemRouter);
+app.use('/dev', devRouter);
 // app.use(authMiddleware);
 
 connection
-    .sync({ alter: true })
+    .sync({ force: true })
     .then(async () => {
-        // themeCheck();
-        // fieldCheck();
+        themeCheck();
+        fieldCheck();
         console.log('Database synced successfully');
     })
     .catch((err) => {

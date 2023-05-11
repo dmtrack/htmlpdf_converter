@@ -3,7 +3,12 @@ import * as sequelize from 'sequelize-typescript';
 import { Item } from './item';
 import { User } from './user';
 import { Theme } from './theme';
-import { BelongsTo } from 'sequelize-typescript';
+import { AfterCreate, BelongsTo } from 'sequelize-typescript';
+import {
+    addCollectionIndex,
+    removeCollectionIndex,
+    uploadCollectionIndex,
+} from '../../services/search.service';
 
 @sequelize.Table({
     timestamps: false,
@@ -70,4 +75,19 @@ export class Collection extends sequelize.Model {
 
     @sequelize.HasMany(() => Field)
     fields!: Field[];
+
+    @AfterCreate
+    static afterCreateHook(instance: Collection) {
+        addCollectionIndex(instance);
+    }
+
+    @sequelize.AfterBulkUpdate
+    static afterBulkUpdateHook(options: any) {
+        uploadCollectionIndex(options.attributes);
+    }
+
+    @sequelize.AfterBulkDestroy
+    static afterBulkDestroyHook(options: any): void {
+        removeCollectionIndex(options.where.id);
+    }
 }
