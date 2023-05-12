@@ -33,7 +33,15 @@ exports.Comment = void 0;
 const sequelize = __importStar(require("sequelize-typescript"));
 const item_1 = require("./item");
 const user_1 = require("./user");
+const sequelize_typescript_1 = require("sequelize-typescript");
+const search_service_1 = require("../../services/search.service");
 let Comment = class Comment extends sequelize.Model {
+    static afterCreateHook(instance) {
+        (0, search_service_1.addCommentIndex)(instance);
+    }
+    static afterBulkDestroyHook(options) {
+        (0, search_service_1.removeCommentIndex)(options.where.id);
+    }
 };
 __decorate([
     sequelize.Column({
@@ -70,6 +78,12 @@ __decorate([
         allowNull: false,
     })
 ], Comment.prototype, "userId", void 0);
+__decorate([
+    sequelize_typescript_1.AfterCreate
+], Comment, "afterCreateHook", null);
+__decorate([
+    sequelize_typescript_1.AfterBulkDestroy
+], Comment, "afterBulkDestroyHook", null);
 Comment = __decorate([
     sequelize.Table({
         timestamps: false,

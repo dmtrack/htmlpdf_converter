@@ -63,6 +63,12 @@ __decorate([
         allowNull: false,
     })
 ], Like.prototype, "userId", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.STRING(255),
+        allowNull: false,
+    })
+], Like.prototype, "name", void 0);
 Like = __decorate([
     sequelize.Table({
         timestamps: false,
