@@ -39,11 +39,7 @@ class CollectionService {
 
     async getAllCollections() {
         try {
-            console.log('request collectio');
-
             const collections = await Collection.findAll();
-            console.log('collections', collections);
-
             return right(collections);
         } catch (e: any) {
             return left(new DBError('get collections error', e));
