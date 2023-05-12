@@ -18,6 +18,7 @@ import {
     removeItemIndex,
     uploadItemIndex,
 } from '../../services/search.service';
+import { User } from './user';
 
 @sequelize.Table({
     timestamps: false,
@@ -58,6 +59,12 @@ export class Item extends sequelize.Model {
         allowNull: true,
     })
     image!: string;
+
+    @sequelize.Column({
+        type: sequelize.DataType.BIGINT,
+        allowNull: false,
+    })
+    userId!: number;
 
     @sequelize.HasMany(() => Comment, { onDelete: 'cascade' })
     comments!: Comment[];
