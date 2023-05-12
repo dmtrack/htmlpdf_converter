@@ -10,7 +10,7 @@ const theme_1 = require("../db/models/theme");
 class CollectionService {
     async create(collection) {
         try {
-            const { name, description, userId, image, themeId } = collection;
+            let { name, description, userId, image, themeId } = collection;
             const created = new Date().getTime();
             const themeName = await theme_1.Theme.findOne({
                 where: { id: themeId },
@@ -18,7 +18,7 @@ class CollectionService {
             const response = await collection_1.Collection.create({
                 name: name,
                 description: description,
-                image: image,
+                image: image ? image : themeName === null || themeName === void 0 ? void 0 : themeName.defaultImg,
                 themeId: themeId,
                 themeName: themeName === null || themeName === void 0 ? void 0 : themeName.name,
                 userId: userId,
@@ -32,7 +32,9 @@ class CollectionService {
     }
     async getAllCollections() {
         try {
+            console.log('request collectio');
             const collections = await collection_1.Collection.findAll();
+            console.log('collections', collections);
             return (0, either_1.right)(collections);
         }
         catch (e) {

@@ -13,6 +13,7 @@ const CommentService = require('./comment.service');
 
 export const addItemIndex = (item: Item) => {
     const index = new SearchClient().index('items');
+
     index
         .addDocuments([filterItem(item)])
         .catch((e: any) => console.log('CREATE_INDEX_ERROR', e));
@@ -58,11 +59,9 @@ export const removeItemCommentsIndexes = async (itemId: number) => {
 
 export const addCollectionIndex = (collection: Collection) => {
     const index = new SearchClient().index('collections');
-    console.log(collection);
 
     index
         .addDocuments([collection.dataValues])
-        .then(() => console.log('create collection'))
         .catch((e: any) => console.log('CREATE_INDEX_ERROR', e));
 };
 

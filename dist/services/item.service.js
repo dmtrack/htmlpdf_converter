@@ -47,10 +47,21 @@ class ItemService {
                 include: [
                     {
                         model: item_1.Item,
-                        attributes: ['name', 'image', 'created'],
+                        attributes: [
+                            'name',
+                            'image',
+                            'created',
+                            'collectionId',
+                        ],
                     },
                 ],
-                group: ['Like.itemId', 'name', 'image', 'created'],
+                group: [
+                    'Like.itemId',
+                    'name',
+                    'image',
+                    'created',
+                    'collectionId',
+                ],
                 order: sequelize_1.Sequelize.literal('count DESC'),
                 raw: true,
                 nest: true,
@@ -91,7 +102,6 @@ class ItemService {
     }
     async updateItem(newData) {
         const item = await item_1.Item.update(Object.assign({}, newData), { where: { id: newData.id } });
-        console.log('itemUpd', item);
         if (item[0] === 0) {
             return (0, either_1.left)(new EntityError_1.EntityError(`there is no item with id:${newData.id} in data-base`));
         }

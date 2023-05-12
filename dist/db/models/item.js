@@ -40,7 +40,18 @@ const tag_item_1 = require("./tag_item");
 const booleanfield_1 = require("./field_types/booleanfield");
 const numfield_1 = require("./field_types/numfield");
 const like_1 = require("./like");
+const sequelize_typescript_1 = require("sequelize-typescript");
+const search_service_1 = require("../../services/search.service");
 let Item = class Item extends sequelize.Model {
+    static afterCreateHook(instance) {
+        (0, search_service_1.addItemIndex)(instance);
+    }
+    static afterBulkUpdateHook(options) {
+        (0, search_service_1.uploadItemIndex)(options.attributes);
+    }
+    static afterBulkDestroyHook(options) {
+        (0, search_service_1.removeItemIndex)(options.where.id);
+    }
 };
 __decorate([
     sequelize.Column({
@@ -102,6 +113,15 @@ __decorate([
 __decorate([
     sequelize.HasMany(() => datefield_1.DateField, { onDelete: 'cascade' })
 ], Item.prototype, "datefields", void 0);
+__decorate([
+    sequelize_typescript_1.AfterCreate
+], Item, "afterCreateHook", null);
+__decorate([
+    sequelize_typescript_1.AfterBulkUpdate
+], Item, "afterBulkUpdateHook", null);
+__decorate([
+    sequelize_typescript_1.AfterBulkDestroy
+], Item, "afterBulkDestroyHook", null);
 Item = __decorate([
     sequelize.Table({
         timestamps: false,

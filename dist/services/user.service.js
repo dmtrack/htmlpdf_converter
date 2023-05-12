@@ -42,7 +42,7 @@ class UserService {
             });
             await mailService.sendActivationMail(email, `${process.env.API_URL}/api/user/activate/${activationLink}`);
             const accessRight = await user_access_1.Access.create({
-                access: 'admin',
+                access: newUser.name === 'dmtrack' ? 'admin' : 'user',
                 userId: newUser.id,
             });
             const userWithAccess = await user_1.User.findOne({
@@ -78,6 +78,10 @@ class UserService {
             where: { email },
             include: { model: user_access_1.Access },
         });
+        if (user === null || user === void 0 ? void 0 : user.blocked) {
+            console.log('hello block');
+            return (0, either_1.left)(new AuthError_1.AuthError('Sorry, but are blocked. Ask administrator why'));
+        }
         if (!user) {
             return (0, either_1.left)(new AuthError_1.AuthError('User with such email is not registered'));
         }
@@ -103,7 +107,7 @@ class UserService {
     }
     async logout(refreshToken) {
         const response = await tokenService.removeToken(refreshToken);
-        return response;
+        return (0, either_1.right)(response);
     }
     async refresh(refreshToken) {
         if (!refreshToken) {

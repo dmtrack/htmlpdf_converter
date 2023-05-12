@@ -8,7 +8,7 @@ const { body } = require('express-validator');
 userRouter.post('/registration', body('email').isEmail(), body('password').isLength({ min: 3, max: 32 }), userController.registration);
 userRouter.get('/activate/:link', userController.activate);
 userRouter.post('/login', userController.login);
-userRouter.post('/logout', userController.logout);
+userRouter.get('/logout', userController.logout);
 userRouter.post('/reconnect', userController.reconnect);
 userRouter.get('/refresh', userController.refresh);
 userRouter.get('/getusers', userController.getAllUsers);
