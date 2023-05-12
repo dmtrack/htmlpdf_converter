@@ -60,6 +60,12 @@ export class Item extends sequelize.Model {
     })
     image!: string;
 
+    @sequelize.Column({
+        type: sequelize.DataType.BIGINT,
+        allowNull: false,
+    })
+    userId!: number;
+
     @sequelize.HasMany(() => Comment, { onDelete: 'cascade' })
     comments!: Comment[];
 

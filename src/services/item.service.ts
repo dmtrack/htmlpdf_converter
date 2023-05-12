@@ -65,8 +65,11 @@ class ItemService {
                 raw: true,
                 nest: true,
             });
+
             return right(likes);
         } catch (e: any) {
+            console.log(e);
+
             return left(new DBError('getTopRatedItems error', e));
         }
     }
@@ -87,7 +90,6 @@ class ItemService {
         const items = await Item.findAll({
             where: { collectionId: id },
         });
-        console.log('items', items);
 
         if (items.length === 0) {
             return left(

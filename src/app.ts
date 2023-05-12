@@ -7,7 +7,7 @@ import itemRouter from './routes/item.routes';
 import { devRouter } from './routes/dev.routes';
 import { urlencoded, json } from 'body-parser';
 import { Theme } from './db/models/theme';
-import { themeCheck } from './utils/collection.utils';
+import { deleteAllIndexes, themeCheck } from './utils/collection.utils';
 import { fieldCheck } from './utils/field.utils';
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -30,7 +30,9 @@ connection
     .sync({ force: true })
     .then(async () => {
         themeCheck();
-        fieldCheck();
+
+        deleteAllIndexes('collections');
+        deleteAllIndexes('items');
         console.log('Database synced successfully');
     })
     .catch((err) => {
