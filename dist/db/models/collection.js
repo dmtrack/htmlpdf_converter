@@ -35,7 +35,18 @@ const sequelize = __importStar(require("sequelize-typescript"));
 const item_1 = require("./item");
 const user_1 = require("./user");
 const theme_1 = require("./theme");
+const sequelize_typescript_1 = require("sequelize-typescript");
+const search_service_1 = require("../../services/search.service");
 let Collection = class Collection extends sequelize.Model {
+    static afterCreateHook(instance) {
+        (0, search_service_1.addCollectionIndex)(instance);
+    }
+    static afterBulkUpdateHook(options) {
+        (0, search_service_1.uploadCollectionIndex)(options.attributes);
+    }
+    static afterBulkDestroyHook(options) {
+        (0, search_service_1.removeCollectionIndex)(options.where.id);
+    }
 };
 __decorate([
     sequelize.Column({
@@ -101,6 +112,15 @@ __decorate([
 __decorate([
     sequelize.HasMany(() => field_1.Field)
 ], Collection.prototype, "fields", void 0);
+__decorate([
+    sequelize_typescript_1.AfterCreate
+], Collection, "afterCreateHook", null);
+__decorate([
+    sequelize.AfterBulkUpdate
+], Collection, "afterBulkUpdateHook", null);
+__decorate([
+    sequelize.AfterBulkDestroy
+], Collection, "afterBulkDestroyHook", null);
 Collection = __decorate([
     sequelize.Table({
         timestamps: false,

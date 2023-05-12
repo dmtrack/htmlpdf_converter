@@ -30,11 +30,11 @@ connection
     .sync({ force: true })
     .then(async () => {
         themeCheck();
+
         deleteAllIndexes('collections');
         deleteAllIndexes('items');
-
         console.log('Database synced successfully');
     })
     .catch((err) => {
-        console.log('Error', err);
+        console.log('Err', err);
     });

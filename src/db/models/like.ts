@@ -33,4 +33,10 @@ export class Like extends sequelize.Model {
         allowNull: false,
     })
     userId!: number;
+
+    @sequelize.Column({
+        type: sequelize.DataType.STRING(255),
+        allowNull: false,
+    })
+    name!: string;
 }

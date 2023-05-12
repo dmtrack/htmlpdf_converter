@@ -4,6 +4,7 @@ exports.updateCollection = exports.deleteOneCollection = exports.getOneCollectio
 const CollectionService = require('../services/collection.service');
 const createCollection = async (req, res, next) => {
     const response = await CollectionService.create(req.body);
+    console.log(response);
     response
         .mapRight((collection) => res.status(200).json(collection))
         .mapLeft((e) => res.status(401).json(e));
