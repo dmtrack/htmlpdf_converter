@@ -20,7 +20,7 @@ class UserController {
             }
             const response = await userService.registration(req);
             res.cookie('refreshToken', response.value.refreshToken, {
-                maxAge: 30 * 24 * 60 * 60 * 1000,
+                // maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
                 sameSite: 'lax',
                 domain: process.env.CORS_ORIGIN,
@@ -37,7 +37,7 @@ class UserController {
         const { password, email } = req.body;
         const response = await userService.login(email, password);
         res.cookie('refreshToken', response.value.refreshToken, {
-            maxAge: 30 * 24 * 60 * 60 * 1000,
+            // maxAge: 30 * 24 * 60 * 60 * 1000,
             httpOnly: true,
             sameSite: 'lax',
             domain: process.env.CORS_ORIGIN,
@@ -52,7 +52,7 @@ class UserController {
         const response = await userService.reconnect(id);
 
         res.cookie('refreshToken', response.value.refreshToken, {
-            maxAge: 30 * 24 * 60 * 60 * 1000,
+            // maxAge: 30 * 24 * 60 * 60 * 1000,
             httpOnly: true,
             sameSite: 'lax',
             domain: process.env.CORS_ORIGIN,
@@ -77,7 +77,7 @@ class UserController {
             const { refreshToken } = req.cookies;
             const token = await userService.logout(refreshToken);
             res.clearCookie('refreshToken', {
-                maxAge: 30 * 24 * 60 * 60 * 1000,
+                // maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
                 sameSite: 'lax',
                 domain: process.env.CORS_ORIGIN,
@@ -93,7 +93,7 @@ class UserController {
             const { refreshToken } = req.cookies;
             const userData = await userService.refresh(refreshToken);
             res.cookie('refreshToken', userData.refreshToken, {
-                maxAge: 30 * 24 * 60 * 60 * 1000,
+                // maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
                 sameSite: 'lax',
                 domain: process.env.CORS_ORIGIN,
