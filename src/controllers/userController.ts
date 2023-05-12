@@ -19,12 +19,12 @@ class UserController {
                 );
             }
             const response = await userService.registration(req);
-            res.cookie('refreshToken', response.value.refreshToken, {
-                maxAge: 30 * 24 * 60 * 60 * 1000,
-                httpOnly: true,
-                sameSite: 'none',
-                domain: process.env.CORS_ORIGIN,
-            });
+            // res.cookie('refreshToken', response.value.refreshToken, {
+            //     maxAge: 30 * 24 * 60 * 60 * 1000,
+            //     httpOnly: true,
+            //     sameSite: 'none',
+            //     domain: process.env.CORS_ORIGIN,
+            // });
             response
                 .mapRight((user: IUserResponse) => res.status(200).json(user))
                 .mapLeft((e: any) => res.status(401).json(e.message));
@@ -36,12 +36,12 @@ class UserController {
     login: RequestHandler = async (req: Request, res: Response, next) => {
         const { password, email } = req.body;
         const response = await userService.login(email, password);
-        res.cookie('refreshToken', response.value.refreshToken, {
-            maxAge: 30 * 24 * 60 * 60 * 1000,
-            httpOnly: true,
-            sameSite: 'none',
-            domain: process.env.CORS_ORIGIN,
-        });
+        // res.cookie('refreshToken', response.value.refreshToken, {
+        //     maxAge: 30 * 24 * 60 * 60 * 1000,
+        //     httpOnly: true,
+        //     sameSite: 'none',
+        //     domain: process.env.CORS_ORIGIN,
+        // });
         response
             .mapRight((user: IUserResponse) => res.status(200).json(user))
             .mapLeft((e: any) => res.status(401).json(e));
@@ -51,12 +51,12 @@ class UserController {
         const { id } = req.body;
         const response = await userService.reconnect(id);
 
-        res.cookie('refreshToken', response.value.refreshToken, {
-            maxAge: 30 * 24 * 60 * 60 * 1000,
-            httpOnly: true,
-            sameSite: 'none',
-            domain: process.env.CORS_ORIGIN,
-        });
+        // res.cookie('refreshToken', response.value.refreshToken, {
+        //     maxAge: 30 * 24 * 60 * 60 * 1000,
+        //     httpOnly: true,
+        //     sameSite: 'none',
+        //     domain: process.env.CORS_ORIGIN,
+        // });
 
         response
             .mapRight((user: IUserResponse) => res.status(200).json(user))
@@ -76,12 +76,12 @@ class UserController {
         try {
             const { refreshToken } = req.cookies;
             const token = await userService.logout(refreshToken);
-            res.clearCookie('refreshToken', {
-                maxAge: 30 * 24 * 60 * 60 * 1000,
-                httpOnly: true,
-                sameSite: 'none',
-                domain: process.env.CORS_ORIGIN,
-            });
+            // res.clearCookie('refreshToken', {
+            //     maxAge: 30 * 24 * 60 * 60 * 1000,
+            //     httpOnly: true,
+            //     sameSite: 'none',
+            //     domain: process.env.CORS_ORIGIN,
+            // });
             return res.status(200).json(token);
         } catch (e) {
             next(e);
@@ -94,12 +94,12 @@ class UserController {
             const userData = await userService.refresh(refreshToken);
             console.log(userData);
 
-            res.cookie('refreshToken', userData.refreshToken, {
-                maxAge: 30 * 24 * 60 * 60 * 1000,
-                httpOnly: true,
-                sameSite: 'none',
-                domain: process.env.CORS_ORIGIN,
-            });
+            // res.cookie('refreshToken', userData.refreshToken, {
+            //     maxAge: 30 * 24 * 60 * 60 * 1000,
+            //     httpOnly: true,
+            //     sameSite: 'none',
+            //     domain: process.env.CORS_ORIGIN,
+            // });
             return res.status(200).json(userData);
         } catch (e) {
             next(e);
