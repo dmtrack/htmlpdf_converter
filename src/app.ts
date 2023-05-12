@@ -27,10 +27,10 @@ app.use('/dev', devRouter);
 // app.use(authMiddleware);
 
 connection
-    .sync({ alter: true })
+    .sync({ force: true })
     .then(async () => {
-        // themeCheck();
-        // fieldCheck();
+        themeCheck();
+        fieldCheck();
         console.log('Database synced successfully');
     })
     .catch((err) => {

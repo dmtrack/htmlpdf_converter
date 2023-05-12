@@ -4,6 +4,7 @@ import * as sequelize from 'sequelize-typescript';
 import { Access } from './user_access';
 import { Token } from './token';
 import { Like } from './like';
+import { Item } from './item';
 
 @sequelize.Table({
     timestamps: false,

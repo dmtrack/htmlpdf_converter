@@ -18,6 +18,7 @@ import {
     removeItemIndex,
     uploadItemIndex,
 } from '../../services/search.service';
+import { User } from './user';
 
 @sequelize.Table({
     timestamps: false,

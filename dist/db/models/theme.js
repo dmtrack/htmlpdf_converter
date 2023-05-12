@@ -49,6 +49,12 @@ __decorate([
     })
 ], Theme.prototype, "name", void 0);
 __decorate([
+    sequelize.Column({
+        type: sequelize.DataType.STRING(255),
+        allowNull: false,
+    })
+], Theme.prototype, "defaultImg", void 0);
+__decorate([
     sequelize.HasMany(() => collection_1.Collection)
 ], Theme.prototype, "collections", void 0);
 Theme = __decorate([

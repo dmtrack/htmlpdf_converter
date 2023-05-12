@@ -12,9 +12,10 @@ class UserController {
                     return next(ApiError.badRequest('Ошибка валидации при регистрации', errors.array()));
                 }
                 const response = await userService.registration(req);
-                res.cookie('refreshToken', response.refreshToken, {
+                res.cookie('refreshToken', response.value.refreshToken, {
                     maxAge: 30 * 24 * 60 * 60 * 1000,
                     httpOnly: true,
+                    sameSite: true,
                 });
                 response
                     .mapRight((user) => res.status(200).json(user))
@@ -27,9 +28,10 @@ class UserController {
         this.login = async (req, res, next) => {
             const { password, email } = req.body;
             const response = await userService.login(email, password);
-            res.cookie('refreshToken', response === null || response === void 0 ? void 0 : response.refreshToken, {
+            res.cookie('refreshToken', response.value.refreshToken, {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
+                sameSite: true,
             });
             response
                 .mapRight((user) => res.status(200).json(user))
@@ -38,9 +40,10 @@ class UserController {
         this.reconnect = async (req, res, next) => {
             const { id } = req.body;
             const response = await userService.reconnect(id);
-            res.cookie('refreshToken', response.refreshToken, {
+            res.cookie('refreshToken', response.value.refreshToken, {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
+                sameSite: true,
             });
             response
                 .mapRight((user) => res.status(200).json(user))
@@ -60,7 +63,9 @@ class UserController {
             try {
                 const { refreshToken } = req.cookies;
                 const token = await userService.logout(refreshToken);
-                res.clearCookie('refreshToken');
+                res.clearCookie('refreshToken', {
+                    sameSite: true,
+                });
                 return res.status(200).json(token);
             }
             catch (e) {
