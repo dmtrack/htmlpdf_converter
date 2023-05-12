@@ -36,5 +36,5 @@ connection
         console.log('Database synced successfully');
     })
     .catch((err) => {
-        console.log('Err', err);
+        console.log('Error', err);
     });
