@@ -23,6 +23,7 @@ class UserController {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
                 sameSite: 'none',
+                domain: process.env.CORS_ORIGIN,
             });
             response
                 .mapRight((user: IUserResponse) => res.status(200).json(user))
@@ -39,6 +40,7 @@ class UserController {
             maxAge: 30 * 24 * 60 * 60 * 1000,
             httpOnly: true,
             sameSite: 'none',
+            domain: process.env.CORS_ORIGIN,
         });
         response
             .mapRight((user: IUserResponse) => res.status(200).json(user))
@@ -53,6 +55,7 @@ class UserController {
             maxAge: 30 * 24 * 60 * 60 * 1000,
             httpOnly: true,
             sameSite: 'none',
+            domain: process.env.CORS_ORIGIN,
         });
 
         response
@@ -65,8 +68,6 @@ class UserController {
             await userService.activate(activationLink);
             return res.redirect(`${process.env.CLIENT_URL}`);
         } catch (e) {
-            console.log('test');
-
             next(e);
         }
     };
@@ -79,6 +80,7 @@ class UserController {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
                 sameSite: 'none',
+                domain: process.env.CORS_ORIGIN,
             });
             return res.status(200).json(token);
         } catch (e) {
@@ -96,6 +98,7 @@ class UserController {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
                 sameSite: 'none',
+                domain: process.env.CORS_ORIGIN,
             });
             return res.status(200).json(userData);
         } catch (e) {
