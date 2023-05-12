@@ -27,7 +27,7 @@ app.use('/dev', devRouter);
 // app.use(authMiddleware);
 
 connection
-    .sync({ alter: true })
+    .sync({ force: true })
     .then(async () => {
         deleteAllIndexes('collections');
         deleteAllIndexes('items');

@@ -9,7 +9,11 @@ import { IItemCreate, IItemUpdate } from '../interfaces/models/item';
 class ItemService {
     async create(item: IItemCreate) {
         try {
-            const { name, description, userId, collectionId, image } = item;
+            let { name, description, userId, collectionId, image } = item;
+            if (!image) {
+                image =
+                    'https://github.com/dmtrack/collections_client/blob/dev-client/public/defaultItem.png?raw=true';
+            }
             const created = new Date().getTime();
             const newItem = await Item.create({
                 name: name,

@@ -1,9 +1,13 @@
+import { Fields, TagType } from './common';
+
 export interface IItemCreate {
     name: string;
     description: string;
     userId: number;
     collectionId: number;
     image: string;
+    fields?: Fields;
+    tags?: TagType[];
 }
 
 export interface IItemUpdate {

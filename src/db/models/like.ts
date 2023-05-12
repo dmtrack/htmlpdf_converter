@@ -1,6 +1,5 @@
 import * as sequelize from 'sequelize-typescript';
 import { Item } from './item';
-import { Tag } from './tag';
 import { User } from './user';
 
 @sequelize.Table({
@@ -17,7 +16,7 @@ export class Like extends sequelize.Model {
     id!: number;
 
     @sequelize.BelongsTo(() => Item)
-    item?: Item;
+    item!: Item;
     @sequelize.ForeignKey(() => Item)
     @sequelize.Column({
         type: sequelize.DataType.BIGINT,
@@ -26,17 +25,11 @@ export class Like extends sequelize.Model {
     itemId!: number;
 
     @sequelize.BelongsTo(() => User)
-    user?: User;
+    user!: User;
     @sequelize.ForeignKey(() => User)
     @sequelize.Column({
         type: sequelize.DataType.BIGINT,
         allowNull: false,
     })
     userId!: number;
-
-    @sequelize.Column({
-        type: sequelize.DataType.STRING(255),
-        allowNull: false,
-    })
-    name!: string;
 }

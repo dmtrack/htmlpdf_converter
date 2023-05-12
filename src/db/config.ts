@@ -3,7 +3,6 @@ import { Sequelize } from 'sequelize-typescript';
 import { User } from './models/user';
 import dotenv from 'dotenv';
 import { Collection } from './models/collection';
-import { TagItem } from './models/tag_item';
 import { Item } from './models/item';
 import { Comment } from './models/comment';
 import { Field } from './models/field';
@@ -16,6 +15,9 @@ import { DateField } from './models/field_types/datefield';
 import { NumField } from './models/field_types/numfield';
 import { Theme } from './models/theme';
 import { Like } from './models/like';
+import { ItemsTags } from './models/ItemsTags';
+import { ItemConfigs } from './models/ItemConfigs';
+import { Tag } from './models/tag';
 dotenv.config();
 
 const connection = new Sequelize({
@@ -30,7 +32,6 @@ const connection = new Sequelize({
         Collection,
         Item,
         Comment,
-        TagItem,
         Field,
         FieldType,
         Access,
@@ -42,6 +43,9 @@ const connection = new Sequelize({
         NumField,
         Theme,
         Like,
+        Tag,
+        ItemsTags,
+        ItemConfigs,
     ],
     // dialectOptions: {
     //     ssl: true,

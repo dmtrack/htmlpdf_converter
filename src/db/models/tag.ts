@@ -1,4 +1,7 @@
 import * as sequelize from 'sequelize-typescript';
+import { Item } from './item';
+import { ItemsTags } from './ItemsTags';
+import { BelongsToMany } from 'sequelize-typescript';
 
 @sequelize.Table({
     timestamps: false,
@@ -19,4 +22,7 @@ export class Tag extends sequelize.Model {
         allowNull: false,
     })
     name!: string;
+
+    @BelongsToMany(() => Item, () => ItemsTags)
+    item!: Item[];
 }

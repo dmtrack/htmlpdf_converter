@@ -1,12 +1,6 @@
-import { TextField } from './field_types/textfield';
-import { StringField } from './field_types/stringfield';
-import { DateField } from './field_types/datefield';
 import * as sequelize from 'sequelize-typescript';
 import { Collection } from './collection';
 import { Comment } from './comment';
-import { TagItem } from './tag_item';
-import { BooleanField } from './field_types/booleanfield';
-import { NumField } from './field_types/numfield';
 import { Like } from './like';
 import {
     AfterBulkDestroy,
@@ -18,7 +12,9 @@ import {
     removeItemIndex,
     uploadItemIndex,
 } from '../../services/search.service';
-import { User } from './user';
+
+import { ItemsTags } from './ItemsTags';
+import { Tag } from './tag';
 
 @sequelize.Table({
     timestamps: false,
@@ -66,29 +62,92 @@ export class Item extends sequelize.Model {
     })
     userId!: number;
 
+    @sequelize.Column({
+        type: sequelize.DataType.STRING,
+    })
+    str1!: string;
+
+    @sequelize.Column({
+        type: sequelize.DataType.STRING,
+    })
+    str2!: string;
+
+    @sequelize.Column({
+        type: sequelize.DataType.STRING,
+    })
+    str3!: string;
+
+    @sequelize.Column({
+        type: sequelize.DataType.TEXT,
+    })
+    txt1!: string;
+
+    @sequelize.Column({
+        type: sequelize.DataType.TEXT,
+    })
+    txt2!: string;
+
+    @sequelize.Column({
+        type: sequelize.DataType.TEXT,
+    })
+    txt3!: string;
+
+    @sequelize.Column({
+        type: sequelize.DataType.DECIMAL,
+    })
+    numb1!: number;
+
+    @sequelize.Column({
+        type: sequelize.DataType.DECIMAL,
+    })
+    numb2!: number;
+
+    @sequelize.Column({
+        type: sequelize.DataType.DECIMAL,
+    })
+    numb3!: number;
+
+    @sequelize.Column({
+        type: sequelize.DataType.BOOLEAN,
+    })
+    bool1!: boolean;
+
+    @sequelize.Column({
+        type: sequelize.DataType.BOOLEAN,
+    })
+    bool2!: boolean;
+
+    @sequelize.Column({
+        type: sequelize.DataType.BOOLEAN,
+    })
+    bool3!: boolean;
+
+    @sequelize.Column({
+        type: sequelize.DataType.DATE,
+    })
+    date1!: string;
+
+    @sequelize.Column({
+        type: sequelize.DataType.DATE,
+    })
+    date2!: string;
+
+    @sequelize.Column({
+        type: sequelize.DataType.DATE,
+    })
+    date3!: string;
+
+    @sequelize.BelongsToMany(() => Tag, () => ItemsTags)
+    tags!: Tag[];
+
+    @sequelize.HasMany(() => ItemsTags, { onDelete: 'cascade' })
+    itemTags!: ItemsTags[];
+
     @sequelize.HasMany(() => Comment, { onDelete: 'cascade' })
     comments!: Comment[];
 
-    @sequelize.HasMany(() => TagItem)
-    tags!: TagItem[];
-
     @sequelize.HasMany(() => Like, { onDelete: 'cascade' })
     likes!: Like[];
-
-    @sequelize.HasMany(() => StringField, { onDelete: 'cascade' })
-    stringfields!: StringField[];
-
-    @sequelize.HasMany(() => TextField, { onDelete: 'cascade' })
-    textfields!: TextField[];
-
-    @sequelize.HasMany(() => BooleanField, { onDelete: 'cascade' })
-    boolean!: BooleanField[];
-
-    @sequelize.HasMany(() => NumField, { onDelete: 'cascade' })
-    numfields!: NumField[];
-
-    @sequelize.HasMany(() => DateField, { onDelete: 'cascade' })
-    datefields!: DateField[];
 
     @AfterCreate
     static afterCreateHook(instance: Item) {

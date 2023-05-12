@@ -9,6 +9,7 @@ import {
     removeCollectionIndex,
     uploadCollectionIndex,
 } from '../../services/search.service';
+import { ItemConfigs } from './ItemConfigs';
 
 @sequelize.Table({
     timestamps: false,
@@ -75,6 +76,9 @@ export class Collection extends sequelize.Model {
 
     @sequelize.HasMany(() => Field)
     fields!: Field[];
+
+    @sequelize.HasMany(() => ItemConfigs, { onDelete: 'cascade' })
+    itemConfigs!: ItemConfigs[];
 
     @AfterCreate
     static afterCreateHook(instance: Collection) {
