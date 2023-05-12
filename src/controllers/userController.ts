@@ -22,7 +22,6 @@ class UserController {
             res.cookie('refreshToken', response.value.refreshToken, {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
-                sameSite: true,
             });
             response
                 .mapRight((user: IUserResponse) => res.status(200).json(user))
@@ -38,7 +37,6 @@ class UserController {
         res.cookie('refreshToken', response.value.refreshToken, {
             maxAge: 30 * 24 * 60 * 60 * 1000,
             httpOnly: true,
-            sameSite: true,
         });
         response
             .mapRight((user: IUserResponse) => res.status(200).json(user))
@@ -52,7 +50,6 @@ class UserController {
         res.cookie('refreshToken', response.value.refreshToken, {
             maxAge: 30 * 24 * 60 * 60 * 1000,
             httpOnly: true,
-            sameSite: true,
         });
 
         response
