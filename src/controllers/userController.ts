@@ -22,7 +22,7 @@ class UserController {
             res.cookie('refreshToken', response.value.refreshToken, {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
-                // sameSite: 'lax',
+                sameSite: 'none',
                 // path: '/',
                 // domain: process.env.CORS_ORIGIN,
             });
@@ -40,7 +40,7 @@ class UserController {
         res.cookie('refreshToken', response.value.refreshToken, {
             maxAge: 30 * 24 * 60 * 60 * 1000,
             httpOnly: true,
-            // sameSite: 'lax',
+            sameSite: 'none',
             // path: '/',
             // domain: process.env.CORS_ORIGIN,
         });
@@ -56,7 +56,7 @@ class UserController {
         res.cookie('refreshToken', response.value.refreshToken, {
             maxAge: 30 * 24 * 60 * 60 * 1000,
             httpOnly: true,
-            // sameSite: 'lax',
+            sameSite: 'none',
             // path: '/',
             // domain: process.env.CORS_ORIGIN,
         });
@@ -82,7 +82,7 @@ class UserController {
             res.clearCookie('refreshToken', {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
-                // sameSite: 'lax',
+                sameSite: 'none',
                 // path: '/',
                 // domain: process.env.CORS_ORIGIN,
             });
@@ -96,10 +96,12 @@ class UserController {
         try {
             const { refreshToken } = req.cookies;
             const userData = await userService.refresh(refreshToken);
+            console.log(userData);
+
             res.cookie('refreshToken', userData.refreshToken, {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
-                // sameSite: 'lax',
+                sameSite: 'none',
                 // path: '/',
                 // domain: process.env.CORS_ORIGIN,
             });
