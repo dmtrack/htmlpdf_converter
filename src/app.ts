@@ -32,7 +32,7 @@ connection
         themeCheck();
         deleteAllIndexes('collections');
         deleteAllIndexes('items');
-        // fieldCheck();
+
         console.log('Database synced successfully');
     })
     .catch((err) => {
