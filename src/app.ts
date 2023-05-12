@@ -27,7 +27,7 @@ app.use('/dev', devRouter);
 // app.use(authMiddleware);
 
 connection
-    .sync({ force: true })
+    .sync({ alter: true })
     .then(async () => {
         themeCheck();
 
