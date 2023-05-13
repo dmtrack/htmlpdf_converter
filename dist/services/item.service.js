@@ -32,7 +32,6 @@ class ItemService {
                 const newItem = yield item_1.Item.create(Object.assign(Object.assign({ collectionId,
                     userId,
                     created, image: image }, fields), { tags }));
-                console.log(newItem, 'newitem');
                 const newTagsResponse = yield this.createItemTags(tags, newItem.id);
                 return (0, either_1.right)(newTagsResponse.map((newTags) => (Object.assign(Object.assign({}, (0, item_utils_1.filterItem)(newItem)), { tags: newTags }))));
             }

@@ -22,7 +22,6 @@ const item_routes_1 = __importDefault(require("./routes/item.routes"));
 const dev_routes_1 = require("./routes/dev.routes");
 const body_parser_1 = require("body-parser");
 const collection_utils_1 = require("./utils/collection.utils");
-const test_1 = require("./utils/test");
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 exports.app = (0, express_1.default)();
@@ -44,7 +43,6 @@ config_1.default
     (0, collection_utils_1.deleteAllIndexes)('collections');
     (0, collection_utils_1.deleteAllIndexes)('items');
     (0, collection_utils_1.themeCheck)();
-    (0, test_1.fakeDriftItems)();
     console.log('Database synced successfully');
 }))
     .catch((err) => {
