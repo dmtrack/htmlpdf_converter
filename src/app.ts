@@ -9,6 +9,7 @@ import { urlencoded, json } from 'body-parser';
 import { Theme } from './db/models/theme';
 import { deleteAllIndexes, themeCheck } from './utils/collection.utils';
 import { fieldCheck } from './utils/field.utils';
+import { fakeDriftItems } from './utils/test';
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 export const app = express();
@@ -32,6 +33,7 @@ connection
         deleteAllIndexes('collections');
         deleteAllIndexes('items');
         themeCheck();
+
         console.log('Database synced successfully');
     })
     .catch((err) => {

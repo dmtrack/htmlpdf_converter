@@ -6,8 +6,8 @@ export interface IItemCreate {
     userId: number;
     collectionId: number;
     image: string;
-    fields?: Fields;
-    tags?: TagType[];
+    fields: Fields;
+    tags: TagType[];
 }
 
 export interface IItemUpdate {

@@ -4,6 +4,6 @@ export interface Fields {
 }
 
 export type TagType = {
-    id?: number;
+    id: number;
     name: string;
 };

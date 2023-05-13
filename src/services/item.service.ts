@@ -1,42 +1,75 @@
-import { left, right } from '@sweet-monads/either';
+import { Either, left, right } from '@sweet-monads/either';
 import { Sequelize } from 'sequelize';
 import { Item } from '../db/models/item';
 import { Like } from '../db/models/like';
 import { DBError } from '../errors/DBError';
 import { EntityError } from '../errors/EntityError';
 import { IItemCreate, IItemUpdate } from '../interfaces/models/item';
+import { filterItem } from '../utils/item.utils';
+import { TagType } from '../interfaces/models/common';
+import { createTagsQuery } from './queries/itemQueries';
+import { ItemsTags } from '../db/models/ItemsTags';
+import { Tag } from '../db/models/tag';
 
 class ItemService {
     async create(item: IItemCreate) {
         try {
-            let { name, description, userId, collectionId, image } = item;
+            let { userId, collectionId, image, fields, tags } = item;
             if (!image) {
                 image =
                     'https://github.com/dmtrack/collections_client/blob/dev-client/public/defaultItem.png?raw=true';
             }
+
             const created = new Date().getTime();
             const newItem = await Item.create({
-                name: name,
-                description: description,
-                collectionId: collectionId,
-                userId: userId,
-                created: created,
+                collectionId,
+                userId,
+                created,
                 image: image,
+                ...fields,
+                tags,
             });
-            return right(newItem);
+
+            const newTagsResponse = await this.createItemTags(tags, newItem.id);
+            return right(
+                newTagsResponse.map(
+                    (newTags) =>
+                        ({ ...filterItem(newItem), tags: newTags } as Item)
+                )
+            );
         } catch (e: any) {
             return left(new DBError('create item error', e));
         }
     }
 
+    async createItemTags(tags: TagType[], itemId: number) {
+        try {
+            const addedTags = tags.filter((tag) => tag.id);
+            const createdTags = await createTagsQuery(
+                tags.filter((tag) => !tag.id)
+            );
+            const itemTags = [...addedTags, ...createdTags].map((tag) => ({
+                itemId,
+                tagId: tag.id,
+            }));
+            await ItemsTags.bulkCreate(itemTags);
+            return right([...addedTags, ...createdTags]);
+        } catch (e) {
+            return left(new DBError('Create item tags error', e));
+        }
+    }
     async getAllItems() {
         try {
             const items = await Item.findAll({
-                include: { model: Like },
+                include: [{ model: Like }, { model: Tag }],
                 order: [['created', 'DESC']],
             });
+            console.log(items, 'items');
+
             return right(items);
         } catch (e: any) {
+            console.log(e);
+
             return left(new DBError('get items error', e));
         }
     }

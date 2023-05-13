@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -13,7 +22,7 @@ const item_routes_1 = __importDefault(require("./routes/item.routes"));
 const dev_routes_1 = require("./routes/dev.routes");
 const body_parser_1 = require("body-parser");
 const collection_utils_1 = require("./utils/collection.utils");
-const field_utils_1 = require("./utils/field.utils");
+const test_1 = require("./utils/test");
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 exports.app = (0, express_1.default)();
@@ -31,11 +40,13 @@ exports.app.use('/dev', dev_routes_1.devRouter);
 // app.use(authMiddleware);
 config_1.default
     .sync({ force: true })
-    .then(async () => {
+    .then(() => __awaiter(void 0, void 0, void 0, function* () {
+    (0, collection_utils_1.deleteAllIndexes)('collections');
+    (0, collection_utils_1.deleteAllIndexes)('items');
     (0, collection_utils_1.themeCheck)();
-    (0, field_utils_1.fieldCheck)();
+    (0, test_1.fakeDriftItems)();
     console.log('Database synced successfully');
-})
+}))
     .catch((err) => {
     console.log('Err', err);
 });

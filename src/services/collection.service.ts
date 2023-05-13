@@ -10,6 +10,7 @@ import {
     ICollectionUpdate,
 } from '../interfaces/models/collection';
 import { Theme } from '../db/models/theme';
+import { removeCollectionRelationshipIndexes } from './search.service';
 
 class CollectionService {
     async create(collection: ICollectionCreate) {
@@ -115,6 +116,7 @@ class CollectionService {
     }
 
     async deleteOneCollection(id: number) {
+        await removeCollectionRelationshipIndexes(id);
         const collection = await Collection.destroy({
             where: { id: id },
         });

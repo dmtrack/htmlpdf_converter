@@ -29,35 +29,50 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Tag = void 0;
-const sequelize = __importStar(require("sequelize-typescript"));
-const item_1 = require("./item");
-const ItemsTags_1 = require("./ItemsTags");
+exports.ItemConfigs = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
-let Tag = class Tag extends sequelize.Model {
+const collection_1 = require("./collection");
+const sequelize = __importStar(require("sequelize-typescript"));
+let ItemConfigs = class ItemConfigs extends sequelize_typescript_1.Model {
 };
 __decorate([
-    sequelize.Column({
-        type: sequelize.DataType.BIGINT,
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
         unique: true,
     })
-], Tag.prototype, "id", void 0);
+], ItemConfigs.prototype, "id", void 0);
+__decorate([
+    sequelize.ForeignKey(() => collection_1.Collection),
+    sequelize.Column({
+        type: sequelize.DataType.BIGINT,
+        allowNull: true,
+    })
+], ItemConfigs.prototype, "collectionId", void 0);
 __decorate([
     sequelize.Column({
-        type: sequelize.DataType.STRING(255),
-        allowNull: false,
+        type: sequelize.DataType.BIGINT,
+        allowNull: true,
     })
-], Tag.prototype, "name", void 0);
+], ItemConfigs.prototype, "type", void 0);
 __decorate([
-    (0, sequelize_typescript_1.BelongsToMany)(() => item_1.Item, () => ItemsTags_1.ItemsTags)
-], Tag.prototype, "item", void 0);
-Tag = __decorate([
-    sequelize.Table({
-        timestamps: false,
-        tableName: 'tags',
+    sequelize.Column({
+        type: sequelize.DataType.BIGINT,
+        allowNull: true,
     })
-], Tag);
-exports.Tag = Tag;
+], ItemConfigs.prototype, "label", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.BIGINT,
+        allowNull: true,
+    })
+], ItemConfigs.prototype, "hidden", void 0);
+__decorate([
+    sequelize.BelongsTo(() => collection_1.Collection)
+], ItemConfigs.prototype, "collections", void 0);
+ItemConfigs = __decorate([
+    (0, sequelize_typescript_1.Table)({ timestamps: false, tableName: 'item_configs' })
+], ItemConfigs);
+exports.ItemConfigs = ItemConfigs;

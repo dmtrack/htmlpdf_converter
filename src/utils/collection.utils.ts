@@ -173,6 +173,7 @@ export const themeCheck = async () => {
     await CollectionService.create(mokeData.collections.collection3);
     await CollectionService.create(mokeData.collections.collection4);
     await CollectionService.create(mokeData.collections.collection5);
+
     await ItemService.create(mokeData.items.item1);
     await ItemService.create(mokeData.items.item2);
     await ItemService.create(mokeData.items.item3);

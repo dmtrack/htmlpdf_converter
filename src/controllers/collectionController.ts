@@ -61,6 +61,7 @@ export const getOneCollection: RequestHandler = async (req, res, next) => {
 
 export const deleteOneCollection: RequestHandler = async (req, res, next) => {
     const id = req.params.id;
+
     const response = await CollectionService.deleteOneCollection(id);
     response
         .mapRight((response: string) => res.status(200).json(response))

@@ -3,20 +3,9 @@ import { RequestHandler } from 'express';
 
 const ItemService = require('../services/item.service');
 
-export const createItemOld: RequestHandler = async (req, res, next) => {
-    try {
-        let item = await ItemService.create(req.body);
-        return res.status(200).json({
-            message: 'item was created succesfully',
-            data: item,
-        });
-    } catch (err: any) {
-        return err.message;
-    }
-};
-
 export const createItem: RequestHandler = async (req, res, next) => {
     const response = await ItemService.create(req.body);
+
     response
         .mapRight((item: IItem) => {
             res.status(200).json(item);

@@ -25,3 +25,11 @@ export interface ICollection {
     image?: string;
     created: number;
 }
+
+export type ItemConfigType = {
+    id?: number;
+    collectionId?: number;
+    hidden?: boolean;
+    type: string;
+    label: string;
+};

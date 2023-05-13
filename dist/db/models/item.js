@@ -30,18 +30,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Item = void 0;
-const textfield_1 = require("./field_types/textfield");
-const stringfield_1 = require("./field_types/stringfield");
-const datefield_1 = require("./field_types/datefield");
 const sequelize = __importStar(require("sequelize-typescript"));
 const collection_1 = require("./collection");
 const comment_1 = require("./comment");
-const tag_item_1 = require("./tag_item");
-const booleanfield_1 = require("./field_types/booleanfield");
-const numfield_1 = require("./field_types/numfield");
 const like_1 = require("./like");
 const sequelize_typescript_1 = require("sequelize-typescript");
 const search_service_1 = require("../../services/search.service");
+const ItemsTags_1 = require("./ItemsTags");
+const tag_1 = require("./tag");
 let Item = class Item extends sequelize.Model {
     static afterCreateHook(instance) {
         (0, search_service_1.addItemIndex)(instance);
@@ -90,29 +86,98 @@ __decorate([
     })
 ], Item.prototype, "image", void 0);
 __decorate([
+    sequelize.Column({
+        type: sequelize.DataType.BIGINT,
+        allowNull: false,
+    })
+], Item.prototype, "userId", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.STRING,
+    })
+], Item.prototype, "str1", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.STRING,
+    })
+], Item.prototype, "str2", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.STRING,
+    })
+], Item.prototype, "str3", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.TEXT,
+    })
+], Item.prototype, "txt1", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.TEXT,
+    })
+], Item.prototype, "txt2", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.TEXT,
+    })
+], Item.prototype, "txt3", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.DECIMAL,
+    })
+], Item.prototype, "numb1", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.DECIMAL,
+    })
+], Item.prototype, "numb2", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.DECIMAL,
+    })
+], Item.prototype, "numb3", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.BOOLEAN,
+    })
+], Item.prototype, "bool1", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.BOOLEAN,
+    })
+], Item.prototype, "bool2", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.BOOLEAN,
+    })
+], Item.prototype, "bool3", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.DATE,
+    })
+], Item.prototype, "date1", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.DATE,
+    })
+], Item.prototype, "date2", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.DATE,
+    })
+], Item.prototype, "date3", void 0);
+__decorate([
+    sequelize.BelongsToMany(() => tag_1.Tag, () => ItemsTags_1.ItemsTags)
+], Item.prototype, "tags", void 0);
+__decorate([
+    sequelize.HasMany(() => ItemsTags_1.ItemsTags, { onDelete: 'cascade' })
+], Item.prototype, "itemTags", void 0);
+__decorate([
     sequelize.HasMany(() => comment_1.Comment, { onDelete: 'cascade' })
 ], Item.prototype, "comments", void 0);
 __decorate([
-    sequelize.HasMany(() => tag_item_1.TagItem)
-], Item.prototype, "tags", void 0);
-__decorate([
     sequelize.HasMany(() => like_1.Like, { onDelete: 'cascade' })
 ], Item.prototype, "likes", void 0);
-__decorate([
-    sequelize.HasMany(() => stringfield_1.StringField, { onDelete: 'cascade' })
-], Item.prototype, "stringfields", void 0);
-__decorate([
-    sequelize.HasMany(() => textfield_1.TextField, { onDelete: 'cascade' })
-], Item.prototype, "textfields", void 0);
-__decorate([
-    sequelize.HasMany(() => booleanfield_1.BooleanField, { onDelete: 'cascade' })
-], Item.prototype, "boolean", void 0);
-__decorate([
-    sequelize.HasMany(() => numfield_1.NumField, { onDelete: 'cascade' })
-], Item.prototype, "numfields", void 0);
-__decorate([
-    sequelize.HasMany(() => datefield_1.DateField, { onDelete: 'cascade' })
-], Item.prototype, "datefields", void 0);
 __decorate([
     sequelize_typescript_1.AfterCreate
 ], Item, "afterCreateHook", null);

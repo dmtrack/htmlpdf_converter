@@ -37,6 +37,7 @@ const user_1 = require("./user");
 const theme_1 = require("./theme");
 const sequelize_typescript_1 = require("sequelize-typescript");
 const search_service_1 = require("../../services/search.service");
+const ItemConfigs_1 = require("./ItemConfigs");
 let Collection = class Collection extends sequelize.Model {
     static afterCreateHook(instance) {
         (0, search_service_1.addCollectionIndex)(instance);
@@ -112,6 +113,9 @@ __decorate([
 __decorate([
     sequelize.HasMany(() => field_1.Field)
 ], Collection.prototype, "fields", void 0);
+__decorate([
+    sequelize.HasMany(() => ItemConfigs_1.ItemConfigs, { onDelete: 'cascade' })
+], Collection.prototype, "itemConfigs", void 0);
 __decorate([
     sequelize_typescript_1.AfterCreate
 ], Collection, "afterCreateHook", null);

@@ -29,35 +29,37 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Tag = void 0;
+exports.ItemsTags = void 0;
 const sequelize = __importStar(require("sequelize-typescript"));
-const item_1 = require("./item");
-const ItemsTags_1 = require("./ItemsTags");
 const sequelize_typescript_1 = require("sequelize-typescript");
-let Tag = class Tag extends sequelize.Model {
+const item_1 = require("./item");
+const tag_1 = require("./tag");
+let ItemsTags = class ItemsTags extends sequelize_typescript_1.Model {
 };
 __decorate([
-    sequelize.Column({
-        type: sequelize.DataType.BIGINT,
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
         unique: true,
     })
-], Tag.prototype, "id", void 0);
+], ItemsTags.prototype, "id", void 0);
 __decorate([
+    sequelize.ForeignKey(() => item_1.Item),
     sequelize.Column({
-        type: sequelize.DataType.STRING(255),
+        type: sequelize.DataType.BIGINT,
         allowNull: false,
     })
-], Tag.prototype, "name", void 0);
+], ItemsTags.prototype, "itemId", void 0);
 __decorate([
-    (0, sequelize_typescript_1.BelongsToMany)(() => item_1.Item, () => ItemsTags_1.ItemsTags)
-], Tag.prototype, "item", void 0);
-Tag = __decorate([
-    sequelize.Table({
-        timestamps: false,
-        tableName: 'tags',
+    sequelize.ForeignKey(() => tag_1.Tag),
+    sequelize.Column({
+        type: sequelize.DataType.BIGINT,
+        allowNull: false,
     })
-], Tag);
-exports.Tag = Tag;
+], ItemsTags.prototype, "tagId", void 0);
+ItemsTags = __decorate([
+    (0, sequelize_typescript_1.Table)({ timestamps: false, tableName: 'items_tags' })
+], ItemsTags);
+exports.ItemsTags = ItemsTags;

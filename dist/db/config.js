@@ -8,7 +8,6 @@ const sequelize_typescript_1 = require("sequelize-typescript");
 const user_1 = require("./models/user");
 const dotenv_1 = __importDefault(require("dotenv"));
 const collection_1 = require("./models/collection");
-const tag_item_1 = require("./models/tag_item");
 const item_1 = require("./models/item");
 const comment_1 = require("./models/comment");
 const field_1 = require("./models/field");
@@ -21,6 +20,9 @@ const datefield_1 = require("./models/field_types/datefield");
 const numfield_1 = require("./models/field_types/numfield");
 const theme_1 = require("./models/theme");
 const like_1 = require("./models/like");
+const ItemsTags_1 = require("./models/ItemsTags");
+const ItemConfigs_1 = require("./models/ItemConfigs");
+const tag_1 = require("./models/tag");
 dotenv_1.default.config();
 const connection = new sequelize_typescript_1.Sequelize({
     dialect: 'postgres',
@@ -34,7 +36,6 @@ const connection = new sequelize_typescript_1.Sequelize({
         collection_1.Collection,
         item_1.Item,
         comment_1.Comment,
-        tag_item_1.TagItem,
         field_1.Field,
         fieldtype_1.FieldType,
         user_access_1.Access,
@@ -46,6 +47,9 @@ const connection = new sequelize_typescript_1.Sequelize({
         numfield_1.NumField,
         theme_1.Theme,
         like_1.Like,
+        tag_1.Tag,
+        ItemsTags_1.ItemsTags,
+        ItemConfigs_1.ItemConfigs,
     ],
     // dialectOptions: {
     //     ssl: true,

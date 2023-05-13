@@ -18,6 +18,6 @@ collectionRouter.get('/topamountofitems', getTopAmountOfItemsCollection);
 collectionRouter.get('/getusercollections/:userId', getUserCollections);
 collectionRouter.get('/getone/:id', getOneCollection);
 collectionRouter.put('/update', updateCollection);
-collectionRouter.delete('/deleteone/:id', deleteOneCollection);
+collectionRouter.delete('/delete/:id', deleteOneCollection);
 
 export default collectionRouter;
