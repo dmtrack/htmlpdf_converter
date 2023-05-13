@@ -26,7 +26,7 @@ class ItemService {
                 let { userId, collectionId, image, fields, tags } = item;
                 if (!image) {
                     image =
-                        'https://github.com/dmtrack/collections_client/blob/dev-client/public/defaultItem.png?raw=true';
+                        'https://github.com/dmtrack/collections_client/blob/dev-client/public/defaultItemImage.png?raw=true';
                 }
                 const created = new Date().getTime();
                 const newItem = yield item_1.Item.create(Object.assign(Object.assign({ collectionId,
@@ -135,9 +135,11 @@ class ItemService {
     }
     deleteOneItem(id) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log(id, 'ID');
             const item = yield item_1.Item.destroy({
                 where: { id: id },
             });
+            console.log(item, 'DELETE');
             if (!item) {
                 return (0, either_1.left)(new EntityError_1.EntityError(`there is no item with id:${id} in data-base`));
             }
