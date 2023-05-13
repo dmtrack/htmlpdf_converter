@@ -139,9 +139,12 @@ class ItemService {
     }
 
     async deleteOneItem(id: number) {
+        console.log(id, 'ID');
+
         const item = await Item.destroy({
             where: { id: id },
         });
+        console.log(item, 'DELETE');
 
         if (!item) {
             return left(

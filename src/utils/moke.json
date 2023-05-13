@@ -144,7 +144,7 @@
         "item4": {
             "fields": {
                 "name": "Nissan Skyline GTT",
-                "description": "https://xn--80aafe9bhdrpm.com/wp-content/uploads/2016/07/5996769411_ba9534081b_o-e1467835483964.jpg",
+                "description": "This is a sports car that was produced by Nissan from 1969 to 2002. The GTT model was introduced in 1998 and is a popular option for drifting thanks to its powerful turbocharged engine and all-wheel drive.",
                 "str1": null,
                 "str2": null,
                 "str3": null,
@@ -161,7 +161,7 @@
                 "date2": null,
                 "date3": null
             },
-            "image": "",
+            "image": "https://xn--80aafe9bhdrpm.com/wp-content/uploads/2016/07/5996769411_ba9534081b_o-e1467835483964.jpg",
             "userId": 1,
             "collectionId": 1,
             "tags": []
