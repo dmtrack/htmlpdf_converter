@@ -1,4 +1,4 @@
-import { Either, left, right } from '@sweet-monads/either';
+import { left, right } from '@sweet-monads/either';
 import { Sequelize } from 'sequelize';
 import { Item } from '../db/models/item';
 import { Like } from '../db/models/like';
@@ -10,6 +10,7 @@ import { TagType } from '../interfaces/models/common';
 import { createTagsQuery } from './queries/itemQueries';
 import { ItemsTags } from '../db/models/ItemsTags';
 import { Tag } from '../db/models/tag';
+import { removeItemCommentsIndexes } from './search.service';
 
 class ItemService {
     async create(item: IItemCreate) {
@@ -139,13 +140,10 @@ class ItemService {
     }
 
     async deleteOneItem(id: number) {
-        console.log(id, 'ID');
-
+        await removeItemCommentsIndexes(id);
         const item = await Item.destroy({
             where: { id: id },
         });
-        console.log(item, 'DELETE');
-
         if (!item) {
             return left(
                 new EntityError(`there is no item with id:${id} in data-base`)
