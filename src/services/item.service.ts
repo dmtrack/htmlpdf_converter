@@ -17,7 +17,7 @@ class ItemService {
             let { userId, collectionId, image, fields, tags } = item;
             if (!image) {
                 image =
-                    'https://github.com/dmtrack/collections_client/blob/dev-client/public/defaultItem.png?raw=true';
+                    'https://github.com/dmtrack/collections_client/blob/dev-client/public/Screen%20Shot%202023-05-13%20at%207.02.33%20PM.png';
             }
 
             const created = new Date().getTime();
