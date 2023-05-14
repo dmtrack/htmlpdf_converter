@@ -78,7 +78,7 @@ class CollectionService {
                     },
                 ],
                 group: ['Item.collectionId', 'collection.id'],
-                order: Sequelize.literal('count DESC'),
+                order: Sequelize.literal('count ASC'),
             });
             return right(items);
         } catch (e: any) {
