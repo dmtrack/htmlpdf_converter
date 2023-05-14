@@ -47,10 +47,10 @@ const connection = new Sequelize({
         ItemsTags,
         ItemConfigs,
     ],
-    dialectOptions: {
-        ssl: true,
-        native: true,
-    },
+    // dialectOptions: {
+    //     ssl: true,
+    //     native: true,
+    // },
 });
 
 export default connection;
