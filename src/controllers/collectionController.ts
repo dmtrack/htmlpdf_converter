@@ -1,13 +1,11 @@
 import { RequestHandler } from 'express';
-import {
-    ICollection,
-    ICollectionUpdate,
-} from '../interfaces/models/collection';
+import { ICollection, } from '../interfaces/models/collection';
 import { ITheme } from '../interfaces/models/theme';
 const CollectionService = require('../services/collection.service');
 
-export const createCollection: RequestHandler = async (req, res, next) => {
-    const response = await CollectionService.create(req.body);
+export const createCollection: RequestHandler = async (req, res) => {
+    const {collection, itemConfigs} = req.body;
+    const response = await CollectionService.create(collection, itemConfigs);
     console.log(response);
 
     response
