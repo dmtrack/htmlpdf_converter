@@ -1,12 +1,13 @@
 import { RequestHandler } from 'express';
-import { ICollection, } from '../interfaces/models/collection';
+import { ICollection } from '../interfaces/models/collection';
 import { ITheme } from '../interfaces/models/theme';
 const CollectionService = require('../services/collection.service');
 
 export const createCollection: RequestHandler = async (req, res) => {
-    const {collection, itemConfigs} = req.body;
+    console.log(req.body);
+
+    const { collection, itemConfigs } = req.body;
     const response = await CollectionService.create(collection, itemConfigs);
-    console.log(response);
 
     response
         .mapRight((collection: ICollection) => res.status(200).json(collection))

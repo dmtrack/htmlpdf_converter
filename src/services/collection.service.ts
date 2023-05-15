@@ -7,11 +7,12 @@ import { EntityError } from '../errors/EntityError';
 import {
     ICollection,
     ICollectionCreate,
-    ICollectionUpdate, ItemConfigType
-} from '../interfaces/models/collection'
+    ICollectionUpdate,
+    ItemConfigType,
+} from '../interfaces/models/collection';
 import { Theme } from '../db/models/theme';
 import { removeCollectionRelationshipIndexes } from './search.service';
-import { ItemConfigs } from '../db/models/ItemConfigs'
+import { ItemConfigs } from '../db/models/ItemConfigs';
 
 class CollectionService {
     async create(collection: ICollectionCreate, itemConfigs: ItemConfigType[]) {
@@ -32,12 +33,19 @@ class CollectionService {
                 userId: userId,
                 created: created,
             });
+
             if (itemConfigs && itemConfigs.length > 0) {
-                const configs = itemConfigs.map(config => ({ ...config, collectionId: response.id }))
-                await ItemConfigs.bulkCreate(configs)
+                const configs = itemConfigs.map((config) => ({
+                    ...config,
+                    collectionId: +response.id,
+                }));
+                console.log(configs, 'CONFIGS');
+                await ItemConfigs.bulkCreate(configs);
             }
             return right(response);
         } catch (e: any) {
+            console.log(e, 'error');
+
             return left(new DBError('create collection error', e));
         }
     }

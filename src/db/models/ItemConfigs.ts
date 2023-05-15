@@ -21,19 +21,19 @@ export class ItemConfigs extends Model {
     collectionId!: number;
 
     @sequelize.Column({
-        type: sequelize.DataType.BIGINT,
+        type: sequelize.DataType.STRING,
         allowNull: true,
     })
     type!: string;
 
     @sequelize.Column({
-        type: sequelize.DataType.BIGINT,
+        type: sequelize.DataType.STRING,
         allowNull: true,
     })
     label!: string;
 
     @sequelize.Column({
-        type: sequelize.DataType.BIGINT,
+        type: sequelize.DataType.BOOLEAN,
         allowNull: true,
     })
     hidden!: boolean;
