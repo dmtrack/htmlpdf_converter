@@ -118,6 +118,8 @@ class ItemService {
 
     async getTopCommentedItems() {
         try {
+            console.log('hello');
+
             const comments = await Comment.findAll({
                 attributes: [
                     'itemId',
@@ -126,25 +128,15 @@ class ItemService {
                 include: [
                     {
                         model: Item,
-                        attributes: [
-                            'name',
-                            'image',
-                            'created',
-                            'collectionId',
-                        ],
+                        attributes: ['name', 'image', 'collectionId'],
                     },
                 ],
-                group: [
-                    'Comment.itemId',
-                    'name',
-                    'image',
-                    'created',
-                    'collectionId',
-                ],
+                group: ['Comment.itemId', 'name', 'image', 'collectionId'],
                 order: Sequelize.literal('count DESC'),
                 raw: true,
                 nest: true,
             });
+            console.log(comments);
 
             return right(comments);
         } catch (e: any) {

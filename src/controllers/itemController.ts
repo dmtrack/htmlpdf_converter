@@ -34,9 +34,7 @@ export const getTopRatedItems: RequestHandler = async (req, res, next) => {
 };
 
 export const getTopCommentedItems: RequestHandler = async (req, res, next) => {
-    console.log('hello');
     const response = await ItemService.getTopCommentedItems();
-    console.log(response, 'response');
 
     response
         .mapRight((item: IItem) => {
