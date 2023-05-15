@@ -31,7 +31,7 @@ app.use('/dev', devRouter);
 Socket.onEvents();
 
 connection
-    .sync({ force: true })
+    .sync({ alter: true })
     .then(async () => {
         deleteAllIndexes('collections');
         deleteAllIndexes('items');

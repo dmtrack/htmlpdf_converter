@@ -20,7 +20,7 @@ itemRouter.post('/setlike', setLike);
 itemRouter.post('/unsetlike', unsetLike);
 itemRouter.get('/getitems', getItems);
 itemRouter.get('/toprated', getTopRatedItems);
-itemRouter.get('/topcommented', getTopCommentedItems);
+itemRouter.get('/topcomments', getTopCommentedItems);
 itemRouter.get('/popular_tags', handleGetMostPopularTags);
 itemRouter.get('/tags', getTags);
 itemRouter.get('/getcollectionitems/:collectionId', getCollectionItems);

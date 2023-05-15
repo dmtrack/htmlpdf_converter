@@ -88,7 +88,7 @@ class CollectionService {
                         },
                     ],
                     group: ['Item.collectionId', 'collection.id'],
-                    order: sequelize_typescript_1.Sequelize.literal('count DESC'),
+                    order: sequelize_typescript_1.Sequelize.literal('count ASC'),
                 });
                 return (0, either_1.right)(items);
             }

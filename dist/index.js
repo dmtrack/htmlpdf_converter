@@ -13,7 +13,7 @@ const app_1 = require("./app");
 const port = process.env.PORT || 5000;
 const start = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        app_1.app.listen(port, () => {
+        app_1.server.listen(port, () => {
             console.log(`Server has succesfully started on port:${port}`);
         });
     }

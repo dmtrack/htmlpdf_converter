@@ -35,10 +35,10 @@ const getCollectionsByItemCountQuery = (params) => __awaiter(void 0, void 0, voi
                     'timestamp',
                     'id',
                 ],
-                include: [{ model: user_1.User, attributes: ['nickname'] }],
+                include: [{ model: user_1.User, attributes: ['name'] }],
             },
         ],
-        group: ['Items.collectionId', 'collections.id', 'collections.users.id'],
+        group: ['Items.collectionId', 'collections.id', 'collections.user.id'],
         order: sequelize_1.Sequelize.literal('count DESC'),
     });
 });

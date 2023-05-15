@@ -13,12 +13,14 @@ const either_1 = require("@sweet-monads/either");
 const sequelize_1 = require("sequelize");
 const item_1 = require("../db/models/item");
 const like_1 = require("../db/models/like");
+const comment_1 = require("../db/models/comment");
 const DBError_1 = require("../errors/DBError");
 const EntityError_1 = require("../errors/EntityError");
 const item_utils_1 = require("../utils/item.utils");
 const itemQueries_1 = require("./queries/itemQueries");
 const ItemsTags_1 = require("../db/models/ItemsTags");
 const tag_1 = require("../db/models/tag");
+const search_service_1 = require("./search.service");
 class ItemService {
     create(item) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -111,6 +113,44 @@ class ItemService {
             }
         });
     }
+    getTopCommentedItems() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const comments = yield comment_1.Comment.findAll({
+                    attributes: [
+                        'itemId',
+                        [sequelize_1.Sequelize.fn('count', sequelize_1.Sequelize.col('itemId')), 'count'],
+                    ],
+                    include: [
+                        {
+                            model: item_1.Item,
+                            attributes: [
+                                'name',
+                                'image',
+                                'created',
+                                'collectionId',
+                            ],
+                        },
+                    ],
+                    group: [
+                        'Comment.itemId',
+                        'name',
+                        'image',
+                        'created',
+                        'collectionId',
+                    ],
+                    order: sequelize_1.Sequelize.literal('count DESC'),
+                    raw: true,
+                    nest: true,
+                });
+                return (0, either_1.right)(comments);
+            }
+            catch (e) {
+                console.log(e);
+                return (0, either_1.left)(new DBError_1.DBError('getTopComments error', e));
+            }
+        });
+    }
     getOneItem(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const item = yield item_1.Item.findOne({
@@ -135,11 +175,10 @@ class ItemService {
     }
     deleteOneItem(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(id, 'ID');
+            yield (0, search_service_1.removeItemCommentsIndexes)(id);
             const item = yield item_1.Item.destroy({
                 where: { id: id },
             });
-            console.log(item, 'DELETE');
             if (!item) {
                 return (0, either_1.left)(new EntityError_1.EntityError(`there is no item with id:${id} in data-base`));
             }
@@ -179,6 +218,21 @@ class ItemService {
                 return (0, either_1.left)(new EntityError_1.EntityError(`there is no item with id:${id} in data-base`));
             }
             return (0, either_1.right)(`like with id:${id} was deleted`);
+        });
+    }
+    getMostPopularTags() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const countTags = (yield (0, itemQueries_1.getMostPopularTagsQuery)()).map((countTag) => ({
+                    tagId: countTag.tagId,
+                    count: +countTag.dataValues.count,
+                }));
+                return (0, either_1.right)(countTags);
+            }
+            catch (e) {
+                console.log(e);
+                return (0, either_1.left)(new DBError_1.DBError('getMostPopularTags: Error', e));
+            }
         });
     }
 }

@@ -9,7 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.unsetLike = exports.setLike = exports.updateItem = exports.deleteOneItem = exports.getOneItem = exports.getCollectionItems = exports.getTopRatedItems = exports.getItems = exports.createItem = void 0;
+exports.handleGetMostPopularTags = exports.getTags = exports.unsetLike = exports.setLike = exports.updateItem = exports.deleteOneItem = exports.getOneItem = exports.getCollectionItems = exports.getTopCommentedItems = exports.getTopRatedItems = exports.getItems = exports.createItem = void 0;
+const tag_1 = require("../db/models/tag");
+const DBError_1 = require("../errors/DBError");
 const ItemService = require('../services/item.service');
 const createItem = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const response = yield ItemService.create(req.body);
@@ -38,6 +40,15 @@ const getTopRatedItems = (req, res, next) => __awaiter(void 0, void 0, void 0, f
         .mapLeft((e) => res.status(401).json(e));
 });
 exports.getTopRatedItems = getTopRatedItems;
+const getTopCommentedItems = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const response = yield ItemService.getTopCommentedItems();
+    response
+        .mapRight((item) => {
+        res.status(200).json(item);
+    })
+        .mapLeft((e) => res.status(401).json(e));
+});
+exports.getTopCommentedItems = getTopCommentedItems;
 const getCollectionItems = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.collectionId;
     const response = yield ItemService.getCollectionItems(id);
@@ -95,3 +106,19 @@ const unsetLike = (req, res, next) => __awaiter(void 0, void 0, void 0, function
         .mapLeft((e) => res.status(401).json(e));
 });
 exports.unsetLike = unsetLike;
+const getTags = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        res.json(yield tag_1.Tag.findAll());
+    }
+    catch (e) {
+        res.status(500).json(new DBError_1.DBError('Get tags error', e));
+    }
+});
+exports.getTags = getTags;
+const handleGetMostPopularTags = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const response = yield ItemService.getMostPopularTags();
+    response
+        .mapRight((r) => res.json(r))
+        .mapLeft((e) => res.status(500).json(e));
+});
+exports.handleGetMostPopularTags = handleGetMostPopularTags;
