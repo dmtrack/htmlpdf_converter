@@ -116,6 +116,7 @@ class ItemService {
     getTopCommentedItems() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                console.log('hello');
                 const comments = yield comment_1.Comment.findAll({
                     attributes: [
                         'itemId',
@@ -124,25 +125,15 @@ class ItemService {
                     include: [
                         {
                             model: item_1.Item,
-                            attributes: [
-                                'name',
-                                'image',
-                                'created',
-                                'collectionId',
-                            ],
+                            attributes: ['name', 'image', 'collectionId'],
                         },
                     ],
-                    group: [
-                        'Comment.itemId',
-                        'name',
-                        'image',
-                        'created',
-                        'collectionId',
-                    ],
+                    group: ['Comment.itemId', 'name', 'image', 'collectionId'],
                     order: sequelize_1.Sequelize.literal('count DESC'),
                     raw: true,
                     nest: true,
                 });
+                console.log(comments);
                 return (0, either_1.right)(comments);
             }
             catch (e) {

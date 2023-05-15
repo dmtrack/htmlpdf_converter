@@ -9,11 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateCollection = exports.deleteOneCollection = exports.getOneCollection = exports.getUserCollections = exports.getTopAmountOfItemsCollection = exports.getThemes = exports.getCollections = exports.createCollection = void 0;
+exports.getItemConfigs = exports.updateCollection = exports.deleteOneCollection = exports.getOneCollection = exports.getUserCollections = exports.getTopAmountOfItemsCollection = exports.getThemes = exports.getCollections = exports.createCollection = void 0;
 const CollectionService = require('../services/collection.service');
-const createCollection = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield CollectionService.create(req.body);
-    console.log(response);
+const createCollection = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body);
+    const { collection, itemConfigs } = req.body;
+    const response = yield CollectionService.create(collection, itemConfigs);
     response
         .mapRight((collection) => res.status(200).json(collection))
         .mapLeft((e) => res.status(401).json(e));
@@ -71,3 +72,11 @@ const updateCollection = (req, res, next) => __awaiter(void 0, void 0, void 0, f
         .mapLeft((e) => res.status(401).json(e));
 });
 exports.updateCollection = updateCollection;
+const getItemConfigs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { collectionId } = req.params;
+    const response = yield CollectionService.getItemConfigs(+collectionId);
+    response
+        .mapRight((configs) => res.json(configs))
+        .mapLeft((e) => res.status(500).json(e));
+});
+exports.getItemConfigs = getItemConfigs;

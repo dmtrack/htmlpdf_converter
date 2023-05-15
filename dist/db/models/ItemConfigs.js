@@ -53,19 +53,19 @@ __decorate([
 ], ItemConfigs.prototype, "collectionId", void 0);
 __decorate([
     sequelize.Column({
-        type: sequelize.DataType.BIGINT,
+        type: sequelize.DataType.STRING,
         allowNull: true,
     })
 ], ItemConfigs.prototype, "type", void 0);
 __decorate([
     sequelize.Column({
-        type: sequelize.DataType.BIGINT,
+        type: sequelize.DataType.STRING,
         allowNull: true,
     })
 ], ItemConfigs.prototype, "label", void 0);
 __decorate([
     sequelize.Column({
-        type: sequelize.DataType.BIGINT,
+        type: sequelize.DataType.BOOLEAN,
         allowNull: true,
     })
 ], ItemConfigs.prototype, "hidden", void 0);

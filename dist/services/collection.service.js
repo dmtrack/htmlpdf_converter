@@ -17,8 +17,9 @@ const DBError_1 = require("../errors/DBError");
 const EntityError_1 = require("../errors/EntityError");
 const theme_1 = require("../db/models/theme");
 const search_service_1 = require("./search.service");
+const ItemConfigs_1 = require("../db/models/ItemConfigs");
 class CollectionService {
-    create(collection) {
+    create(collection, itemConfigs) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let { name, description, userId, image, themeId } = collection;
@@ -35,9 +36,15 @@ class CollectionService {
                     userId: userId,
                     created: created,
                 });
+                if (itemConfigs && itemConfigs.length > 0) {
+                    const configs = itemConfigs.map((config) => (Object.assign(Object.assign({}, config), { collectionId: +response.id })));
+                    console.log(configs, 'CONFIGS');
+                    yield ItemConfigs_1.ItemConfigs.bulkCreate(configs);
+                }
                 return (0, either_1.right)(response);
             }
             catch (e) {
+                console.log(e, 'error');
                 return (0, either_1.left)(new DBError_1.DBError('create collection error', e));
             }
         });
@@ -143,6 +150,17 @@ class CollectionService {
             }
             const updatedCollection = yield collection_1.Collection.findByPk(newData.id);
             return (0, either_1.right)(updatedCollection);
+        });
+    }
+    getItemConfigs(collectionId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const itemConfigs = yield ItemConfigs_1.ItemConfigs.findAll({ where: { collectionId } });
+                return (0, either_1.right)(itemConfigs);
+            }
+            catch (e) {
+                return (0, either_1.left)(new DBError_1.DBError('get item configs error', e));
+            }
         });
     }
 }

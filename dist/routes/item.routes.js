@@ -8,7 +8,7 @@ itemRouter.post('/setlike', itemController_1.setLike);
 itemRouter.post('/unsetlike', itemController_1.unsetLike);
 itemRouter.get('/getitems', itemController_1.getItems);
 itemRouter.get('/toprated', itemController_1.getTopRatedItems);
-itemRouter.get('/topcommented', itemController_1.getTopCommentedItems);
+itemRouter.get('/topcomments', itemController_1.getTopCommentedItems);
 itemRouter.get('/popular_tags', itemController_1.handleGetMostPopularTags);
 itemRouter.get('/tags', itemController_1.getTags);
 itemRouter.get('/getcollectionitems/:collectionId', itemController_1.getCollectionItems);
