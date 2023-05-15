@@ -9,6 +9,8 @@ import {
     setLike,
     unsetLike,
     getTopRatedItems,
+    handleGetMostPopularTags,
+    getTags,
 } from '../controllers/itemController';
 const itemRouter = Router();
 
@@ -17,6 +19,8 @@ itemRouter.post('/setlike', setLike);
 itemRouter.post('/unsetlike', unsetLike);
 itemRouter.get('/getitems', getItems);
 itemRouter.get('/toprated', getTopRatedItems);
+itemRouter.get('/popular_tags', handleGetMostPopularTags);
+itemRouter.get('/tags', getTags);
 itemRouter.get('/getcollectionitems/:collectionId', getCollectionItems);
 itemRouter.get('/getone/:id', getOneItem);
 itemRouter.put('/update', updateItem);

@@ -1,3 +1,5 @@
+import { Tag } from '../db/models/tag';
+import { DBError } from '../errors/DBError';
 import { IItem } from './../interfaces/models/item';
 import { RequestHandler } from 'express';
 
@@ -89,4 +91,20 @@ export const unsetLike: RequestHandler = async (req, res, next) => {
             res.status(200).json(response);
         })
         .mapLeft((e: any) => res.status(401).json(e));
+};
+
+export const getTags: RequestHandler = async (req, res) => {
+    try {
+        res.json(await Tag.findAll());
+    } catch (e) {
+        res.status(500).json(new DBError('Get tags error', e));
+    }
+};
+
+export const handleGetMostPopularTags: RequestHandler = async (req, res) => {
+    const response = await ItemService.getMostPopularTags();
+
+    response
+        .mapRight((r: any) => res.json(r))
+        .mapLeft((e: any) => res.status(500).json(e));
 };

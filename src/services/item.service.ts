@@ -1,13 +1,16 @@
-import { left, right } from '@sweet-monads/either';
+import { Either, left, right } from '@sweet-monads/either';
 import { Sequelize } from 'sequelize';
 import { Item } from '../db/models/item';
 import { Like } from '../db/models/like';
 import { DBError } from '../errors/DBError';
 import { EntityError } from '../errors/EntityError';
-import { IItemCreate, IItemUpdate } from '../interfaces/models/item';
+import { IItemCreate, IItemUpdate, ITagCount } from '../interfaces/models/item';
 import { filterItem } from '../utils/item.utils';
 import { TagType } from '../interfaces/models/common';
-import { createTagsQuery } from './queries/itemQueries';
+import {
+    createTagsQuery,
+    getMostPopularTagsQuery,
+} from './queries/itemQueries';
 import { ItemsTags } from '../db/models/ItemsTags';
 import { Tag } from '../db/models/tag';
 import { removeItemCommentsIndexes } from './search.service';
@@ -191,6 +194,20 @@ class ItemService {
             );
         }
         return right(`like with id:${id} was deleted`);
+    }
+    async getMostPopularTags(): Promise<Either<DBError, ITagCount[]>> {
+        try {
+            const countTags: ITagCount[] = (
+                await getMostPopularTagsQuery()
+            ).map((countTag) => ({
+                tagId: countTag.tagId,
+                count: +countTag.dataValues.count,
+            }));
+            return right(countTags);
+        } catch (e) {
+            console.log(e);
+            return left(new DBError('getMostPopularTags: Error', e));
+        }
     }
 }
 module.exports = new ItemService();

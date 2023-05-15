@@ -23,3 +23,8 @@ export interface IItem {
     collectionId: number;
     created: number;
 }
+
+export interface ITagCount {
+    tagId: number;
+    count: number;
+}
