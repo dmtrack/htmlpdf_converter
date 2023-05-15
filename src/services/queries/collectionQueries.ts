@@ -29,10 +29,10 @@ export const getCollectionsByItemCountQuery = async (params: {
                     'timestamp',
                     'id',
                 ],
-                include: [{ model: User, attributes: ['nickname'] }],
+                include: [{ model: User, attributes: ['name'] }],
             },
         ],
-        group: ['Items.collectionId', 'collections.id', 'collections.users.id'],
+        group: ['Items.collectionId', 'collections.id', 'collections.user.id'],
         order: Sequelize.literal('count DESC'),
     });
 };
