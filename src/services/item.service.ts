@@ -2,6 +2,7 @@ import { Either, left, right } from '@sweet-monads/either';
 import { Sequelize } from 'sequelize';
 import { Item } from '../db/models/item';
 import { Like } from '../db/models/like';
+import { Comment } from '../db/models/comment';
 import { DBError } from '../errors/DBError';
 import { EntityError } from '../errors/EntityError';
 import { IItemCreate, IItemUpdate, ITagCount } from '../interfaces/models/item';
@@ -112,6 +113,44 @@ class ItemService {
             console.log(e);
 
             return left(new DBError('getTopRatedItems error', e));
+        }
+    }
+
+    async getTopCommentedItems() {
+        try {
+            const comments = await Comment.findAll({
+                attributes: [
+                    'itemId',
+                    [Sequelize.fn('count', Sequelize.col('itemId')), 'count'],
+                ],
+                include: [
+                    {
+                        model: Item,
+                        attributes: [
+                            'name',
+                            'image',
+                            'created',
+                            'collectionId',
+                        ],
+                    },
+                ],
+                group: [
+                    'Comment.itemId',
+                    'name',
+                    'image',
+                    'created',
+                    'collectionId',
+                ],
+                order: Sequelize.literal('count DESC'),
+                raw: true,
+                nest: true,
+            });
+
+            return right(comments);
+        } catch (e: any) {
+            console.log(e);
+
+            return left(new DBError('getTopComments error', e));
         }
     }
 

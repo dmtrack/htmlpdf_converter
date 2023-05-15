@@ -33,6 +33,16 @@ export const getTopRatedItems: RequestHandler = async (req, res, next) => {
         .mapLeft((e: any) => res.status(401).json(e));
 };
 
+export const getTopCommentedItems: RequestHandler = async (req, res, next) => {
+    const response = await ItemService.getTopCommentedItems();
+
+    response
+        .mapRight((item: IItem) => {
+            res.status(200).json(item);
+        })
+        .mapLeft((e: any) => res.status(401).json(e));
+};
+
 export const getCollectionItems: RequestHandler = async (req, res, next) => {
     const id = req.params.collectionId;
     const response = await ItemService.getCollectionItems(id);
