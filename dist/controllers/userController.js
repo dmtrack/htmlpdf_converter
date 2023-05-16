@@ -120,7 +120,7 @@ class UserController {
                 .mapRight((user) => {
                 res.status(200).json(user);
             })
-                .mapLeft((e) => res.status(401).json(e));
+                .mapLeft((e) => res.status(500).json(e));
         });
         this.toggleBlock = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getItemConfigs = exports.updateCollection = exports.deleteOneCollection = exports.getOneCollection = exports.getUserCollections = exports.getTopAmountOfItemsCollection = exports.getThemes = exports.getCollections = exports.createCollection = void 0;
+exports.editCollection = exports.getItemConfigs = exports.updateCollection = exports.deleteOneCollection = exports.getOneCollection = exports.getUserCollections = exports.getTopAmountOfItemsCollection = exports.getThemes = exports.getCollections = exports.createCollection = void 0;
 const CollectionService = require('../services/collection.service');
 const createCollection = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(req.body);
@@ -17,59 +17,59 @@ const createCollection = (req, res) => __awaiter(void 0, void 0, void 0, functio
     const response = yield CollectionService.create(collection, itemConfigs);
     response
         .mapRight((collection) => res.status(200).json(collection))
-        .mapLeft((e) => res.status(401).json(e));
+        .mapLeft((e) => res.status(500).json(e));
 });
 exports.createCollection = createCollection;
-const getCollections = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const getCollections = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const response = yield CollectionService.getAllCollections();
     response
         .mapRight((collection) => res.status(200).json(collection))
-        .mapLeft((e) => res.status(401).json(e));
+        .mapLeft((e) => res.status(500).json(e));
 });
 exports.getCollections = getCollections;
-const getThemes = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const getThemes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const response = yield CollectionService.getThemes();
     response
         .mapRight((themes) => res.status(200).json(themes))
-        .mapLeft((e) => res.status(401).json(e));
+        .mapLeft((e) => res.status(500).json(e));
 });
 exports.getThemes = getThemes;
-const getTopAmountOfItemsCollection = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const getTopAmountOfItemsCollection = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const response = yield CollectionService.getTopAmountOfItemsCollection();
     response
         .mapRight((collection) => res.status(200).json(collection))
-        .mapLeft((e) => res.status(401).json(e));
+        .mapLeft((e) => res.status(500).json(e));
 });
 exports.getTopAmountOfItemsCollection = getTopAmountOfItemsCollection;
-const getUserCollections = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const getUserCollections = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.userId;
     const response = yield CollectionService.getUserCollections(id);
     response
         .mapRight((collections) => res.status(200).json(collections))
-        .mapLeft((e) => res.status(401).json(e));
+        .mapLeft((e) => res.status(500).json(e));
 });
 exports.getUserCollections = getUserCollections;
-const getOneCollection = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const getOneCollection = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const response = yield CollectionService.getOneCollection(id);
     response
         .mapRight((collection) => res.status(200).json(collection))
-        .mapLeft((e) => res.status(401).json(e));
+        .mapLeft((e) => res.status(500).json(e));
 });
 exports.getOneCollection = getOneCollection;
-const deleteOneCollection = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const deleteOneCollection = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const response = yield CollectionService.deleteOneCollection(id);
     response
         .mapRight((response) => res.status(200).json(response))
-        .mapLeft((e) => res.status(401).json(e));
+        .mapLeft((e) => res.status(500).json(e));
 });
 exports.deleteOneCollection = deleteOneCollection;
-const updateCollection = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const updateCollection = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const response = yield CollectionService.updateCollection(req.body);
     response
         .mapRight((collection) => res.status(200).json(collection))
-        .mapLeft((e) => res.status(401).json(e));
+        .mapLeft((e) => res.status(500).json(e));
 });
 exports.updateCollection = updateCollection;
 const getItemConfigs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -80,3 +80,11 @@ const getItemConfigs = (req, res) => __awaiter(void 0, void 0, void 0, function*
         .mapLeft((e) => res.status(500).json(e));
 });
 exports.getItemConfigs = getItemConfigs;
+const editCollection = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { collection, itemConfigs } = req.body;
+    const response = yield CollectionService.edit(collection, itemConfigs);
+    response
+        .mapRight((collection) => res.status(200).json(collection))
+        .mapLeft((e) => res.status(500).json(e));
+});
+exports.editCollection = editCollection;

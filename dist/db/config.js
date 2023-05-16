@@ -54,7 +54,7 @@ const connection = new sequelize_typescript_1.Sequelize({
     dialectOptions: {
         ssl: {
             require: true,
-            rejectUnauthorized: false
+            rejectUnauthorized: false,
         },
         native: true,
     },

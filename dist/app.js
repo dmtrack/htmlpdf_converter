@@ -48,7 +48,7 @@ config_1.default
     (0, collection_utils_1.deleteAllIndexes)('collections');
     (0, collection_utils_1.deleteAllIndexes)('items');
     (0, collection_utils_1.themeCheck)();
-    console.log('Database synced successfully');
+    console.log('Database synced successfully, lets go!');
 }))
     .catch((err) => {
     console.log('Err', err);

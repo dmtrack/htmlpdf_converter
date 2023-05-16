@@ -45,8 +45,26 @@ class CollectionService {
             return right(response);
         } catch (e: any) {
             console.log(e, 'error');
-
             return left(new DBError('create collection error', e));
+        }
+    }
+
+    async edit (collection: ICollection, itemConfigs: ItemConfigType[]) {
+        try {
+            const response = await Collection.update(collection, {where: {id: collection.id}, returning: ['*']})
+            await ItemConfigs.destroy({where: {collectionId: collection.id}})
+            if (itemConfigs && itemConfigs.length > 0) {
+                const configs = itemConfigs.map((config) => ({
+                    ...config,
+                    collectionId: response[1][0].id,
+                }));
+                console.log(configs, 'CONFIGS');
+                await ItemConfigs.bulkCreate(configs);
+            }
+            return right(response[1][0])
+        } catch (error) {
+            console.log(error, 'error');
+            return left(new DBError('create collection error', error));
         }
     }
 

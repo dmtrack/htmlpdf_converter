@@ -19,7 +19,7 @@ const createItem = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         .mapRight((item) => {
         res.status(200).json(item);
     })
-        .mapLeft((e) => res.status(401).json(e));
+        .mapLeft((e) => res.status(500).json(e));
 });
 exports.createItem = createItem;
 const getItems = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -28,7 +28,7 @@ const getItems = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
         .mapRight((item) => {
         res.status(200).json(item);
     })
-        .mapLeft((e) => res.status(401).json(e));
+        .mapLeft((e) => res.status(500).json(e));
 });
 exports.getItems = getItems;
 const getTopRatedItems = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -37,7 +37,7 @@ const getTopRatedItems = (req, res, next) => __awaiter(void 0, void 0, void 0, f
         .mapRight((item) => {
         res.status(200).json(item);
     })
-        .mapLeft((e) => res.status(401).json(e));
+        .mapLeft((e) => res.status(500).json(e));
 });
 exports.getTopRatedItems = getTopRatedItems;
 const getTopCommentedItems = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -46,7 +46,7 @@ const getTopCommentedItems = (req, res, next) => __awaiter(void 0, void 0, void 
         .mapRight((item) => {
         res.status(200).json(item);
     })
-        .mapLeft((e) => res.status(401).json(e));
+        .mapLeft((e) => res.status(500).json(e));
 });
 exports.getTopCommentedItems = getTopCommentedItems;
 const getCollectionItems = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -56,7 +56,7 @@ const getCollectionItems = (req, res, next) => __awaiter(void 0, void 0, void 0,
         .mapRight((item) => {
         res.status(200).json(item);
     })
-        .mapLeft((e) => res.status(401).json(e));
+        .mapLeft((e) => res.status(500).json(e));
 });
 exports.getCollectionItems = getCollectionItems;
 const getOneItem = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -66,7 +66,7 @@ const getOneItem = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         .mapRight((item) => {
         res.status(200).json(item);
     })
-        .mapLeft((e) => res.status(401).json(e));
+        .mapLeft((e) => res.status(500).json(e));
 });
 exports.getOneItem = getOneItem;
 const deleteOneItem = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -76,7 +76,7 @@ const deleteOneItem = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         .mapRight((response) => {
         res.status(200).json(response);
     })
-        .mapLeft((e) => res.status(401).json(e));
+        .mapLeft((e) => res.status(500).json(e));
 });
 exports.deleteOneItem = deleteOneItem;
 const updateItem = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -85,7 +85,7 @@ const updateItem = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         .mapRight((item) => {
         res.status(200).json(item);
     })
-        .mapLeft((e) => res.status(401).json(e));
+        .mapLeft((e) => res.status(500).json(e));
 });
 exports.updateItem = updateItem;
 const setLike = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -94,7 +94,7 @@ const setLike = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
         .mapRight((response) => {
         res.status(200).json(response);
     })
-        .mapLeft((e) => res.status(401).json(e));
+        .mapLeft((e) => res.status(500).json(e));
 });
 exports.setLike = setLike;
 const unsetLike = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -103,7 +103,7 @@ const unsetLike = (req, res, next) => __awaiter(void 0, void 0, void 0, function
         .mapRight((response) => {
         res.status(200).json(response);
     })
-        .mapLeft((e) => res.status(401).json(e));
+        .mapLeft((e) => res.status(500).json(e));
 });
 exports.unsetLike = unsetLike;
 const getTags = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
