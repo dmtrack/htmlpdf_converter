@@ -37,7 +37,7 @@ connection
         deleteAllIndexes('items');
         themeCheck();
 
-        console.log('Database synced successfully');
+        console.log('Database synced successfully, lets go!');
     })
     .catch((err) => {
         console.log('Err', err);
