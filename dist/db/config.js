@@ -51,9 +51,12 @@ const connection = new sequelize_typescript_1.Sequelize({
         ItemsTags_1.ItemsTags,
         ItemConfigs_1.ItemConfigs,
     ],
-    // dialectOptions: {
-    //     ssl: true,
-    //     native: true,
-    // },
+    dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false
+        },
+        native: true,
+    },
 });
 exports.default = connection;

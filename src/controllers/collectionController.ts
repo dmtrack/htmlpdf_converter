@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import { ICollection } from '../interfaces/models/collection';
+import { ICollection, ItemConfigType } from '../interfaces/models/collection'
 import { ITheme } from '../interfaces/models/theme';
 const CollectionService = require('../services/collection.service');
 
@@ -73,3 +73,12 @@ export const updateCollection: RequestHandler = async (req, res, next) => {
         .mapRight((collection: ICollection) => res.status(200).json(collection))
         .mapLeft((e: any) => res.status(401).json(e));
 };
+
+export const getItemConfigs: RequestHandler = async (req, res) => {
+    const { collectionId } = req.params
+    const response = await CollectionService.getItemConfigs(+collectionId)
+
+    response
+      .mapRight((configs: ItemConfigType[]) => res.json(configs))
+      .mapLeft((e: any) => res.status(500).json(e));
+}

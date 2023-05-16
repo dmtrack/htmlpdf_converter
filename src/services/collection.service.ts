@@ -158,5 +158,14 @@ class CollectionService {
         const updatedCollection = await Collection.findByPk(newData.id);
         return right(updatedCollection);
     }
+
+    async getItemConfigs(collectionId: number) {
+        try {
+            const itemConfigs = await ItemConfigs.findAll({ where: { collectionId } })
+            return right(itemConfigs)
+        } catch (e: any) {
+            return left(new DBError('get item configs error', e));
+        }
+    }
 }
 module.exports = new CollectionService();

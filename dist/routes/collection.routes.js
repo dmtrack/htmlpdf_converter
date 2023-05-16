@@ -9,6 +9,7 @@ collectionRouter.get('/getthemes', collectionController_1.getThemes);
 collectionRouter.get('/topamountofitems', collectionController_1.getTopAmountOfItemsCollection);
 collectionRouter.get('/getusercollections/:userId', collectionController_1.getUserCollections);
 collectionRouter.get('/getone/:id', collectionController_1.getOneCollection);
+collectionRouter.get('/item_configs/:collectionId', collectionController_1.getItemConfigs);
 collectionRouter.put('/update', collectionController_1.updateCollection);
 collectionRouter.delete('/delete/:id', collectionController_1.deleteOneCollection);
 exports.default = collectionRouter;

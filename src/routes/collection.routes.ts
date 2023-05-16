@@ -7,8 +7,8 @@ import {
     getUserCollections,
     updateCollection,
     getTopAmountOfItemsCollection,
-    getThemes,
-} from '../controllers/collectionController';
+    getThemes, getItemConfigs
+} from '../controllers/collectionController'
 const collectionRouter = Router();
 
 collectionRouter.post('/create', createCollection);
@@ -17,6 +17,7 @@ collectionRouter.get('/getthemes', getThemes);
 collectionRouter.get('/topamountofitems', getTopAmountOfItemsCollection);
 collectionRouter.get('/getusercollections/:userId', getUserCollections);
 collectionRouter.get('/getone/:id', getOneCollection);
+collectionRouter.get('/item_configs/:collectionId', getItemConfigs)
 collectionRouter.put('/update', updateCollection);
 collectionRouter.delete('/delete/:id', deleteOneCollection);
 
