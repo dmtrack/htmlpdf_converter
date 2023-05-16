@@ -53,7 +53,7 @@ class UserService {
             );
 
             const accessRight = await Access.create({
-                access: 'admin,
+                access: 'admin',
                 userId: newUser.id,
             });
 
