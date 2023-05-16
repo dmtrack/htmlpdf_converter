@@ -47,6 +47,7 @@ config_1.default
     .then(() => __awaiter(void 0, void 0, void 0, function* () {
     (0, collection_utils_1.deleteAllIndexes)('collections');
     (0, collection_utils_1.deleteAllIndexes)('items');
+    (0, collection_utils_1.deleteAllIndexes)('comments');
     (0, collection_utils_1.themeCheck)();
     console.log('Database synced successfully, lets go!');
 }))

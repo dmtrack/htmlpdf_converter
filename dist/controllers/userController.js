@@ -167,6 +167,19 @@ class UserController {
                 next(e);
             }
         });
+        this.destroyUser = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            const id = req.params.id;
+            try {
+                yield userService.deleteUser(id);
+                return res.status(200).json({
+                    message: `user with id:${id} was deleted`,
+                    userId: id,
+                });
+            }
+            catch (e) {
+                next(e);
+            }
+        });
     }
 }
 module.exports = new UserController();
