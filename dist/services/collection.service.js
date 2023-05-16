@@ -49,6 +49,24 @@ class CollectionService {
             }
         });
     }
+    edit(collection, itemConfigs) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const response = yield collection_1.Collection.update(collection, { where: { id: collection.id }, returning: ['*'] });
+                yield ItemConfigs_1.ItemConfigs.destroy({ where: { collectionId: collection.id } });
+                if (itemConfigs && itemConfigs.length > 0) {
+                    const configs = itemConfigs.map((config) => (Object.assign(Object.assign({}, config), { collectionId: response[1][0].id })));
+                    console.log(configs, 'CONFIGS');
+                    yield ItemConfigs_1.ItemConfigs.bulkCreate(configs);
+                }
+                return (0, either_1.right)(response[1][0]);
+            }
+            catch (error) {
+                console.log(error, 'error');
+                return (0, either_1.left)(new DBError_1.DBError('create collection error', error));
+            }
+        });
+    }
     getAllCollections() {
         return __awaiter(this, void 0, void 0, function* () {
             try {

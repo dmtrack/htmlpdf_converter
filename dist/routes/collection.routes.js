@@ -4,6 +4,7 @@ const express_1 = require("express");
 const collectionController_1 = require("../controllers/collectionController");
 const collectionRouter = (0, express_1.Router)();
 collectionRouter.post('/create', collectionController_1.createCollection);
+collectionRouter.post('/edit', collectionController_1.editCollection);
 collectionRouter.get('/getcollections', collectionController_1.getCollections);
 collectionRouter.get('/getthemes', collectionController_1.getThemes);
 collectionRouter.get('/topamountofitems', collectionController_1.getTopAmountOfItemsCollection);
