@@ -22,6 +22,7 @@ userRouter.get('/getuser/:id([0-9]+)', userController.getUser);
 userRouter.put('/block', userController.toggleBlock);
 userRouter.put('/unblock', userController.toggleUnBlock);
 userRouter.delete('/delete', userController.deleteUser);
+userRouter.delete('/destroy/:id([0-9]+)', userController.destroyUser);
 
 export default userRouter;
 

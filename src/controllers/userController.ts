@@ -170,6 +170,20 @@ class UserController {
             next(e);
         }
     };
+    destroyUser: RequestHandler = async (req, res, next) => {
+        const id = req.params.id;
+
+        try {
+            await userService.deleteUser(id);
+
+            return res.status(200).json({
+                message: `user with id:${id} was deleted`,
+                userId: id,
+            });
+        } catch (e) {
+            next(e);
+        }
+    };
 }
 
 module.exports = new UserController();
