@@ -35,6 +35,7 @@ connection
     .then(async () => {
         deleteAllIndexes('collections');
         deleteAllIndexes('items');
+        deleteAllIndexes('comments');
         themeCheck();
 
         console.log('Database synced successfully, lets go!');
