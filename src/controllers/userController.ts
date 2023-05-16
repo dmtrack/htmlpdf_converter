@@ -122,7 +122,7 @@ class UserController {
             .mapRight((user: IUser) => {
                 res.status(200).json(user);
             })
-            .mapLeft((e: any) => res.status(401).json(e));
+            .mapLeft((e: any) => res.status(500).json(e));
     };
 
     toggleBlock: RequestHandler = async (req, res, next) => {
