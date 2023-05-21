@@ -19,7 +19,8 @@ import { removeItemCommentsIndexes } from './search.service';
 class ItemService {
     async create(item: IItemCreate) {
         try {
-            let { userId, collectionId, image, fields, tags } = item;
+            let { userId, collectionId, image, fields, tags, description } =
+                item;
             if (!image) {
                 image =
                     'https://github.com/dmtrack/collections_client/blob/dev-client/public/defaultItemImage.png?raw=true';
@@ -28,6 +29,7 @@ class ItemService {
             const created = new Date().getTime();
             const newItem = await Item.create({
                 collectionId,
+                description,
                 userId,
                 created,
                 image: image,
@@ -69,7 +71,6 @@ class ItemService {
                 include: [{ model: Like }, { model: Tag }],
                 order: [['created', 'DESC']],
             });
-            console.log(items, 'items');
 
             return right(items);
         } catch (e: any) {
@@ -93,6 +94,7 @@ class ItemService {
                             'image',
                             'created',
                             'collectionId',
+                            'description',
                         ],
                     },
                 ],
@@ -102,6 +104,7 @@ class ItemService {
                     'image',
                     'created',
                     'collectionId',
+                    'description',
                 ],
                 order: Sequelize.literal('count DESC'),
                 raw: true,
@@ -118,8 +121,6 @@ class ItemService {
 
     async getTopCommentedItems() {
         try {
-            console.log('hello');
-
             const comments = await Comment.findAll({
                 attributes: [
                     'itemId',
@@ -128,10 +129,21 @@ class ItemService {
                 include: [
                     {
                         model: Item,
-                        attributes: ['name', 'image', 'collectionId'],
+                        attributes: [
+                            'name',
+                            'image',
+                            'collectionId',
+                            'description',
+                        ],
                     },
                 ],
-                group: ['Comment.itemId', 'name', 'image', 'collectionId'],
+                group: [
+                    'Comment.itemId',
+                    'name',
+                    'image',
+                    'collectionId',
+                    'description',
+                ],
                 order: Sequelize.literal('count DESC'),
                 raw: true,
                 nest: true,

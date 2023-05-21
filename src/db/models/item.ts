@@ -51,6 +51,12 @@ export class Item extends sequelize.Model {
     collectionId!: number;
 
     @sequelize.Column({
+        type: sequelize.DataType.STRING(4096),
+        allowNull: false,
+    })
+    description!: string;
+
+    @sequelize.Column({
         type: sequelize.DataType.STRING(255),
         allowNull: true,
     })

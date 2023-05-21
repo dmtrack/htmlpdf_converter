@@ -75,6 +75,8 @@ export const deleteOneItem: RequestHandler = async (req, res, next) => {
 };
 
 export const updateItem: RequestHandler = async (req, res, next) => {
+    console.log(req.body);
+
     const response = await ItemService.updateItem(req.body);
     response
         .mapRight((item: IItem) => {
