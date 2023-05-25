@@ -11,9 +11,16 @@ export interface IItemCreate {
 }
 
 export interface IItemUpdate {
-    id: number;
-    name: string;
-    description: string;
+    item: {
+        id: number;
+        name: string;
+        description: string;
+        userId: number;
+        collectionId: number;
+        image: string;
+        fields: Fields;
+        tags: TagType[];
+    };
 }
 
 export interface IItem {

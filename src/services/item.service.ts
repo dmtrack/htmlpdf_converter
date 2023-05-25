@@ -199,19 +199,20 @@ class ItemService {
     }
 
     async updateItem(newData: IItemUpdate) {
+        const { id } = newData.item;
         const item = await Item.update(
-            { ...newData },
-            { where: { id: newData.id } }
+            { ...newData.item },
+            { where: { id: id } }
         );
 
         if (item[0] === 0) {
             return left(
                 new EntityError(
-                    `there is no item with id:${newData.id} in data-base`
+                    `there is no item with id:${newData.item.id} in data-base`
                 )
             );
         }
-        const updatedItem = await Item.findByPk(newData.id);
+        const updatedItem = await Item.findByPk(Number(newData.item.id));
         return right(updatedItem);
     }
 
