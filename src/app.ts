@@ -31,12 +31,12 @@ app.use('/dev', devRouter);
 Socket.onEvents();
 
 connection
-    .sync({ force: true })
+    .sync({ alter: true })
     .then(async () => {
-        deleteAllIndexes('collections');
-        deleteAllIndexes('items');
-        deleteAllIndexes('comments');
-        themeCheck();
+        // deleteAllIndexes('collections');
+        // deleteAllIndexes('items');
+        // deleteAllIndexes('comments');
+        // themeCheck();
 
         console.log('Database synced successfully, lets go!');
     })
