@@ -1,12 +1,10 @@
 import * as sequelize from 'sequelize-typescript';
-import { Collection } from './collection';
-import { Item } from './item';
 
 @sequelize.Table({
     timestamps: false,
-    tableName: 'themes',
+    tableName: 'logs',
 })
-export class Theme extends sequelize.Model {
+export class Log extends sequelize.Model {
     @sequelize.Column({
         type: sequelize.DataType.BIGINT,
         autoIncrement: true,
@@ -20,12 +18,27 @@ export class Theme extends sequelize.Model {
         allowNull: false,
     })
     name!: string;
+
+    @sequelize.Column({
+        type: sequelize.DataType.STRING(4096),
+        allowNull: false,
+    })
+    description!: string;
+
     @sequelize.Column({
         type: sequelize.DataType.STRING(255),
         allowNull: false,
     })
-    defaultImg!: string;
+    image!: string;
+    @sequelize.Column({
+        type: sequelize.DataType.STRING(255),
+        allowNull: false,
+    })
+    themeName!: string;
 
-    @sequelize.HasMany(() => Collection)
-    collections!: Collection[];
+    @sequelize.Column({
+        type: sequelize.DataType.BIGINT,
+        allowNull: true,
+    })
+    created!: number;
 }
