@@ -12,13 +12,13 @@ dotenv.config();
 app.use(cors({ credentials: true, origin: process.env.CLIENT_URL }));
 app.use(json());
 app.use(urlencoded({ extended: true }));
-app.use('/upload', fileRouter);
+app.use('/file', fileRouter);
 
-// connection
-//     .sync()
-//     .then(async ({}) => {
-//         console.log('Database synced successfully, lets go!');
-//     })
-//     .catch((err) => {
-//         console.log('Err', err);
-//     });
+connection
+    .sync({ force: true })
+    .then(async () => {
+        console.log('Database synced successfully, lets go!');
+    })
+    .catch((err) => {
+        console.log('Err', err);
+    });

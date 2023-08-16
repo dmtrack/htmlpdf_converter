@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize-typescript';
 import dotenv from 'dotenv';
-import { Log } from './models/log';
+import { Record } from './models/log';
 dotenv.config();
 
 const connection = new Sequelize({
@@ -10,7 +10,7 @@ const connection = new Sequelize({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     logging: false,
-    models: [Log],
+    models: [Record],
     dialectOptions: {
         ssl: {
             require: true,

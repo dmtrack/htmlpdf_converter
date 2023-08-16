@@ -1,10 +1,10 @@
 import * as sequelize from 'sequelize-typescript';
 
 @sequelize.Table({
-    timestamps: false,
-    tableName: 'logs',
+    timestamps: true,
+    tableName: 'records',
 })
-export class Log extends sequelize.Model {
+export class Record extends sequelize.Model {
     @sequelize.Column({
         type: sequelize.DataType.BIGINT,
         autoIncrement: true,
@@ -20,25 +20,19 @@ export class Log extends sequelize.Model {
     name!: string;
 
     @sequelize.Column({
-        type: sequelize.DataType.STRING(4096),
+        type: sequelize.DataType.INTEGER,
         allowNull: false,
     })
-    description!: string;
+    executingTime!: number;
 
+    @sequelize.Column({
+        type: sequelize.DataType.INTEGER,
+        allowNull: false,
+    })
+    memory!: number;
     @sequelize.Column({
         type: sequelize.DataType.STRING(255),
         allowNull: false,
     })
-    image!: string;
-    @sequelize.Column({
-        type: sequelize.DataType.STRING(255),
-        allowNull: false,
-    })
-    themeName!: string;
-
-    @sequelize.Column({
-        type: sequelize.DataType.BIGINT,
-        allowNull: true,
-    })
-    created!: number;
+    link!: string;
 }

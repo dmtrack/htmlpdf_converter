@@ -1,4 +1,4 @@
-import { IUserDto } from '../../db/models/interface/user.interface';
+import { IUserDto } from '../../db/models/interface/log.interface';
 
 export interface IUserResponse {
     mapRight(

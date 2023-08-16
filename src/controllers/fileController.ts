@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { IUserResponse } from '../interfaces/controllers/fileController.interface';
 import { RequestHandler } from 'express';
+import { IFileRecord } from '../db/models/interface/log.interface';
 const fileService = require('../services/file.service');
 const { validationResult } = require('express-validator');
 const ApiError = require('../errors/api-error');
@@ -12,30 +13,32 @@ class FileController {
             if (!errors.isEmpty()) {
                 return next(
                     ApiError.badRequest(
-                        'Ошибка валидации при регистрации',
+                        'Ошибка валидации при загрузке',
                         errors.array()
                     )
                 );
             }
-            // const response = await fileService.upload(req);
-            // res.cookie('refreshToken', response.value.refreshToken, {
-            //     maxAge: 30 * 24 * 60 * 60 * 1000,
-            //     httpOnly: true,
-            //     sameSite: 'none',
-            //     domain: process.env.CORS_ORIGIN,
-            // });
+            const response: IFileRecord = await fileService.upload(req);
+            console.log(response, 'responce');
+            res.json({
+                filename: response.name,
+                executingTime: response.executingTime,
+                memory: response.memory,
+                link: response.link,
+                createdAt: response.createdAt,
+            });
         } catch (e) {
             next(e);
         }
     };
 
     getAllLogs: RequestHandler = async (req, res, next) => {
-        // try {
-        //     const users = await fileService.getAllLogs();
-        //     return res.json(users);
-        // } catch (e) {
-        //     next(e);
-        // }
+        try {
+            const logs = await fileService.getAllLogs();
+            return res.json(logs);
+        } catch (e) {
+            next(e);
+        }
     };
 
     destroyUser: RequestHandler = async (req, res, next) => {
