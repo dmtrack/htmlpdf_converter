@@ -10,7 +10,12 @@ export const app = express();
 export const server = http.createServer(app);
 
 dotenv.config();
-app.use(cors({ credentials: true, origin: process.env.CLIENT_URL }));
+app.options(
+    '*',
+    cors({ origin: process.env.CLIENT_URL, optionsSuccessStatus: 200 })
+);
+app.use(cors({ origin: process.env.CLIENT_URL, optionsSuccessStatus: 200 }));
+
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use('/file', fileRouter);
