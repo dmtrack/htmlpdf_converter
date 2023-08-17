@@ -5,7 +5,7 @@ import {
     IUploadRequest,
 } from '../db/models/interface/log.interface';
 import { Record } from '../db/models/log';
-import { DBError } from '../errors/DBError';
+import { CustomError } from '../exceptions/CustomError';
 
 class FileService {
     async upload(data: IUploadRequest) {
@@ -19,7 +19,7 @@ class FileService {
             });
             return newRecord;
         } catch (e: any) {
-            new DBError('create record error', e);
+            new CustomError('create record error', e);
         }
     }
 

@@ -13,15 +13,27 @@ const fileService = require('../services/file.service');
 const compressService = require('../services/compress.service');
 const convertService = require('../services/convert.service');
 const { validationResult } = require('express-validator');
+const logger = require('../utils/logger');
 class FileController {
     constructor() {
         this.upload = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             if (!req.files || Object.keys(req.files).length === 0) {
-                return res.status(400).send('No files were uploaded.');
+                return res.status(500).send('No files were uploaded.');
+            }
+            else {
+                logger.info(`file uploaded`);
             }
             const start = Date.now();
+            const startCompress = Date.now();
             const { fileName, compressMemory } = yield compressService.unzipFiles(req.files);
+            const finishCompress = Date.now();
+            const resultCompress = finishCompress - startCompress;
+            const startConvert = Date.now();
             const { fileUrl, convertMemory } = yield convertService.htmlToPdf(fileName);
+            const finishConvert = Date.now();
+            const resultConvert = finishConvert - startConvert;
+            logger.info(`file: ${fileName} is compressed in ${resultCompress}ms with heap=${Math.floor(compressMemory)}`);
+            logger.info(`file: ${fileName} is converted in ${resultConvert}ms with heap=${Math.floor(convertMemory)}`);
             const finish = Date.now();
             const executingTime = finish - start;
             try {

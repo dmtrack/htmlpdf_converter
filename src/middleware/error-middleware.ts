@@ -1,18 +1,21 @@
-import { NextFunction, Request, Response } from 'express';
-import { IFileError } from '../interfaces/other/other.interface';
-import { FileError } from '../errors/file-error';
+import { Request, Response, NextFunction } from 'express';
+import { CustomError } from '../exceptions/CustomError';
 
-export function handleFileError(
-    err: IFileError,
+function handleError(
+    err: TypeError | CustomError,
     req: Request,
     res: Response,
     next: NextFunction
 ) {
-    if (err instanceof FileError) {
-        res.status(err.status).json({
-            text: err.message,
-            errors: err.errors,
-        });
+    let customError = err;
+
+    if (!(err instanceof CustomError)) {
+        customError = new CustomError(
+            'Oh no, this is embarrasing. We are having troubles my friend'
+        );
     }
-    // return res.status(500).json({ message: fileError });
+
+    res.status((customError as CustomError).status).send(customError);
 }
+
+export default handleError;

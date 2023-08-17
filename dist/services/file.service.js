@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const log_1 = require("../db/models/log");
-const DBError_1 = require("../errors/DBError");
+const CustomError_1 = require("../exceptions/CustomError");
 class FileService {
     upload(data) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -25,7 +25,7 @@ class FileService {
                 return newRecord;
             }
             catch (e) {
-                new DBError_1.DBError('create record error', e);
+                new CustomError_1.CustomError('create record error', e);
             }
         });
     }

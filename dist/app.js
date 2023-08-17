@@ -18,18 +18,20 @@ const config_1 = __importDefault(require("./db/config"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const file_routes_1 = __importDefault(require("./routes/file.routes"));
 const body_parser_1 = require("body-parser");
+const error_middleware_1 = __importDefault(require("./middleware/error-middleware"));
 const cors = require('cors');
 const http = require('http');
 exports.app = (0, express_1.default)();
 exports.server = http.createServer(exports.app);
 dotenv_1.default.config();
-exports.app.use(cors({ credentials: true, origin: process.env.CLIENT_URL }));
+exports.app.options('*', cors({ origin: process.env.CLIENT_URL, optionsSuccessStatus: 200 }));
+exports.app.use(cors({ origin: process.env.CLIENT_URL, optionsSuccessStatus: 200 }));
 exports.app.use((0, body_parser_1.json)());
 exports.app.use((0, body_parser_1.urlencoded)({ extended: true }));
 exports.app.use('/file', file_routes_1.default);
-// app.use(handleFileError);
+exports.app.use(error_middleware_1.default);
 config_1.default
-    .sync({ force: true })
+    .sync({ alter: true })
     .then(() => __awaiter(void 0, void 0, void 0, function* () {
     console.log('Database synced successfully, lets go!');
 }))

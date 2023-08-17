@@ -1,14 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.handleFileError = void 0;
-const file_error_1 = require("../errors/file-error");
-function handleFileError(err, req, res, next) {
-    if (err instanceof file_error_1.FileError) {
-        res.status(err.status).json({
-            text: err.message,
-            errors: err.errors,
-        });
+const CustomError_1 = require("../exceptions/CustomError");
+function handleError(err, req, res, next) {
+    let customError = err;
+    if (!(err instanceof CustomError_1.CustomError)) {
+        customError = new CustomError_1.CustomError('Oh no, this is embarrasing. We are having troubles my friend');
     }
-    // return res.status(500).json({ message: fileError });
+    res.status(customError.status).send(customError);
 }
-exports.handleFileError = handleFileError;
+exports.default = handleError;
