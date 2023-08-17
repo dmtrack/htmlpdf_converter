@@ -37,16 +37,17 @@ class ConvertService {
 
         const pdfPath = path.join(__dirname, `../../${targetName}.pdf`);
 
-        // fs.rmSync(targetFile, {
-        //     force: true,
-        // });
-        // fs.rmSync(pdfPath, {
-        //     force: true,
-        // });
+        fs.rmSync(targetFile, {
+            force: true,
+        });
+        fs.rmSync(pdfPath, {
+            force: true,
+        });
+        const usedMemory = process.memoryUsage().heapUsed / 1024 / 1024;
 
         // Close the browser instance
         await browser.close();
-        return scanUrl;
+        return { fileUrl: scanUrl, convertMemory: usedMemory };
     }
 }
 module.exports = new ConvertService();

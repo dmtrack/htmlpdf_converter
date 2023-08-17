@@ -12,8 +12,12 @@ class FileController {
             return res.status(400).send('No files were uploaded.');
         }
         const start = Date.now();
-        const fileName = await compressService.unzipFiles(req.files);
-        const fileUrl = await convertService.htmlToPdf(fileName);
+        const { fileName, compressMemory } = await compressService.unzipFiles(
+            req.files
+        );
+        const { fileUrl, convertMemory } = await convertService.htmlToPdf(
+            fileName
+        );
         const finish = Date.now();
 
         const executingTime = finish - start;
@@ -23,7 +27,9 @@ class FileController {
                 name: fileName,
                 executingTime: executingTime,
                 link: fileUrl,
+                memory: Math.floor(compressMemory + convertMemory),
             });
+
             res.json({
                 filename: response.name,
                 executingTime: response.executingTime,
