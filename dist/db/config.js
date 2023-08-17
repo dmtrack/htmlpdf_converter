@@ -14,7 +14,7 @@ const connection = new sequelize_typescript_1.Sequelize({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     logging: false,
-    models: [log_1.Log],
+    models: [log_1.Record],
     dialectOptions: {
         ssl: {
             require: true,

@@ -9,53 +9,60 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const fileService = require('../services/user.service');
+const fileService = require('../services/file.service');
+const compressService = require('../services/compress.service');
+const convertService = require('../services/convert.service');
 const { validationResult } = require('express-validator');
-const ApiError = require('../errors/api-error');
 class FileController {
     constructor() {
         this.upload = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            if (!req.files || Object.keys(req.files).length === 0) {
+                return res.status(400).send('No files were uploaded.');
+            }
+            const start = Date.now();
+            const { fileName, compressMemory } = yield compressService.unzipFiles(req.files);
+            const { fileUrl, convertMemory } = yield convertService.htmlToPdf(fileName);
+            const finish = Date.now();
+            const executingTime = finish - start;
             try {
-                const errors = validationResult(req);
-                if (!errors.isEmpty()) {
-                    return next(ApiError.badRequest('Ошибка валидации при регистрации', errors.array()));
-                }
-                const response = yield fileService.upload(req);
-                // res.cookie('refreshToken', response.value.refreshToken, {
-                //     maxAge: 30 * 24 * 60 * 60 * 1000,
-                //     httpOnly: true,
-                //     sameSite: 'none',
-                //     domain: process.env.CORS_ORIGIN,
-                // });
-                response
-                    .mapRight((user) => res.status(200).json(user))
-                    .mapLeft((e) => res.status(401).json(e.message));
+                const response = yield fileService.upload({
+                    name: fileName,
+                    executingTime: executingTime,
+                    link: fileUrl,
+                    memory: Math.floor(compressMemory + convertMemory),
+                });
+                res.json({
+                    filename: response.name,
+                    executingTime: response.executingTime,
+                    memory: response.memory,
+                    link: response.link,
+                    createdAt: response.createdAt,
+                });
             }
             catch (e) {
                 next(e);
             }
         });
-        this.getAllLogs = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+        this.getRecords = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const users = yield fileService.getAllLogs();
-                return res.json(users);
+                const logs = yield fileService.getRecords();
+                return res.json({ data: logs });
             }
             catch (e) {
                 next(e);
             }
         });
         this.destroyUser = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
-            const id = req.params.id;
-            try {
-                yield fileService.deleteUser(id);
-                return res.status(200).json({
-                    message: `user with id:${id} was deleted`,
-                    userId: id,
-                });
-            }
-            catch (e) {
-                next(e);
-            }
+            // const id = req.params.id;
+            // try {
+            //     await fileService.deleteUser(id);
+            //     return res.status(200).json({
+            //         message: `user with id:${id} was deleted`,
+            //         userId: id,
+            //     });
+            // } catch (e) {
+            //     next(e);
+            // }
         });
     }
 }

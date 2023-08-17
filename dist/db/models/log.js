@@ -29,9 +29,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Log = void 0;
+exports.Record = void 0;
 const sequelize = __importStar(require("sequelize-typescript"));
-let Log = class Log extends sequelize.Model {
+let Record = class Record extends sequelize.Model {
 };
 __decorate([
     sequelize.Column({
@@ -40,41 +40,35 @@ __decorate([
         primaryKey: true,
         allowNull: false,
     })
-], Log.prototype, "id", void 0);
+], Record.prototype, "id", void 0);
 __decorate([
     sequelize.Column({
         type: sequelize.DataType.STRING(255),
         allowNull: false,
     })
-], Log.prototype, "name", void 0);
+], Record.prototype, "name", void 0);
 __decorate([
     sequelize.Column({
-        type: sequelize.DataType.STRING(4096),
+        type: sequelize.DataType.INTEGER,
         allowNull: false,
     })
-], Log.prototype, "description", void 0);
+], Record.prototype, "executingTime", void 0);
+__decorate([
+    sequelize.Column({
+        type: sequelize.DataType.INTEGER,
+        allowNull: false,
+    })
+], Record.prototype, "memory", void 0);
 __decorate([
     sequelize.Column({
         type: sequelize.DataType.STRING(255),
         allowNull: false,
     })
-], Log.prototype, "image", void 0);
-__decorate([
-    sequelize.Column({
-        type: sequelize.DataType.STRING(255),
-        allowNull: false,
-    })
-], Log.prototype, "themeName", void 0);
-__decorate([
-    sequelize.Column({
-        type: sequelize.DataType.BIGINT,
-        allowNull: true,
-    })
-], Log.prototype, "created", void 0);
-Log = __decorate([
+], Record.prototype, "link", void 0);
+Record = __decorate([
     sequelize.Table({
-        timestamps: false,
-        tableName: 'logs',
+        timestamps: true,
+        tableName: 'records',
     })
-], Log);
-exports.Log = Log;
+], Record);
+exports.Record = Record;

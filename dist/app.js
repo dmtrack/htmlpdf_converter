@@ -26,10 +26,11 @@ dotenv_1.default.config();
 exports.app.use(cors({ credentials: true, origin: process.env.CLIENT_URL }));
 exports.app.use((0, body_parser_1.json)());
 exports.app.use((0, body_parser_1.urlencoded)({ extended: true }));
-exports.app.use('/upload', file_routes_1.default);
+exports.app.use('/file', file_routes_1.default);
+// app.use(handleFileError);
 config_1.default
-    .sync()
-    .then(({}) => __awaiter(void 0, void 0, void 0, function* () {
+    .sync({ force: true })
+    .then(() => __awaiter(void 0, void 0, void 0, function* () {
     console.log('Database synced successfully, lets go!');
 }))
     .catch((err) => {

@@ -1,13 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ApiError = require('../errors/api-error');
-module.exports = function (err, req, res, next) {
-    console.log(err);
-    if (err instanceof ApiError) {
+exports.handleFileError = void 0;
+const file_error_1 = require("../errors/file-error");
+function handleFileError(err, req, res, next) {
+    if (err instanceof file_error_1.FileError) {
         res.status(err.status).json({
-            message: err.message,
+            text: err.message,
             errors: err.errors,
         });
     }
-    return res.status(500).json({ message: err.message });
-};
+    // return res.status(500).json({ message: fileError });
+}
+exports.handleFileError = handleFileError;
