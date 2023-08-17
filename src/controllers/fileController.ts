@@ -1,14 +1,55 @@
 import { Request, Response } from 'express';
 import { RequestHandler } from 'express';
 const fileService = require('../services/file.service');
+const compressService = require('../services/compress.service');
 const { validationResult } = require('express-validator');
+const puppeteer = require('puppeteer');
+const fs = require('fs');
+const path = require('path');
 
 class FileController {
     upload: RequestHandler = async (req, res, next) => {
-        if (!req.file || Object.keys(req.file).length === 0) {
+        if (!req.files || Object.keys(req.files).length === 0) {
             return res.status(400).send('No files were uploaded.');
         }
-        console.log(req.file, 'file!!');
+
+        compressService.unzipFiles(req.files);
+
+        (async () => {
+            // Create a browser instance
+            const browser = await puppeteer.launch();
+
+            // Create a new page
+            const page = await browser.newPage();
+            const targetFile = path.join(__dirname, '../upload/index.html');
+
+            const html = fs.readFileSync(targetFile, 'utf-8');
+            await page.setContent(html, { waitUntil: 'domcontentloaded' });
+            //To reflect CSS used for screens instead of print
+            await page.emulateMediaType('screen');
+
+            // Downlaod the PDF
+            const pdf = await page.pdf({
+                path: 'index.pdf',
+                margin: {
+                    top: '100px',
+                    right: '50px',
+                    bottom: '100px',
+                    left: '50px',
+                },
+                printBackground: true,
+                format: 'A4',
+            });
+            const oldPath = path.join(__dirname, '../../index.pdf');
+            const newPath = path.join(__dirname, '../upload/index.pdf');
+
+            fs.rename(oldPath, newPath, function (err: Error) {
+                if (err) throw err;
+            });
+            // Close the browser instance
+            await browser.close();
+        })();
+
         try {
             // const errors = validationResult(req);
             // if (!errors.isEmpty()) {
