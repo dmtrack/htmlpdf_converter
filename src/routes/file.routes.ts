@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import FileMiddleware from '../middleware/file-middleware';
 import ValidationMiddleware from '../middleware/validation-middleware';
 const fileRouter = Router();
 const fileController = require('../controllers/fileController');
