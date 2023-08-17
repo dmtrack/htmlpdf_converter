@@ -17,7 +17,7 @@ app.use('/file', fileRouter);
 // app.use(handleFileError);
 
 connection
-    .sync({ force: true })
+    .sync({ alter: true })
     .then(async () => {
         console.log('Database synced successfully, lets go!');
     })
