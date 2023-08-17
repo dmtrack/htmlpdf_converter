@@ -45,8 +45,5 @@
     "keywords": [
         "converter",
         "test-task"
-    ],
-    "engines": {
-        "node": ">=14 <15"
-    }
+    ]
 }
