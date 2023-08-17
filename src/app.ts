@@ -3,7 +3,7 @@ import connection from './db/config';
 import dotenv from 'dotenv';
 import fileRouter from './routes/file.routes';
 import { urlencoded, json } from 'body-parser';
-import { handleFileError } from './middleware/error-middleware';
+import {} from './middleware/error-middleware';
 const cors = require('cors');
 const http = require('http');
 export const app = express();

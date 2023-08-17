@@ -13,7 +13,7 @@ class FileController {
         }
         const start = Date.now();
         const fileName = await compressService.unzipFiles(req.files);
-        const fileUrl = await convertService.htmlToPdf();
+        const fileUrl = await convertService.htmlToPdf(fileName);
         const finish = Date.now();
 
         const executingTime = finish - start;
