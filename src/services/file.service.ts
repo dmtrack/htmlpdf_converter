@@ -10,15 +10,14 @@ const uuid = require('uuid');
 const ApiError = require('../errors/api-error');
 
 class FileService {
-    async upload(file: IUploadRequest) {
+    async upload(data: IUploadRequest) {
         try {
-            let { name, executingTime, memory } = file.body;
-            console.log(name, executingTime, memory);
+            let { name, executingTime, link } = data;
             const newRecord: ICreateRecord = await Record.create({
                 name: name,
                 executingTime: executingTime,
-                memory: memory,
-                link: 'www.ya.ru',
+                memory: 780,
+                link: link,
             });
             return newRecord;
         } catch (e: any) {

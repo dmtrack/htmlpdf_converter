@@ -1,16 +1,15 @@
 export interface IUploadRequest {
-    body: {
-        name: string;
-        executingTime?: number;
-        memory?: number;
-    };
+    name: string;
+    executingTime: number;
+    memory?: number;
+    link: string;
 }
 
 export interface IFileRecord {
     id: number;
     name: string;
     executingTime: number;
-    memory: number;
+    memory?: number;
     link: string;
     createdAt: number;
 }

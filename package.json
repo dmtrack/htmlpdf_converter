@@ -19,6 +19,7 @@
         "dotenv": "^16.0.3",
         "express": "^4.18.2",
         "express-validator": "^6.14.3",
+        "firebase": "^10.1.0",
         "pg": "^8.8.0",
         "pg-hstore": "^2.3.4",
         "puppeteer": "^21.0.3",
