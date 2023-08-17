@@ -4,7 +4,6 @@ import {
     IUploadRequest,
 } from '../db/models/interface/log.interface';
 import { Record } from '../db/models/log';
-import { AuthError } from '../errors/AuthError';
 import { DBError } from '../errors/DBError';
 
 const uuid = require('uuid');
@@ -27,9 +26,9 @@ class FileService {
         }
     }
 
-    async getAllLogs() {
-        // const logs = await User.findAll({ include: Access });
-        // return logs;
+    async getRecords() {
+        const records = await Record.findAll();
+        return records;
     }
 
     async deleteUser(id: number) {

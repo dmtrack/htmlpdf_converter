@@ -1,21 +1,18 @@
 import { NextFunction, Request, Response } from 'express';
-import { IApiError } from '../interfaces/other/other.interface';
+import { IFileError } from '../interfaces/other/other.interface';
+import { FileError } from '../errors/file-error';
 
-const ApiError = require('../errors/api-error');
-
-module.exports = function (
-    err: IApiError,
+export function handleFileError(
+    err: IFileError,
     req: Request,
     res: Response,
     next: NextFunction
 ) {
-    console.log(err);
-
-    if (err instanceof ApiError) {
+    if (err instanceof FileError) {
         res.status(err.status).json({
-            message: err.message,
+            text: err.message,
             errors: err.errors,
         });
     }
-    return res.status(500).json({ message: err.message });
-};
+    // return res.status(500).json({ message: fileError });
+}
