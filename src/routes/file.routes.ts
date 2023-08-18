@@ -15,7 +15,6 @@ const upload = multer({
     ) {
         if (file.mimetype !== 'application/zip') {
             logger.error(`file: ${file.originalname} has no zip format`);
-
             return cb(
                 new CustomError('Filetype is not a zip', 500, 'additionalInfo')
             );
