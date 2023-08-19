@@ -7,7 +7,6 @@ const path = require('path');
 class ConvertService {
     async htmlToPdf(fileName: string, startConvert: number) {
         const browser = await puppeteer.launch();
-
         const page = await browser.newPage();
         const targetFile = path.join(__dirname, `../upload/${fileName}.html`);
         const targetPathLength = targetFile.split('/').length;

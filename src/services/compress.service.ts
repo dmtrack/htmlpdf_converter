@@ -6,30 +6,32 @@ class CompressService {
         let fileName = '';
         if (Array.isArray(files)) {
             await files.forEach((f) => {
-                if (f.mimetype === 'application/zip') {
-                    const zip = new AdmZip(f.buffer);
-                    const zipEntries = zip.getEntries();
-                    zipEntries.forEach(function (zipEntry: any) {
-                        fileName = zipEntry.entryName.split('._')[1];
-                        if (
-                            zipEntry.entryName.includes('.html') &&
-                            !!fileName
-                        ) {
-                            zip.extractEntryTo(
-                                /*entry name*/ `${fileName.split('.')[0]}.html`,
-                                /*target path*/ outputPath,
-                                /*maintainEntryPath*/ true,
-                                /*overwrite*/ true
-                            );
-                        }
-                    });
-                }
+                const zip = new AdmZip(f.buffer);
+                const zipEntries = zip.getEntries();
+                zipEntries.forEach(function (zipEntry: any) {
+                    // console.log(zipEntry.toString());
+                    // fileName = zipEntry.toString();
+                    // console.log(fileName);
+                    // .name.split('.')[0];
+                    if (
+                        zipEntry.name.includes('.html') &&
+                        zipEntry.name[0] !== '.'
+                    ) {
+                        console.log(zipEntry.name, 'correct entry');
+                        fileName = zipEntry.name;
+                        zip.extractEntryTo(
+                            /*entry name*/ `${zipEntry.name}`,
+                            /*target path*/ outputPath,
+                            /*maintainEntryPath*/ true,
+                            /*overwrite*/ true
+                        );
+                    }
+                });
             });
         }
         const finishCompress = Date.now();
         const timeCompress = finishCompress - startCompress;
         const usedMemory = process.memoryUsage().heapUsed / 1024 / 1024;
-
         return {
             fileName: fileName.split('.')[0],
             compressMemory: usedMemory,

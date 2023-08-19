@@ -1,10 +1,8 @@
-import { Request, Response } from 'express';
 import { RequestHandler } from 'express';
 import { IFileRecord } from '../db/models/interface/log.interface';
 const fileService = require('../services/file.service');
 const compressService = require('../services/compress.service');
 const convertService = require('../services/convert.service');
-const { validationResult } = require('express-validator');
 const logger = require('../utils/logger');
 
 class FileController {
@@ -33,7 +31,6 @@ class FileController {
                 convertMemory
             )}`
         );
-
         const executingTime = timeCompress + timeConvert;
 
         try {
@@ -63,19 +60,6 @@ class FileController {
         } catch (e) {
             next(e);
         }
-    };
-
-    destroyUser: RequestHandler = async (req, res, next) => {
-        // const id = req.params.id;
-        // try {
-        //     await fileService.deleteUser(id);
-        //     return res.status(200).json({
-        //         message: `user with id:${id} was deleted`,
-        //         userId: id,
-        //     });
-        // } catch (e) {
-        //     next(e);
-        // }
     };
 }
 
