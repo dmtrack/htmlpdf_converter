@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 class ConvertService {
-    async htmlToPdf(fileName: string) {
+    async htmlToPdf(fileName: string, startConvert: number) {
         const browser = await puppeteer.launch();
 
         const page = await browser.newPage();
@@ -47,7 +47,13 @@ class ConvertService {
 
         // Close the browser instance
         await browser.close();
-        return { fileUrl: scanUrl, convertMemory: usedMemory };
+        const finishConvert = Date.now();
+        const timeConvert = finishConvert - startConvert;
+        return {
+            fileUrl: scanUrl,
+            convertMemory: usedMemory,
+            timeConvert: timeConvert,
+        };
     }
 }
 module.exports = new ConvertService();

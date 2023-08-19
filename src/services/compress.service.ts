@@ -2,7 +2,7 @@ const path = require('path');
 const outputPath = path.join(__dirname, '../upload/');
 const AdmZip = require('adm-zip');
 class CompressService {
-    async unzipFiles(files: Express.Multer.File[]) {
+    async unzipFiles(files: Express.Multer.File[], startCompress: number) {
         let fileName = '';
         if (Array.isArray(files)) {
             await files.forEach((f) => {
@@ -26,10 +26,15 @@ class CompressService {
                 }
             });
         }
-
+        const finishCompress = Date.now();
+        const timeCompress = finishCompress - startCompress;
         const usedMemory = process.memoryUsage().heapUsed / 1024 / 1024;
 
-        return { fileName: fileName.split('.')[0], compressMemory: usedMemory };
+        return {
+            fileName: fileName.split('.')[0],
+            compressMemory: usedMemory,
+            timeCompress: timeCompress,
+        };
     }
 }
 module.exports = new CompressService();

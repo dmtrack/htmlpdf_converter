@@ -14,33 +14,27 @@ class FileController {
         } else {
             logger.info(`file uploaded`);
         }
-        const start = Date.now();
+
         const startCompress = Date.now();
-        const { fileName, compressMemory } = await compressService.unzipFiles(
-            req.files
-        );
-        const finishCompress = Date.now();
-        const resultCompress = finishCompress - startCompress;
+        const { fileName, compressMemory, timeCompress } =
+            await compressService.unzipFiles(req.files, startCompress);
 
         const startConvert = Date.now();
-        const { fileUrl, convertMemory } = await convertService.htmlToPdf(
-            fileName
-        );
-        const finishConvert = Date.now();
-        const resultConvert = finishConvert - startConvert;
+        const { fileUrl, convertMemory, timeConvert } =
+            await convertService.htmlToPdf(fileName, startConvert);
+
         logger.info(
-            `file: ${fileName} is compressed in ${resultCompress}ms with heap=${Math.floor(
+            `file: ${fileName} is compressed in ${timeCompress}ms with heap=${Math.floor(
                 compressMemory
             )}`
         );
         logger.info(
-            `file: ${fileName} is converted in ${resultConvert}ms with heap=${Math.floor(
+            `file: ${fileName} is converted in ${timeConvert}ms with heap=${Math.floor(
                 convertMemory
             )}`
         );
-        const finish = Date.now();
 
-        const executingTime = finish - start;
+        const executingTime = timeCompress + timeConvert;
 
         try {
             const response: IFileRecord = await fileService.upload({
