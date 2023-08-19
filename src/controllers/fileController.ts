@@ -1,5 +1,6 @@
 import { RequestHandler } from 'express';
 import { IFileRecord } from '../db/models/interface/log.interface';
+import { CustomError } from '../exceptions/CustomError';
 const fileService = require('../services/file.service');
 const compressService = require('../services/compress.service');
 const convertService = require('../services/convert.service');
@@ -13,27 +14,31 @@ class FileController {
             logger.info(`file uploaded`);
         }
 
-        const startCompress = Date.now();
-        const { fileName, compressMemory, timeCompress } =
-            await compressService.unzipFiles(req.files, startCompress);
-
-        const startConvert = Date.now();
-        const { fileUrl, convertMemory, timeConvert } =
-            await convertService.htmlToPdf(fileName, startConvert);
-
-        logger.info(
-            `file: ${fileName} is compressed in ${timeCompress}ms with heap=${Math.floor(
-                compressMemory
-            )}`
-        );
-        logger.info(
-            `file: ${fileName} is converted in ${timeConvert}ms with heap=${Math.floor(
-                convertMemory
-            )}`
-        );
-        const executingTime = timeCompress + timeConvert;
-
         try {
+            const startCompress = Date.now();
+            const { fileName, compressMemory, timeCompress } =
+                await compressService.unzipFiles(req.files, startCompress);
+            if (!fileName)
+                throw new CustomError(
+                    'There is no html inside',
+                    500,
+                    'additionalInfo'
+                );
+            const startConvert = Date.now();
+            const { fileUrl, convertMemory, timeConvert } =
+                await convertService.htmlToPdf(fileName, startConvert);
+
+            logger.info(
+                `file: ${fileName} is compressed in ${timeCompress}ms with heap=${Math.floor(
+                    compressMemory
+                )}`
+            );
+            logger.info(
+                `file: ${fileName} is converted in ${timeConvert}ms with heap=${Math.floor(
+                    convertMemory
+                )}`
+            );
+            const executingTime = timeCompress + timeConvert;
             const response: IFileRecord = await fileService.upload({
                 name: fileName,
                 executingTime: executingTime,
