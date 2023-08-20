@@ -15,18 +15,16 @@ class FileController {
         }
 
         try {
-            const startCompress = Date.now();
             const { fileName, compressMemory, timeCompress } =
-                await compressService.unzipFiles(req.files, startCompress);
+                await compressService.unzipFiles(req.files);
             if (!fileName)
                 throw new CustomError(
                     'There is no html inside',
                     500,
                     'additionalInfo'
                 );
-            const startConvert = Date.now();
             const { fileUrl, convertMemory, timeConvert } =
-                await convertService.htmlToPdf(fileName, startConvert);
+                await convertService.htmlToPdf(fileName);
 
             logger.info(
                 `file: ${fileName} is compressed in ${timeCompress}ms with heap=${Math.floor(

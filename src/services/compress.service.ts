@@ -2,7 +2,8 @@ const path = require('path');
 const outputPath = path.join(__dirname, '../upload/');
 const AdmZip = require('adm-zip');
 class CompressService {
-    async unzipFiles(files: Express.Multer.File[], startCompress: number) {
+    async unzipFiles(files: Express.Multer.File[]) {
+        const startCompress = Date.now();
         let fileName = '';
         if (Array.isArray(files)) {
             await files.forEach((f) => {
